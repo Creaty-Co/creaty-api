@@ -73,7 +73,7 @@ from functools import partial
 # noinspection PyPackageRequirements
 import environ
 
-# from base.logs.configs import LogConfig  TODO
+from base.logs.configs import LogConfig
 
 # imports
 ###
@@ -198,7 +198,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     *(['debug_toolbar.middleware.DebugToolbarMiddleware'] if DEBUG else []),
     
-    # 'base.middlewares.RequestLogMiddleware' TODO
+    'base.middlewares.RequestLogMiddleware'
 ]
 
 TEMPLATES = [
@@ -410,7 +410,7 @@ _loggers = {
 for k, v in env('LOG_LEVEL').items():
     _loggers.setdefault(k, {})['level'] = v
 
-# LOGGING = LogConfig(_loggers).to_dict()
+LOGGING = LogConfig(_loggers).to_dict()
 
 # logs
 ###
