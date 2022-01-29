@@ -170,8 +170,8 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'app.accounts.authentications.token.TokenAuthentication',
-        'app.accounts.authentications.session.SessionAuthentication'
+        'account.authentications.token.TokenAuthentication',
+        'account.authentications.session.SessionAuthentication'
     ],
     'DEFAULT_PAGINATION_CLASS': 'base.paginations.base.BasePagination',
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
@@ -254,7 +254,7 @@ CACHEOPS_DEFAULTS = {
     'timeout': 60 * 5, 'cache_on_save': True, 'ops': ['get', 'fetch', 'exists']
 }
 CACHEOPS = {
-    # 'account.*': {}  TODO
+    'account.*': {}
 }
 
 CACHEOPS_DEGRADE_ON_FAILURE = True
@@ -374,7 +374,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}
 ]
 
-# AUTH_USER_MODEL = 'account.User'  TODO
+AUTH_USER_MODEL = 'account.User'
 SESSION_ON_LOGIN = env('SESSION_ON_LOGIN', bool, DEBUG)
 
 AUTHENTICATION_BACKENDS = [
@@ -423,9 +423,9 @@ LANGUAGES = (
     ('en', 'Английский')
 )
 
-# MODELTRANSLATION_TRANSLATION_FILES = (
-#     'api.translation',
-# )
+MODELTRANSLATION_TRANSLATION_FILES = (
+    'api.translation',
+)
 
 USE_I18N = True
 
