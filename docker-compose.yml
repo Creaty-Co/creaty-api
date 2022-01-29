@@ -1,0 +1,10 @@
+version: '3.5'
+
+services:
+  redis:
+    image: redis:6.2.6
+    networks:
+      - redis_network
+
+networks:
+  redis_network:
