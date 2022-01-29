@@ -1,0 +1,35 @@
+Django==3.2.2
+django-cors-headers==3.7.0
+django-environ==0.4.5
+django-filter==2.4.0
+django-cleanup==5.2.0
+django-templated-mail==1.1.1
+django-celery-email==3.0.0
+django-modeltranslation==0.17.3
+django-pickling==1.0
+
+djangorestframework==3.12.4
+djangorestframework-simplejwt==4.6.0
+
+psycopg2-binary==2.9.1
+python-dateutil==2.8.1
+django-redis==5.0.0
+redis==3.5.3
+Pillow==8.4.0
+toml==0.10.2
+requests==2.26.0
+gunicorn==20.1.0
+whitenoise==5.3.0
+celery==5.0.2  # на версиях 5.0.3+ наблюдается утечка соединений для Redis result backend
+gevent==21.12.0
+git+git://github.com/jokerinteractive/travelpayouts-python@master#egg=travelpayouts
+git+https://github.com/GentleEnvy/drf-spectacular  # modfidied drf-spectacular==0.20.2
+git+https://github.com/GentleEnvy/django-cacheops  # modfidied django-cacheops==6.0
+
+# dev
+django-debug-toolbar==3.2.2
+
+# test
+parameterized==0.8.1
+freezegun==1.1.0
+factory_boy==3.2.0
