@@ -1,5 +1,10 @@
 """
 Environment requirements:
+    Environ:
+        ENV_FILE:
+            :type: str
+            :default: envs/.debug.env
+    
     Django:
         *SECRET_KEY:
             :type: str
@@ -34,10 +39,6 @@ Environment requirements:
             :type: int
             :default: 10
     
-    Environ:
-        ENV_FILE:
-            :type: str
-    
     Logs:
         LOG_CONF:
             :type: dict
@@ -69,6 +70,7 @@ Environment requirements:
 
 import importlib
 from functools import partial
+from pathlib import Path
 
 # noinspection PyPackageRequirements
 import environ
@@ -82,10 +84,9 @@ from base.logs.configs import LogConfig
 # env
 
 _env_value = {'value': lambda s: s.split(',')}
-_localhost = 'http://localhost:8000/'
 
 env = environ.Env(
-    ENV_FILE=(str, None),
+    ENV_FILE=(str, 'envs/.debug.env'),
     DEBUG=(bool, False),
     TEST=(bool, False),
     EMAIL_BACKEND=(str, None),
@@ -102,7 +103,7 @@ env = environ.Env(
     ADMINS=(_env_value, {})
 )
 
-if env('ENV_FILE'):
+if Path(env('ENV_FILE')).exists():
     environ.Env.read_env(env_file=env('ENV_FILE'))
 
 # env
@@ -159,7 +160,9 @@ INSTALLED_APPS = [
     
     'django.contrib.admin',
     
-    'base'
+    'base',
+    'account',
+    'admin_'
 ]
 
 REST_FRAMEWORK = {
@@ -393,8 +396,7 @@ _loggers = {
         'handlers': list(
             map(
                 partial(
-                    getattr,
-                    importlib.import_module('.handlers', 'app.main.logs.configs')
+                    getattr, importlib.import_module('.handlers', 'base.logs.configs')
                 ), v
             )
         )

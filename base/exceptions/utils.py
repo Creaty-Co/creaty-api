@@ -1,8 +1,5 @@
 from rest_framework.exceptions import APIException, ErrorDetail
 
-from base.exceptions import ClientError
-from base.exceptions.warning import APIWarning
-
 
 def extract_detail(api_exception: APIException):
     def _extract_detail(detail):
@@ -20,6 +17,7 @@ def extract_detail(api_exception: APIException):
 
 
 def warning_cast_rest_api_exception(exception: APIException):
+    from base.exceptions.warning import APIWarning
     codes = list(exception.get_codes())
     return APIWarning(
         codes[0] if codes else None, extract_detail(exception),
@@ -28,6 +26,7 @@ def warning_cast_rest_api_exception(exception: APIException):
 
 
 def client_error_cast_rest_api_exception(exception: APIException):
+    from base.exceptions.client import ClientError
     codes = list(exception.get_codes())
     return ClientError(
         extract_detail(exception), getattr(exception, 'status_code'),

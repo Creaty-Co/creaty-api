@@ -7,8 +7,8 @@ schema.yaml
 .idea/
 dumps/
 staticfiles/
-creaty/logs/logs.log
-creaty/envs/**
+logs/logs.log
+envs/**
 
 # Custom
 ###

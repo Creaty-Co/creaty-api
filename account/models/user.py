@@ -9,7 +9,9 @@ from django.utils import timezone
 class User(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
     
-    username = models.CharField(unique=True, validators=[username_validator])
+    username = models.CharField(
+        unique=True, max_length=150, validators=[username_validator]
+    )
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     email = models.EmailField(blank=True)

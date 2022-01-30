@@ -18,7 +18,7 @@ web_console = {
 web_file = {
     '__name__': 'web_file_handler',
     'level': _level,
-    'class': 'app.main.logs.handlers.FileHandler',
+    'class': 'base.logs.handlers.FileHandler',
     'formatter':  web,
     'filename': _log_filename,
     'mode': _file_mode,
@@ -28,14 +28,14 @@ web_file = {
 api_console = {
     '__name__': 'api_console_handler',
     'level': _level,
-    'class': 'app.main.logs.handlers.StdHandler',
+    'class': 'base.logs.handlers.StdHandler',
     'formatter': api
 }
 
 api_file = {
     '__name__': 'api_file_handler',
     'level': _level,
-    'class': 'app.main.logs.handlers.FileHandler',
+    'class': 'base.logs.handlers.FileHandler',
     'formatter': api,
     'filename': _log_filename,
     'mode': _file_mode,
@@ -45,7 +45,7 @@ api_file = {
 email_admins = {
     '__name__': 'email_admins_handler',
     'level': 'ERROR',
-    'class': 'app.main.logs.handlers.AdminEmailHandler',
+    'class': 'base.logs.handlers.AdminEmailHandler',
     'formatter': api,
     'include_html': True
 }

@@ -3,7 +3,7 @@ __all__ = ['web', 'api']
 from django.conf import settings
 
 _datefmt = '[%d.%m%y-%H:%M:%S]'
-_class = 'app.main.logs.formatters.ErrorFormatter'
+_class = 'base.logs.formatters.ErrorFormatter'
 
 web = {
     '__name__': 'web_formatter',
