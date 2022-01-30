@@ -331,7 +331,7 @@ CELERYD_LOG_LEVEL = 'INFO'
 MEDIA_URL = '/media/'
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
-if env(HEROKU):
+if HEROKU:
     CLOUDINARY_URL = env('CLOUDINARY_URL')
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
