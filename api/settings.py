@@ -63,6 +63,12 @@ Environment requirements:
             :type: dict
             :pattern: name=email,level,...;...
             :default: {}
+    
+    (Heroku):
+        Cloudinary:
+            *CLOUDINARY_URL:
+                :type: str
+                :pattern: cloudinary://.+
 """
 
 ###
@@ -100,7 +106,8 @@ env = environ.Env(
     }),
     LOG_LEVEL=(dict, {}),
     CELERY_REDIS_MAX_CONNECTIONS=(int, 10),
-    ADMINS=(_env_value, {})
+    ADMINS=(_env_value, {}),
+    HEROKU=(bool, False)
 )
 
 if Path(env('ENV_FILE')).exists():
@@ -137,6 +144,7 @@ SITE_NAME = 'Creaty'
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 TEST = env('TEST')
+HEROKU = env('HEROKU')
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -152,6 +160,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_spectacular',
     'cacheops',
+    *(['cloudinary_storage', 'cloudinary'] if HEROKU else []),
     'django_cleanup.apps.CleanupConfig',
     'djcelery_email',
     'modeltranslation',
@@ -321,6 +330,10 @@ CELERYD_LOG_LEVEL = 'INFO'
 
 MEDIA_URL = '/media/'
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
+
+if env(HEROKU):
+    CLOUDINARY_URL = env('CLOUDINARY_URL')
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # media
 ###
