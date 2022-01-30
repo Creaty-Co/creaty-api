@@ -1,10 +1,10 @@
 from rest_framework import status
 from rest_framework.response import Response
 
-from app.accounts.permissions import IsAuthenticatedPermission
-from app.accounts.serializers.token import AccountsTokenSerializer
-from app.accounts.services.auth import AuthService
-from app.main.views.base import BaseView
+from account.permissions import IsAuthenticatedPermission
+from account.serializers.token import AccountsTokenSerializer
+from account.services.auth import AuthService
+from base.views.base import BaseView
 
 
 # noinspection PyMethodMayBeStatic

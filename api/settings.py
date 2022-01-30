@@ -99,13 +99,7 @@ env = environ.Env(
     }),
     LOG_LEVEL=(dict, {}),
     CELERY_REDIS_MAX_CONNECTIONS=(int, 10),
-    VERIFICATION_CODE_TIMEOUT=(int, 86400),
-    ADMINS=(_env_value, {}),
-    TRAVELPAYOUTS_MARKER=int,
-    VERIFICATION_ACTIVATE_SUCCESS_URL=(str, _localhost),
-    VERIFICATION_ACTIVATE_FAILURE_URL=(str, _localhost),
-    SOCIAL_AUTH_LOGIN_REDIRECT_URL=(str, _localhost),
-    SOCIAL_REDIRECT_URL=(str, _localhost)
+    ADMINS=(_env_value, {})
 )
 
 if env('ENV_FILE'):
@@ -176,8 +170,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'base.paginations.base.BasePagination',
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
+        'rest_framework.throttling.AnonRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {'anon': '1000/s', 'user': '10000/s'},
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',

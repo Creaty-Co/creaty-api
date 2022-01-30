@@ -76,24 +76,24 @@ class BaseView(GenericAPIView):
         return serializer_class[1]
     
     @classmethod
-    def _to_schema(cls, clazz: Type[BaseView]) -> None:
-        for method_name in clazz.http_method_names:
+    def _to_schema(cls, class_: Type[BaseView]) -> None:
+        for method_name in class_.http_method_names:
             try:
-                method = getattr(clazz, method_name)
+                method = getattr(class_, method_name)
             except AttributeError:
                 continue
             responses = {}
             
-            extracted = clazz._extract_serializer_class_with_status(method_name)
+            extracted = class_._extract_serializer_class_with_status(method_name)
             if extracted:
                 serializer_class = extracted[1]
                 if issubclass(serializer_class, SerializerSchemaMixin):
                     responses |= serializer_class.to_schema(extracted[0])
             
-            if issubclass(clazz, ViewSchemaMixin):
-                responses |= clazz.to_schema()
+            if issubclass(class_, ViewSchemaMixin):
+                responses |= class_.to_schema()
             
-            setattr(clazz, method_name, extend_schema(responses=responses)(method))
+            setattr(class_, method_name, extend_schema(responses=responses)(method))
     
     @classmethod
     def as_view(cls, **initkwargs):
@@ -106,17 +106,17 @@ class BaseView(GenericAPIView):
 
 class BaseViewSet(ViewSetMixin, BaseView):
     @classmethod
-    def _to_schema(cls, clazz, actions: dict[str, str] = None) -> None:
+    def _to_schema(cls, class_, actions: dict[str, str] = None) -> None:
         if not actions:
             return
         for method_name, action_name in actions.items():
             try:
-                action = getattr(clazz, action_name)
+                action = getattr(class_, action_name)
             except AttributeError:
                 continue
             responses = {}
             
-            extracted = clazz._extract_serializer_class_with_status(method_name)
+            extracted = class_._extract_serializer_class_with_status(method_name)
             if extracted:
                 serializer_class = extracted[1]
                 if issubclass(serializer_class, SerializerSchemaMixin):
@@ -124,7 +124,7 @@ class BaseViewSet(ViewSetMixin, BaseView):
             
             # noinspection PyBroadException
             try:
-                action_serializer = clazz.get_serializer_class(
+                action_serializer = class_.get_serializer_class(
                     type('_', (), {'action': action_name})()
                 )
                 if issubclass(action_serializer, SerializerSchemaMixin):
@@ -134,10 +134,10 @@ class BaseViewSet(ViewSetMixin, BaseView):
             except Exception:
                 pass
             
-            if issubclass(clazz, ViewSchemaMixin):
-                responses |= clazz.to_schema()
+            if issubclass(class_, ViewSchemaMixin):
+                responses |= class_.to_schema()
             
-            setattr(clazz, action_name, extend_schema(responses=responses)(action))
+            setattr(class_, action_name, extend_schema(responses=responses)(action))
     
     @classmethod
     def as_view(cls, actions=None, **initkwargs):

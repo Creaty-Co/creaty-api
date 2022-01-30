@@ -13,8 +13,7 @@ class TokenAuthentication(_TokenAuthentication):
     keyword = ''
     
     WARNING_401 = APIWarning(
-        'Неверный токен', codes=['invalid_token'],
-        status=status.HTTP_401_UNAUTHORIZED
+        'Неверный токен', status.HTTP_401_UNAUTHORIZED, 'invalid_token'
     )
     
     def authenticate(self, request):
@@ -28,8 +27,7 @@ class TokenAuthentication(_TokenAuthentication):
             token = Token.objects.prefetch_related('user').get(key=key)
             return token.user, token
         except Token.DoesNotExist:
-            return None
-            # raise self.WARNING_401
+            raise self.WARNING_401
 
 
 class TokenScheme(OpenApiAuthenticationExtension):

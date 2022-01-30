@@ -1,6 +1,6 @@
 from rest_framework.authentication import get_authorization_header
 
-from app.main.exceptions import ClientError
+from base.exceptions import ClientError
 
 
 def get_header(request):
