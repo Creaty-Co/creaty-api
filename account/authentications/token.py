@@ -13,7 +13,7 @@ class TokenAuthentication(_TokenAuthentication):
     keyword = ''
     
     WARNING_401 = APIWarning(
-        'Неверный токен', status.HTTP_401_UNAUTHORIZED, 'invalid_token'
+        'invalid_token', 'Неверный токен', status.HTTP_401_UNAUTHORIZED
     )
     
     def authenticate(self, request):

@@ -14,15 +14,15 @@ class AccountsTokenSerializer(SerializerSchemaMixin, serializers.ModelSerializer
     
     WARNINGS = {
         401: APIWarning(
-            'Неверный пароль', status.HTTP_401_UNAUTHORIZED, 'invalid_password'
+            'invalid_password', 'Неверный пароль', status.HTTP_401_UNAUTHORIZED
         ),
         404: APIWarning(
-            'Пользователя с таким email не существует', status.HTTP_404_NOT_FOUND,
-            'email_not_found'
+            'email_not_found', 'Пользователя с таким email не существует',
+            status.HTTP_404_NOT_FOUND
         ),
         406: APIWarning(
-            'Пользователь не верифицирован', status.HTTP_406_NOT_ACCEPTABLE,
-            'not_verified'
+            'not_verified', 'Пользователь не верифицирован',
+            status.HTTP_406_NOT_ACCEPTABLE
         )
     }
     

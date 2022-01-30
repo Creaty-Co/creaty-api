@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Final, Type
+from typing import Any, Callable, Type
 
 from django.conf import settings
 from rest_framework.response import Response
@@ -13,14 +13,19 @@ __all__ = ['APIException', 'CastSupportsError']
 class APIException(Exception):
     TYPE_NAME: str
     
-    def __init__(self, detail: str, status: int):
-        self.detail: Final[str] = detail
-        self.status: Final[int] = status
+    def __init__(self, code: str, detail: str, status: int):
+        self.detail: str = detail
+        self.status: int = status
+        self.code: str = code
     
     def serialize(self) -> dict[str, dict[str, Any]]:
         if settings.DEBUG or settings.TEST:
-            return {'error': {'type': self.TYPE_NAME, 'detail': self.detail}}
-        return {'error': {'type': self.TYPE_NAME}}
+            return {
+                'error': {
+                    'type': self.TYPE_NAME, 'detail': self.detail, 'code': self.code
+                }
+            }
+        return {'error': {'type': self.TYPE_NAME, 'code': self.code}}
     
     def to_response(self) -> Response:
         return Response(data=self.serialize(), status=self.status)
@@ -29,8 +34,8 @@ class APIException(Exception):
 class LoggedException(APIException):
     LOG_FUNC = error
     
-    def __init__(self, detail, status, log_func=None):
-        super().__init__(detail, status)
+    def __init__(self, code, detail, status, log_func=None):
+        super().__init__(code, detail, status)
         self.log_func = log_func or self.LOG_FUNC
     
     def log(self) -> None:

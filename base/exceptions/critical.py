@@ -25,7 +25,7 @@ def _cast_exception(exception: Exception):
 
 
 class CriticalError(CastSupportsError):
-    TYPE_NAME = 'critical_error'
+    TYPE_NAME = 'critical'
     LOG_FUNC = critical
     
     EXCEPTION__CAST = {
@@ -36,6 +36,6 @@ class CriticalError(CastSupportsError):
     
     def __init__(self, detail=None, status=None):
         super().__init__(
-            detail or 'Server error',
+            'critical', detail or 'Server error',
             status or rest_status.HTTP_500_INTERNAL_SERVER_ERROR
         )

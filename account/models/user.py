@@ -32,7 +32,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return full_name.strip()
     
     def get_short_name(self):
-        """Return the short name for the user."""
         return self.first_name
     
     def email_user(self, subject, message, from_email=None, **kwargs):
