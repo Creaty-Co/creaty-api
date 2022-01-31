@@ -263,7 +263,10 @@ CACHEOPS_DEFAULTS = {
     'timeout': 60 * 5, 'cache_on_save': True, 'ops': ['get', 'fetch', 'exists']
 }
 CACHEOPS = {
-    'account.*': {}
+    'account.*': {},
+    'admin_.*': {},
+    'tags.*': {'timeout': 60 * 60},
+    'mentors.*': {}
 }
 
 CACHEOPS_DEGRADE_ON_FAILURE = True
