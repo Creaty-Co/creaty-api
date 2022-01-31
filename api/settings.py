@@ -165,13 +165,16 @@ INSTALLED_APPS = [
     'djcelery_email',
     'modeltranslation',
     'django_pickling',
+    # 'countries_plus',  MAYBE
+    # 'languages_plus',
     *(['debug_toolbar'] if DEBUG else []),
     
     'django.contrib.admin',
     
     'base',
     'account',
-    'admin_'
+    'admin_',
+    # 'mentors'
 ]
 
 REST_FRAMEWORK = {
