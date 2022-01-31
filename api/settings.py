@@ -174,7 +174,8 @@ INSTALLED_APPS = [
     'base',
     'account',
     'admin_',
-    'mentors'
+    'mentors',
+    'tags'
 ]
 
 REST_FRAMEWORK = {
