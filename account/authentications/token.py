@@ -16,18 +16,24 @@ class TokenAuthentication(_TokenAuthentication):
         'invalid_token', 'Неверный токен', status.HTTP_401_UNAUTHORIZED
     )
     
+    def _on_auth_fail(self):
+        raise self.WARNING_401
+    
     def authenticate(self, request):
         token = get_header(request)
         if token is None or len(token.split()) > 1:
             return None
-        return self.authenticate_credentials(token)
+        authenticate_credentials = self.authenticate_credentials(token)
+        if authenticate_credentials is None:
+            request.on_auth_fail = self._on_auth_fail
+        return authenticate_credentials
     
     def authenticate_credentials(self, key):
         try:
             token = Token.objects.prefetch_related('user').get(key=key)
             return token.user, token
         except Token.DoesNotExist:
-            raise self.WARNING_401
+            return None
 
 
 class TokenScheme(OpenApiAuthenticationExtension):
