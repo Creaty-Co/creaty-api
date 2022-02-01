@@ -4,6 +4,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import serializers
 from rest_framework.response import Response
 
+from account.views import BaseAuthView
 from base.serializers.base import BaseSerializer
 from base.views.base import BaseView
 
@@ -11,7 +12,7 @@ __all__ = ['EchoView']
 
 
 # noinspection PyMethodMayBeStatic
-class EchoView(BaseView):
+class EchoView(BaseAuthView):
     @extend_schema(
         responses={
             200: type(

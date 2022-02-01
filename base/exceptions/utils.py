@@ -16,19 +16,26 @@ def extract_detail(api_exception: APIException):
     return _extract_detail(api_exception.get_full_details())
 
 
+def extract_first_code(api_exception: APIException):
+    codes = api_exception.get_codes()
+    if codes is None:
+        return None
+    if isinstance(codes, str):
+        return codes
+    if isinstance(codes, (list, tuple)):
+        return codes[0]
+    if isinstance(codes, dict):
+        return list(codes.values())[0]
+    return list(codes)[0]
+
+
 def warning_cast_rest_api_exception(exception: APIException):
     from base.exceptions.warning import APIWarning
-    codes = list(exception.get_codes())
-    return APIWarning(
-        codes[0] if codes else None, extract_detail(exception),
-        getattr(exception, 'status_code')
-    )
+    code = extract_first_code(exception)
+    return APIWarning(code, extract_detail(exception), getattr(exception, 'status_code'))
 
 
 def client_error_cast_rest_api_exception(exception: APIException):
     from base.exceptions.client import ClientError
-    codes = list(exception.get_codes())
-    return ClientError(
-        extract_detail(exception), getattr(exception, 'status_code'),
-        codes[0] if codes else None
-    )
+    code = extract_first_code(exception)
+    return ClientError(extract_detail(exception), getattr(exception, 'status_code'), code)

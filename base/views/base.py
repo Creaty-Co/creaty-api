@@ -5,7 +5,7 @@ from typing import Type
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from drf_spectacular.utils import extend_schema
-from rest_framework import serializers
+from rest_framework import exceptions, serializers
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
@@ -102,6 +102,12 @@ class BaseView(GenericAPIView):
     
     def handle_exception(self, exception):
         return _exception_handler(exception)
+    
+    def permission_denied(self, request, message=None, code=None):
+        if request.authenticators and not request.successful_authenticator:
+            getattr(request, 'on_auth_fail', lambda: None)()
+            raise exceptions.NotAuthenticated()
+        raise exceptions.PermissionDenied(detail=message, code=code)
 
 
 class BaseViewSet(ViewSetMixin, BaseView):
