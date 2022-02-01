@@ -1,7 +1,9 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from djmoney.models.fields import MoneyField
 
 from base.models import AbstractModel
+from base.money import Money
 
 
 class Mentor(AbstractModel):
@@ -12,7 +14,7 @@ class Mentor(AbstractModel):
     first_name = models.TextField()
     last_name = models.TextField()
     # tag_set  TODO: #24
-    # price  TODO: #24
+    money: Money = MoneyField(max_digits=10, decimal_places=2)
 
 
 class Package(AbstractModel):

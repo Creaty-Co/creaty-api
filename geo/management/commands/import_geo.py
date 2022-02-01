@@ -26,6 +26,7 @@ class Command(BaseCommand):
         flag_unicodes = json.load(open(self.FLAG_UNICODES_FILEPATH))
         countries = {country.code: country for country in Country.objects.all()}
         for language, _ in settings.LANGUAGES:
+            language = language.lower()
             translation.activate(language)
             for code, name in dict(raw_countries).items():
                 code = code.lower()
@@ -39,6 +40,7 @@ class Command(BaseCommand):
         language_codes = json.load(open(self.LANGUAGES_FILEPATH))
         languages = {language.code: language for language in Language.objects.all()}
         for setting_language, _ in settings.LANGUAGES:
+            setting_language = setting_language.lower()
             for code in language_codes:
                 translation.activate(setting_language)
                 code = code.lower()

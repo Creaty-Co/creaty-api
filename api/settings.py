@@ -166,6 +166,8 @@ INSTALLED_APPS = [
     'modeltranslation',
     'django_pickling',
     'django_countries',
+    'djmoney',
+    'djmoney.contrib.exchange',
     *(['debug_toolbar'] if DEBUG else []),
     
     'django.contrib.admin',
@@ -433,18 +435,26 @@ LOGGING = LogConfig(_loggers).to_dict()
 ###
 # language
 
-LANGUAGES = (
-    ('ru', 'Русский'),
-    ('en', 'Английский')
-)
+LANGUAGES = [('ru', 'Русский'), ('en', 'Английский')]
 
-MODELTRANSLATION_TRANSLATION_FILES = (
-    'api.translation',
-)
+MODELTRANSLATION_TRANSLATION_FILES = ['api.translation']
 
 USE_I18N = True
 
 # language
+###
+
+###
+# money
+
+CURRENCIES = ('RUB', 'USD', 'EUR')
+CURRENCY_CHOICES = [('RUB', 'RUB ₽'), ('USD', 'USD $'), ('EUR', 'EUR €')]
+DEFAULT_CURRENCY = 'USD'
+
+EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
+FIXER_ACCESS_KEY = '7d40b06656a86772ec7155c040ee5b65'
+
+# money
 ###
 
 ###
