@@ -10,6 +10,6 @@ class Country(AbstractModel):
 
 
 class Language(AbstractModel):
-    code = models.CharField(max_length=6, unique=True)
+    code = models.CharField(max_length=7, unique=True)
     name = models.TextField()
     name_native = models.TextField()
