@@ -17,3 +17,8 @@ class TagTranslationOptions(TranslationOptions):
 @register(Country)
 class CountryTranslationOptions(TranslationOptions):
     fields = ['name']
+
+
+@register(Language)
+class LanguageTranslationOptions(TranslationOptions):
+    fields = ['name']
