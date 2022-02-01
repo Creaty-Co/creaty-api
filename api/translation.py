@@ -1,5 +1,6 @@
 from modeltranslation.translator import register, TranslationOptions
 
+from geo.models import *
 from tags.models import *
 
 
@@ -11,3 +12,8 @@ class CategoryTranslationOptions(TranslationOptions):
 @register(Tag)
 class TagTranslationOptions(TranslationOptions):
     fields = ['title']
+
+
+@register(Country)
+class CountryTranslationOptions(TranslationOptions):
+    fields = ['name']

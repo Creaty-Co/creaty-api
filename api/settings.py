@@ -167,6 +167,7 @@ INSTALLED_APPS = [
     'django_pickling',
     # 'countries_plus',  MAYBE: #24
     # 'languages_plus',
+    'django_countries',
     *(['debug_toolbar'] if DEBUG else []),
     
     'django.contrib.admin',
@@ -175,7 +176,8 @@ INSTALLED_APPS = [
     'account',
     'admin_',
     'mentors',
-    'tags'
+    'tags',
+    'geo'
 ]
 
 REST_FRAMEWORK = {
