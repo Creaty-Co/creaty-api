@@ -7,3 +7,7 @@ class Country(AbstractModel):
     code = models.CharField(max_length=2, unique=True)
     flag_unicode = models.CharField(max_length=11, unique=True)
     name = models.TextField()
+
+
+class Language(AbstractModel):
+    pass
