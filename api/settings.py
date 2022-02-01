@@ -75,11 +75,13 @@ Environment requirements:
 # imports
 
 import importlib
+from datetime import timedelta
 from functools import partial
 from pathlib import Path
 
 # noinspection PyPackageRequirements
 import environ
+from celery.schedules import crontab
 
 from base.logs.configs import LogConfig
 
@@ -163,6 +165,7 @@ INSTALLED_APPS = [
     *(['cloudinary_storage', 'cloudinary'] if HEROKU else []),
     'django_cleanup.apps.CleanupConfig',
     'djcelery_email',
+    'django_celery_beat',
     'modeltranslation',
     'django_pickling',
     'django_countries',
@@ -329,7 +332,13 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_IGNORE_RESULT = False
 CELERY_TRACK_STARTED = True
-CELERYD_LOG_LEVEL = 'INFO'
+
+CELERY_BEAT_SCHEDULE = {
+    'update_rates': {
+        'task': 'geo.tasks.update_rates',
+        'schedule': timedelta(hours=8)
+    }
+}
 
 # celery
 ###
