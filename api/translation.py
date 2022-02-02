@@ -1,6 +1,7 @@
 from modeltranslation.translator import register, TranslationOptions
 
 from geo.models import *
+from mentors.models import *
 from tags.models import *
 
 
@@ -22,3 +23,8 @@ class CountryTranslationOptions(TranslationOptions):
 @register(Language)
 class LanguageTranslationOptions(TranslationOptions):
     fields = ['name']
+
+
+@register(MentorInfo)
+class MentorInfoTranslationOptions(TranslationOptions):
+    fields = ['city']

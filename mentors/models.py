@@ -4,6 +4,8 @@ from djmoney.models.fields import MoneyField
 
 from base.models import AbstractModel
 from base.money import Money
+from geo.models import *
+from tags.models import Tag
 
 
 class Mentor(AbstractModel):
@@ -13,8 +15,9 @@ class Mentor(AbstractModel):
     profession = models.TextField(null=True, blank=True)
     first_name = models.TextField()
     last_name = models.TextField()
-    # tag_set  TODO: #24
-    money: Money = MoneyField(max_digits=10, decimal_places=2)
+    price: Money = MoneyField(max_digits=10, decimal_places=2)
+    tag_set = models.ManyToManyField(Tag)
+    country = models.ForeignKey(Country, on_delete=models.PROTECT)
 
 
 class Package(AbstractModel):
@@ -33,3 +36,5 @@ class MentorInfo(AbstractModel):
     what_help = models.TextField()
     experience = models.TextField()
     portfolio = models.TextField()
+    language_set = models.ManyToManyField(Language)
+    city = models.TextField()
