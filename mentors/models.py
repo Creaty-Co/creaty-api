@@ -6,6 +6,8 @@ from base.money import Money
 from geo.models import *
 from tags.models import Tag
 
+__all__ = ['Mentor', 'Package', 'MentorInfo']
+
 
 class Mentor(AbstractModel):
     info = models.OneToOneField('MentorInfo', on_delete=models.CASCADE)

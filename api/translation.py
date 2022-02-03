@@ -1,5 +1,6 @@
 from modeltranslation.translator import register, TranslationOptions
 
+from forms.models import *
 from geo.models import *
 from mentors.models import *
 from tags.models import *
@@ -28,3 +29,8 @@ class LanguageTranslationOptions(TranslationOptions):
 @register(MentorInfo)
 class MentorInfoTranslationOptions(TranslationOptions):
     fields = ['city']
+
+
+@register(Form)
+class FormTranslationOptions(TranslationOptions):
+    fields = ['description', 'post_send']

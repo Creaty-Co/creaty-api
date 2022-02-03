@@ -10,6 +10,7 @@ __all__ = ['Form', 'Application']
 class Form(AbstractModel):
     type = models.TextField(unique=True, choices=FormType.choices)
     description = models.TextField(null=True, blank=True)
+    post_send = models.TextField()
     fields = ArrayField(models.TextField(choices=FormField.choices))
 
 

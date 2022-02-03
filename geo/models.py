@@ -2,6 +2,8 @@ from django.db import models
 
 from base.models import AbstractModel
 
+__all__ = ['Country', 'Language']
+
 
 class Country(AbstractModel):
     code = models.CharField(max_length=2, unique=True)
