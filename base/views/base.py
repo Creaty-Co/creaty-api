@@ -15,7 +15,7 @@ from rest_framework.viewsets import ViewSetMixin
 from base.exceptions import *
 from base.schemas.mixins import SerializerSchemaMixin, ViewSchemaMixin
 from base.serializers.base import EmptySerializer
-from base.utils import status_by_method
+from base.utils.functions import status_by_method
 
 __all__ = ['BaseView', 'BaseViewSet']
 

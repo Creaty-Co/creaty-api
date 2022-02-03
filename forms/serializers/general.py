@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from base.utils import choices_to_help_text
+from base.utils.functions import choices_to_help_text
 from forms.models import Form
 from forms.models.choices import *
 
