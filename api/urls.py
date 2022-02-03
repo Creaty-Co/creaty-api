@@ -20,6 +20,7 @@ urlpatterns = [
     path('admin/', include('admin_.urls')),
     path('mentors/', include('mentors.urls')),
     path('tags/', include('tags.urls')),
+    path('forms/', include('forms.urls')),
     
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
