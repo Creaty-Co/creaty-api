@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import status
 from rest_framework.response import Response
 from django.dispatch import receiver as _receiver
@@ -10,6 +10,14 @@ def schema_response_204(f):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
     return extend_schema(responses={201: None, 204: ''})(_f_decorator)
+
+
+def schema_redirect(description: str = None):
+    if description:
+        response = OpenApiResponse(description=description)
+    else:
+        response = ''
+    return extend_schema(responses={200: None, 302: response})
 
 
 def receiver(signal, sender=None):

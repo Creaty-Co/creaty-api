@@ -64,6 +64,10 @@ Environment requirements:
             :pattern: name=email,level,...;...
             :default: {}
     
+    Redirects:
+        *EDIRECT_ON_UNSUBSCRIBE:
+            :type: str
+    
     (Heroku):
         Cloudinary:
             *CLOUDINARY_URL:
@@ -388,6 +392,14 @@ DATABASES = {'default': env.db()}
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # db
+###
+
+###
+# redirects
+
+REDIRECT_ON_UNSUBSCRIBE = env('REDIRECT_ON_UNSUBSCRIBE')
+
+# redirects
 ###
 
 ###
