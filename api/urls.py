@@ -21,6 +21,7 @@ urlpatterns = [
     path('mentors/', include('mentors.urls')),
     path('tags/', include('tags.urls')),
     path('forms/', include('forms.urls')),
+    path('milings/', include('mailings.urls')),
     
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

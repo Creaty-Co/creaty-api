@@ -181,7 +181,8 @@ INSTALLED_APPS = [
     'mentors',
     'tags',
     'geo',
-    'forms'
+    'forms',
+    'mailings'
 ]
 
 REST_FRAMEWORK = {
