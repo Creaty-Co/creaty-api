@@ -25,8 +25,8 @@ class AdminNotificationService:
             f'''Заявка: {ReverseFormType[application.form.type].label}\n{str_fields}'''
         )
     
-    def on_subscribe(self, subscribe):
+    def on_subscriber(self, subscriber):
         self._send_admin_emails(
             'Подписка на рассылку',
-            f'''Пользователь с email {subscribe.email} подписался на рассылку'''
+            f'''Пользователь с email {subscriber.email} подписался на рассылку'''
         )

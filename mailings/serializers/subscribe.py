@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-from mailings.models import Subscribe
+from mailings.models import Subscriber
 
 
 class MailingsSubscribeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Subscribe
+        model = Subscriber
         fields = ['email']
