@@ -1,6 +1,4 @@
-from django.core.mail import EmailMultiAlternatives, get_connection
-from django.template import Template
-from django.template.context import make_context
+from django.core.mail import get_connection
 from rest_framework import serializers
 from rest_framework.response import Response
 
