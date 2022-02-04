@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from admin_.views.base import BaseAdminView
 from base.utils.functions import schema_serializer
 from mailings.models import Mailing, Subscriber
+from mailings.services.email import MailingEmailMessage
 
 
 class MailingSendView(BaseAdminView):
@@ -20,14 +21,10 @@ class MailingSendView(BaseAdminView):
         connection = get_connection()
         messages = []
         for subscriber in Subscriber.objects.all():
-            rendered_content = Template(mailing.content).render(
-                make_context({'subscriber': subscriber})
+            message = MailingEmailMessage(
+                mailing, subscriber, connection=connection, request=request
             )
-            message = EmailMultiAlternatives(
-                subject=mailing.subject, body=rendered_content,
-                to=[subscriber.email], connection=connection
-            )
-            message.attach_alternative(rendered_content, 'text/html')
+            message.render()
             messages.append(message)
         mailing.task_ids = [r.id for r in connection.send_messages(messages)]
         mailing.save()

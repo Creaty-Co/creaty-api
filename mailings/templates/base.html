@@ -1,11 +1,15 @@
-{# TODO: #35 #}
 {% load i18n %}
 
-{{ content }}
+{% block subject %}
+    {{ mailing.subject }}
+{% endblock subject %}
 
-<p>
-    {% trans "Unsubscribe from the mailing list" %}:
-    <a href="{{ protocol }}://{{ domain }}/mailings/unsubscribe/{{ email }}/">
-        {{ protocol }}://{{ domain }}/mailings/unsubscribe/{{ email }}/
-    </a>
-</p>
+{% block html_body %}
+    <p>__content__</p>
+    <p>
+        {% trans "Unsubscribe from the mailing list" %}:
+        <a href="{{ protocol }}://{{ domain }}/mailings/unsubscribe/{{ subscriber.id }}/">
+            {{ protocol }}://{{ domain }}/mailings/unsubscribe/{{ subscriber.id }}/
+        </a>
+    </p>
+{% endblock html_body %}
