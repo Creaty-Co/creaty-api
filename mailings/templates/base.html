@@ -1,0 +1,11 @@
+{# TODO: #35 #}
+{% load i18n %}
+
+{{ content }}
+
+<p>
+    {% trans "Unsubscribe from the mailing list" %}:
+    <a href="{{ protocol }}://{{ domain }}/mailings/unsubscribe/{{ email }}/">
+        {{ protocol }}://{{ domain }}/mailings/unsubscribe/{{ email }}/
+    </a>
+</p>
