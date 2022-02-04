@@ -1,7 +1,7 @@
 ---
 name: 'Enhancement'
 about: 'Enhancement'
-title: 'Enhancement'
+title: 'Реализовать '
 labels: ['enhancement']
 assignees: ['GentleEnvy']
 
