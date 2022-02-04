@@ -1,6 +1,7 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.response import Response
+from django.dispatch import receiver as _receiver
 
 
 def schema_response_204(f):
@@ -9,3 +10,10 @@ def schema_response_204(f):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
     return extend_schema(responses={201: None, 204: ''})(_f_decorator)
+
+
+def receiver(signal, sender=None):
+    def _decorator(f):
+        return _receiver(signal, sender=sender, weak=False, dispatch_uid=f.__name__)(f)
+    
+    return _decorator
