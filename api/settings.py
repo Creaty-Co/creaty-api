@@ -186,7 +186,8 @@ INSTALLED_APPS = [
     'tags',
     'geo',
     'forms',
-    'mailings'
+    'mailings',
+    'pages'
 ]
 
 REST_FRAMEWORK = {
