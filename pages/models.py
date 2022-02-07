@@ -53,8 +53,5 @@ class Page(AbstractModel):
     
     def clean(self):
         super().clean()
-        if self.tag is None:
-            if self.category is None:
-                raise ValidationError(f'У Page({self.id}) не заданы tag или category')
-        if self.category is not None:
+        if self.tag is not None and self.category is not None:
             raise ValidationError(f'У Page({self.id}) заданы tag и category')

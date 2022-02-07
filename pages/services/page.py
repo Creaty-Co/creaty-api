@@ -7,6 +7,18 @@ class PageService:
     MAX_MENTORS_COUNT = 20
     MAX_TAGS_COUNT = 20
     
+    @property
+    def main(self) -> Page:
+        main_page, is_created = Page.objects.get_or_create(tag=None, category=None)
+        if is_created:
+            mentor_qs = Mentor.objects.order_by('?')[:self.MAX_MENTORS_COUNT]
+            tags_qs = Tag.objects.order_by('?')[:self.MAX_TAGS_COUNT]
+            for index, mentor in enumerate(mentor_qs):
+                PageMentorSet.objects.create(page=main_page, mentor=mentor, index=index)
+            for index, tag in enumerate(tags_qs):
+                PageTagSet.objects.create(page=main_page, tag=tag, index=index)
+        return main_page
+    
     def get_or_create(self, tag_or_category: Tag | Category) -> Page:
         if isinstance(tag_or_category, Tag):
             page, is_created = Page.objects.get_or_create(tag=tag_or_category)
