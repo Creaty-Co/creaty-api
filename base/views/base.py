@@ -13,6 +13,7 @@ from rest_framework.views import set_rollback
 from rest_framework.viewsets import ViewSetMixin
 
 from base.exceptions import *
+from base.permissions.base import BasePermission
 from base.schemas.mixins import SerializerSchemaMixin, ViewSchemaMixin
 from base.serializers.base import EmptySerializer
 from base.utils.functions import status_by_method
@@ -56,6 +57,9 @@ class BaseView(GenericAPIView):
     serializer_classes: dict[
         str, tuple[int, Type[serializers.Serializer]] | Type[serializers.Serializer]
     ] = {}
+    permission_classes_map: dict[
+        str, list[Type[BasePermission]] | tuple[Type[BasePermission]]
+    ] = {}
     
     @classmethod
     def _extract_serializer_class_with_status(
@@ -74,6 +78,15 @@ class BaseView(GenericAPIView):
         if serializer_class is None:
             return self.serializer_class
         return serializer_class[1]
+    
+    def get_permissions(self):
+        permissions = None
+        if self.permission_classes_map:
+            permissions = self.permission_classes_map.get(self.request.method.lower())
+            if permissions:
+                if isinstance(permissions, list):
+                    return super().get_permissions() + permissions
+        return permissions or super().get_permissions()
     
     @classmethod
     def _to_schema(cls, class_: Type[BaseView]) -> None:
