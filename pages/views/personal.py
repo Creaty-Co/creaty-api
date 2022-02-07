@@ -1,18 +1,22 @@
 from django.db.models import Prefetch, Q
 from django.http import Http404
 from rest_framework.generics import get_object_or_404
-from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 
 from base.views.base import BaseView
 from mentors.views import MentorsView
 from pages.models import Page
-from pages.serializers.personal import PagesRetrievePersonalSerializer
+from pages.serializers.personal import (
+    PagesRetrievePersonalSerializer, PagesUpdatePersonalSerializer
+)
 from pages.services.page import PageService
 from tags.models import Category, Tag
 
 
-class PagesPersonalView(RetrieveModelMixin, BaseView):
-    serializer_classes = {'get': PagesRetrievePersonalSerializer}
+class PagesPersonalView(RetrieveModelMixin, UpdateModelMixin, BaseView):
+    serializer_classes = {
+        'get': PagesRetrievePersonalSerializer, 'patch': PagesUpdatePersonalSerializer
+    }
     queryset = Page.objects.prefetch_related(
         'tag', 'category',
         Prefetch('tag_set', queryset=Tag.objects.order_by('pagetagset__index')),
@@ -23,6 +27,9 @@ class PagesPersonalView(RetrieveModelMixin, BaseView):
     
     def get(self, request, **_):
         return self.retrieve(request)
+    
+    def patch(self, request):
+        return self.partial_update(request)
     
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
