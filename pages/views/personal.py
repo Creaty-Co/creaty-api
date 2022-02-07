@@ -4,7 +4,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import RetrieveModelMixin
 
 from base.views.base import BaseView
-from mentors.models import Mentor
+from mentors.views import MentorsView
 from pages.models import Page
 from pages.serializers.personal import PagesPersonalSerializer
 from pages.services.page import PageService
@@ -17,7 +17,7 @@ class PagesPersonalView(RetrieveModelMixin, BaseView):
         'tag', 'category',
         Prefetch('tag_set', queryset=Tag.objects.order_by('pagetagset__index')),
         Prefetch(
-            'mentor_set', queryset=Mentor.objects.order_by('pagementorset__index')
+            'mentor_set', queryset=MentorsView.queryset.order_by('pagementorset__index')
         )
     )
     
@@ -30,7 +30,7 @@ class PagesPersonalView(RetrieveModelMixin, BaseView):
         try:
             page = get_object_or_404(
                 queryset,
-                Q(tag_set__shortcut=shortcut) | Q(category_set__shortcut=shortcut)
+                Q(tag__shortcut=shortcut) | Q(category__shortcut=shortcut)
             )
         except Http404:
             tag_or_category = Tag.objects.filter(

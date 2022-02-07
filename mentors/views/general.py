@@ -9,9 +9,7 @@ from mentors.serializers.general import MentorsSerializer
 
 class MentorsView(ListModelMixin, BaseView):
     serializer_classes = {'get': MentorsSerializer}
-    queryset = Mentor.objects.annotate(
-        country_flag=F('country__flag_unicode')
-    ).prefetch_related('tag_set')
+    queryset = Mentor.objects.prefetch_related('tag_set', 'country')
     filterset_class = MentorsFilterSet
     
     def get(self, request):

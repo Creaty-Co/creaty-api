@@ -25,4 +25,4 @@ class MentorsSerializer(serializers.ModelSerializer):
     
     @extend_schema_field(OpenApiTypes.STR)
     def get_country_flag(self, mentor):
-        return mentor.country_flag
+        return mentor.country.flag_unicode
