@@ -1,13 +1,14 @@
 from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import CreateModelMixin
 
+from admin_.views.base import BaseAdminView
 from base.utils.decorators import schema_response_204
 from base.views.base import BaseView
 from forms.models import Form
 from forms.serializers.applications.general import FormApplicationsSerializer
 
 
-class FormApplicationsView(CreateModelMixin, BaseView):
+class FormApplicationsView(CreateModelMixin, BaseAdminView):
     serializer_classes = {'post': FormApplicationsSerializer}
     
     @schema_response_204

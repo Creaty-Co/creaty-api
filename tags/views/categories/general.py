@@ -5,6 +5,7 @@ from tags.models import Category
 from tags.serializers.categories.general import TagsCategoriesSerializer
 
 
+# TODO: #16
 class TagsCategoriesView(ListModelMixin, BaseView):
     serializer_classes = {'get': TagsCategoriesSerializer}
     queryset = Category.objects.prefetch_related('tag_set').all()

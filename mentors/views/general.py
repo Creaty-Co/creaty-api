@@ -1,4 +1,3 @@
-from django.db.models import F
 from rest_framework.mixins import ListModelMixin
 
 from base.views.base import BaseView
@@ -7,6 +6,7 @@ from mentors.models import Mentor
 from mentors.serializers.general import MentorsSerializer
 
 
+# TODO: #37
 class MentorsView(ListModelMixin, BaseView):
     serializer_classes = {'get': MentorsSerializer}
     queryset = Mentor.objects.prefetch_related('tag_set', 'country')

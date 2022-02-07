@@ -1,19 +1,18 @@
 from django.db.models import Prefetch, Q
 from django.http import Http404
 from rest_framework.generics import get_object_or_404
-from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 
-from base.views.base import BaseView
 from mentors.views import MentorsView
 from pages.models import Page
 from pages.serializers.personal import (
     PagesRetrievePersonalSerializer, PagesUpdatePersonalSerializer
 )
 from pages.services.page import PageService
+from pages.views import PagesMainView
 from tags.models import Category, Tag
 
 
-class PagesPersonalView(RetrieveModelMixin, UpdateModelMixin, BaseView):
+class PagesPersonalView(PagesMainView):
     serializer_classes = {
         'get': PagesRetrievePersonalSerializer, 'patch': PagesUpdatePersonalSerializer
     }

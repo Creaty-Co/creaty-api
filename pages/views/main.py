@@ -1,6 +1,7 @@
 from django.db.models import Prefetch
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 
+from admin_.views.base import BaseAdminView
 from base.views.base import BaseView
 from mentors.views import MentorsView
 from pages.models import Page
@@ -19,6 +20,7 @@ class PagesMainView(RetrieveModelMixin, UpdateModelMixin, BaseView):
             'mentor_set', queryset=MentorsView.queryset.order_by('pagementorset__index')
         )
     )
+    permission_classes_map = {'patch': BaseAdminView.permission_classes}
     
     def get(self, request):
         return self.retrieve(request)
