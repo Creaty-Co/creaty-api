@@ -1,17 +1,18 @@
 from django.db.models import Prefetch
-from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 
 from base.views.base import BaseView
-from mentors.models import Mentor
 from mentors.views import MentorsView
 from pages.models import Page
-from pages.serializers.main import PagesMainSerializer
+from pages.serializers.main import PagesRetrieveMainSerializer, PagesUpdateMainSerializer
 from pages.services.page import PageService
 from tags.models import Tag
 
 
-class PagesMainView(RetrieveModelMixin, BaseView):
-    serializer_classes = {'get': PagesMainSerializer}
+class PagesMainView(RetrieveModelMixin, UpdateModelMixin, BaseView):
+    serializer_classes = {
+        'get': PagesRetrieveMainSerializer, 'patch': PagesUpdateMainSerializer
+    }
     queryset = Page.objects.prefetch_related(
         Prefetch('tag_set', queryset=Tag.objects.order_by('pagetagset__index')),
         Prefetch(
@@ -19,8 +20,11 @@ class PagesMainView(RetrieveModelMixin, BaseView):
         )
     )
     
-    def get(self, request, **_):
+    def get(self, request):
         return self.retrieve(request)
+    
+    def patch(self, request):
+        return self.partial_update(request)
     
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())

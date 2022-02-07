@@ -277,8 +277,12 @@ CACHEOPS_DEFAULTS = {
 CACHEOPS = {
     'account.*': {},
     'admin_.*': {},
+    'geo.*': {'timeout': 60 * 60},
     'tags.*': {'timeout': 60 * 60},
-    'mentors.*': {}
+    'mentors.*': {},
+    'forms.*': {},
+    'mailings.*': {},
+    'pages.*': {},
 }
 
 CACHEOPS_DEGRADE_ON_FAILURE = True

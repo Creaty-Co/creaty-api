@@ -2,14 +2,14 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
-from pages.serializers.main import PagesMainSerializer
+from pages.serializers.main import PagesRetrieveMainSerializer
 
 
-class PagesPersonalSerializer(PagesMainSerializer):
+class PagesRetrievePersonalSerializer(PagesRetrieveMainSerializer):
     title = serializers.SerializerMethodField()
     
-    class Meta(PagesMainSerializer.Meta):
-        fields = PagesMainSerializer.Meta.fields[:]
+    class Meta(PagesRetrieveMainSerializer.Meta):
+        fields = PagesRetrieveMainSerializer.Meta.fields[:]
         fields.insert(1, 'title')
     
     @extend_schema_field(OpenApiTypes.STR)

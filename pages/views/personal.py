@@ -6,13 +6,13 @@ from rest_framework.mixins import RetrieveModelMixin
 from base.views.base import BaseView
 from mentors.views import MentorsView
 from pages.models import Page
-from pages.serializers.personal import PagesPersonalSerializer
+from pages.serializers.personal import PagesRetrievePersonalSerializer
 from pages.services.page import PageService
 from tags.models import Category, Tag
 
 
 class PagesPersonalView(RetrieveModelMixin, BaseView):
-    serializer_classes = {'get': PagesPersonalSerializer}
+    serializer_classes = {'get': PagesRetrievePersonalSerializer}
     queryset = Page.objects.prefetch_related(
         'tag', 'category',
         Prefetch('tag_set', queryset=Tag.objects.order_by('pagetagset__index')),
