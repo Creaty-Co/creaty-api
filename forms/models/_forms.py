@@ -4,7 +4,7 @@ from django.db import models
 from base.models import AbstractModel
 from forms.models.choices import FormType, FormField
 
-__all__ = ['Form', 'Application']
+__all__ = ['Form', 'Field', 'Application']
 
 
 class Form(AbstractModel):

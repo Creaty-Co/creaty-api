@@ -34,3 +34,8 @@ class MentorInfoTranslationOptions(TranslationOptions):
 @register(Form)
 class FormTranslationOptions(TranslationOptions):
     fields = ['description', 'post_send']
+
+
+@register(Field)
+class FieldTranslationOptions(TranslationOptions):
+    fields = ['placeholder']
