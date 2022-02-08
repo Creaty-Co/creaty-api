@@ -476,7 +476,7 @@ USE_I18N = True
 # money
 
 CURRENCIES = ('RUB', 'USD', 'EUR')
-CURRENCY_CHOICES = [('RUB', 'RUB ₽'), ('USD', 'USD $'), ('EUR', 'EUR €')]
+CURRENCY_CHOICES = [('RUB', 'Рубль (₽)'), ('USD', 'Доллар США ($)'), ('EUR', 'Евро (€)')]
 DEFAULT_CURRENCY = 'USD'
 
 EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'

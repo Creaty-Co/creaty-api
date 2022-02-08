@@ -1,7 +1,8 @@
-from typing import Any, Type, TypeVar
+from typing import Any, Iterable, Type, TypeVar
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 from django.db import models
+from django.db.models import Choices
 from rest_framework import serializers
 
 __all__ = [
@@ -22,10 +23,16 @@ def status_by_method(method: str) -> int:
             return 200
 
 
-def choices_to_help_text(choices: Type[models.Choices]) -> str:
+def choices_to_help_text(
+    choices: Type[models.Choices] | Iterable[tuple[Any, str]]
+) -> str:
     transcripts = []
-    for member in choices:
-        transcripts.append(f'{member.value} — {member.name} ({member.label})')
+    if isinstance(choices, type) and issubclass(choices, Choices):
+        for member in choices:
+            transcripts.append(f'{member.value} — {member.name} ({member.label})')
+    else:
+        for member in choices:
+            transcripts.append(f'{member[0]} — {member[1]}')
     return '\n\n'.join(transcripts)
 
 
