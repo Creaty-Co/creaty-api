@@ -4,6 +4,7 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from base.utils.functions import choices_to_help_text
+from geo.models import Language
 from mentors.models import Mentor, MentorInfo
 from tags.models import Tag
 
@@ -31,6 +32,11 @@ class MentorsListSerializer(serializers.ModelSerializer):
 
 
 class _MentorsCreateInfoSerializer(serializers.ModelSerializer):
+    languages = serializers.PrimaryKeyRelatedField(
+        allow_empty=False, many=True, queryset=Language.objects.all(),
+        source='language_set'
+    )
+    
     class Meta:
         model = MentorInfo
         extra_kwargs = {
@@ -40,7 +46,7 @@ class _MentorsCreateInfoSerializer(serializers.ModelSerializer):
         }
         fields = [
             'trial_meeting', 'resume', 'what_help', 'experience', 'portfolio',
-            'language_set', 'city_ru', 'city_en'
+            'languages', 'city_ru', 'city_en'
         ]
 
 

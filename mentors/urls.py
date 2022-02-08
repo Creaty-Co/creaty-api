@@ -3,5 +3,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', MentorsView.as_view())
+    path('', MentorsView.as_view()),
+    path('<int:id>/', MentorView.as_view()),
 ]
