@@ -5,6 +5,34 @@ from forms.models.choices import *
 
 _default_post_send_ru = 'Мы в ближайшее время свяжемся с вами, чтобы осбудить детали!'
 _default_post_send_en = 'We will contact you soon to discuss the details!'
+_default_field_set = [
+    {
+        'type': FormField.NAME, 'placeholder_ru': 'Имя', 'placeholder_en': 'Name'
+    },
+    {
+        'type': FormField.EMAIL, 'placeholder_ru': 'Email', 'placeholder_en': 'Email'
+    },
+    {
+        'type': FormField.TELEGRAM, 'placeholder_ru': 'Номер или ник в ',
+        'placeholder_en': 'Number or nickname in '
+    },
+    {
+        'type': FormField.FACEBOOK, 'placeholder_ru': 'Номер или ник в ',
+        'placeholder_en': 'Number or nickname in '
+    },
+    {
+        'type': FormField.WHATS_APP, 'placeholder_ru': 'Номер или ник в ',
+        'placeholder_en': 'Number or nickname in '
+    },
+    {
+        'type': FormField.VIBER, 'placeholder_ru': 'Номер или ник в ',
+        'placeholder_en': 'Number or nickname in '
+    },
+    {
+        'type': FormField.ABOUT, 'placeholder_ru': 'Номер или ник в ',
+        'placeholder_en': 'Number or nickname in '
+    }
+]
 
 
 class Command(BaseCommand):
@@ -12,40 +40,36 @@ class Command(BaseCommand):
         FormType.BECOME_MENTOR: {
             'post_send_ru': _default_post_send_ru,
             'post_send_en': _default_post_send_en,
-            'fields': [
-                FormField.NAME, FormField.EMAIL, FormField.TELEGRAM, FormField.FACEBOOK,
-                FormField.WHATS_APP, FormField.VIBER, FormField.ABOUT
-            ]
+            'field_set': _default_field_set
         },
         FormType.CHOOSE_MENTOR: {
             'post_send_ru': _default_post_send_ru,
             'post_send_en': _default_post_send_en,
-            'fields': [
-                FormField.NAME, FormField.EMAIL, FormField.TELEGRAM, FormField.FACEBOOK,
-                FormField.WHATS_APP, FormField.VIBER, FormField.ABOUT
-            ]
+            'field_set': _default_field_set
         },
         FormType.TEST_MEETING: {
             'post_send_ru': _default_post_send_ru,
             'post_send_en': _default_post_send_en,
-            'fields': [
-                FormField.NAME, FormField.EMAIL, FormField.TELEGRAM, FormField.FACEBOOK,
-                FormField.WHATS_APP, FormField.VIBER, FormField.ABOUT
-            ]
+            'field_set': _default_field_set
         },
         FormType.STILL_QUESTIONS: {
             'post_send_ru': _default_post_send_ru,
             'post_send_en': _default_post_send_en,
-            'fields': [
-                FormField.NAME, FormField.EMAIL, FormField.TELEGRAM, FormField.FACEBOOK,
-                FormField.WHATS_APP, FormField.VIBER, FormField.ABOUT
-            ]
+            'field_set': _default_field_set
         }
     }
     
     def handle(self, *args, **options):
         for form_type, fields in self.DEFAULT_FORMS.items():
             form = Form.objects.filter(type=form_type).first() or Form(type=form_type)
+            field_set = fields.pop('field_set')
             for field, value in fields.items():
                 setattr(form, field, value)
             form.save()
+            for field_data in field_set:
+                field_instance = Field.objects.filter(
+                    type=field_data['type'], form=form
+                ).first() or Field(form=form)
+                for f, v in field_data.items():
+                    setattr(field_instance, f, v)
+                field_instance.save()
