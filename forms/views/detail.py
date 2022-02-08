@@ -10,4 +10,4 @@ class FormView(UpdateModelMixin, BaseView):
     queryset = Form.objects.all()
     
     def patch(self, request, **_):
-        return self.update(request)
+        return self.partial_update(request)

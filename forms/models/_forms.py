@@ -1,8 +1,7 @@
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from base.models import AbstractModel
-from forms.models.choices import FormType, FormField
+from forms.models.choices import FormField, FormType
 
 __all__ = ['Form', 'Field', 'Application']
 
