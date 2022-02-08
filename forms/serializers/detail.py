@@ -17,7 +17,7 @@ class FormSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Form
-        fields = ['fields']
+        fields = ['description', 'post_send', 'fields']
     
     def update(self, form, validated_data):
         fields = validated_data.pop('field_set', None)
@@ -26,4 +26,4 @@ class FormSerializer(serializers.ModelSerializer):
                 field_instance = Field.objects.get(form=form, type=field['type'])
                 field_instance.placeholder = field['placeholder']
                 field_instance.save()
-        return form
+        return super().update(form, validated_data)
