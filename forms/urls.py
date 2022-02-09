@@ -5,5 +5,6 @@ from .views import *
 urlpatterns = [
     path('', FormsView.as_view()),
     path('<int:id>/', FormView.as_view()),
-    path('<int:form_id>/applications/', FormApplicationsView.as_view())
+    path('<int:form_id>/applications/', FormApplicationsView.as_view()),
+    path('applications/xlsx/', FormsApplicationsXlsxView.as_view())
 ]
