@@ -1,4 +1,5 @@
 from django.conf import settings
+from drf_base64.fields import Base64ImageField
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
@@ -18,6 +19,7 @@ class _MentorsTagsSerializer(serializers.ModelSerializer):
 class MentorsListSerializer(serializers.ModelSerializer):
     country_flag = serializers.SerializerMethodField()
     tags = _MentorsTagsSerializer(many=True, source='tag_set')
+    avatar = Base64ImageField()
     
     class Meta:
         model = Mentor

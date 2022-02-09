@@ -12,6 +12,7 @@ django-countries==7.2.1
 django-money==2.1.1
 certifi==2021.10.8
 django-celery-beat==2.2.1
+drf-base64==2.0
 
 djangorestframework==3.12.4
 djangorestframework-simplejwt==4.6.0
