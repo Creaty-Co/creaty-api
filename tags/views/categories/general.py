@@ -3,8 +3,7 @@ from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from base.views.base import BaseView
 from tags.models import Category
 from tags.serializers.categories.general import (
-    CreateTagsCategoriesSerializer,
-    ListTagsCategoriesSerializer
+    CreateTagsCategoriesSerializer, ListTagsCategoriesSerializer
 )
 
 
