@@ -9,7 +9,7 @@ class ListTagsCategoriesSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Category
-        fields = ['id', 'title', 'tags']
+        fields = ['id', 'shortcut', 'title', 'tags']
 
 
 class CreateTagsCategoriesSerializer(serializers.ModelSerializer):
