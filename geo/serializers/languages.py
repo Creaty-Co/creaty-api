@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-from geo.models import Country
+from geo.models import Language
 
 
-class GeoCountriesSerializer(serializers.ModelSerializer):
+class GeoLanguagesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Country
-        fields = ['id', 'code', 'flag_unicode', 'name']
+        model = Language
+        fields = ['id', 'code', 'name', 'name_native']
