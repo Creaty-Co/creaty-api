@@ -4,7 +4,7 @@ from rest_framework import serializers
 from base.utils.functions import choices_to_help_text
 from geo.models import Country, Language
 from mentors.models import Mentor, MentorInfo
-from tags.serializers.general import TagsSerializer
+from tags.serializers.general import ListTagsSerializer
 
 
 class _MentorInfoLanguagesSerializer(serializers.ModelSerializer):
@@ -40,7 +40,7 @@ class _MentorCountrySerializer(serializers.ModelSerializer):
 class MentorSerializer(serializers.ModelSerializer):
     info = _MentorInfoSerializer()
     country = _MentorCountrySerializer()
-    tags = TagsSerializer(many=True, source='tag_set')
+    tags = ListTagsSerializer(many=True, source='tag_set')
     
     class Meta:
         model = Mentor

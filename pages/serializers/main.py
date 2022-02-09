@@ -4,11 +4,11 @@ from mentors.models import Mentor
 from mentors.serializers.general import MentorsListSerializer
 from pages.models import Page, PageMentorSet, PageTagSet
 from tags.models import Tag
-from tags.serializers.general import TagsSerializer
+from tags.serializers.general import ListTagsSerializer
 
 
 class PagesRetrieveMainSerializer(serializers.ModelSerializer):
-    tags = TagsSerializer(many=True, source='tag_set')
+    tags = ListTagsSerializer(many=True, source='tag_set')
     mentors = MentorsListSerializer(many=True, source='mentor_set')
     
     class Meta:
