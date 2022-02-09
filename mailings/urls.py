@@ -7,5 +7,6 @@ urlpatterns = [
     path('unsubscribe/<int:id>/', MailingsUnsubscribeView.as_view()),
     path('', MailingsView.as_view()),
     path('<int:id>/', MailingView.as_view()),
-    path('<int:id>/send/', MailingSendView.as_view())
+    path('<int:id>/send/', MailingSendView.as_view()),
+    path('subscribers/xlsx/', MailingsSubscribersXlsxView.as_view())
 ]
