@@ -78,6 +78,7 @@ Environment requirements:
 ###
 # imports
 
+import base64
 import importlib
 from datetime import timedelta
 from functools import partial
@@ -86,8 +87,12 @@ from pathlib import Path
 # noinspection PyPackageRequirements
 import environ
 from celery.schedules import crontab
+from pybase64 import b64decode, b64encode
 
 from base.logs.configs import LogConfig
+
+base64.b64encode = b64encode
+base64.b64decode = b64decode
 
 # imports
 ###
