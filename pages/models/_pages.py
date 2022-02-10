@@ -4,6 +4,8 @@ from django.db import models
 
 from base.models import AbstractModel
 
+__all__ = ['PageMentorSet', 'PageTagSet', 'Page']
+
 
 class PageMentorSet(AbstractModel):
     page = models.ForeignKey('pages.Page', on_delete=models.CASCADE)
