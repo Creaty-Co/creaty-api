@@ -1,28 +1,19 @@
-from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
-from rest_framework import serializers
-
+from base.serializers.xlsx import BaseXlsxSerializer
 from base.services.xlsx import BaseXlsxConverter
 from base.utils.decorators import schema_response_204
-from base.utils.functions import schema_serializer
 from base.views.base import BaseView
 
 
 class BaseXlsxView(BaseView):
     xlsx_converter: BaseXlsxConverter
     
-    serializer_classes = {
-        'put': extend_schema_serializer(
-            examples=[OpenApiExample('UpdateXlsxExample', {'xlsx': 'file.xlsx'})]
-        )(
-            schema_serializer(
-                'UpdateXlsxSerializer', xlsx=serializers.CharField()
-            )
-        )
-    }
+    serializer_classes = {'put': BaseXlsxSerializer}
     
     def get(self, request):
         return self.xlsx_converter.to_response()
     
     @schema_response_204
     def put(self, request):
-        self.xlsx_converter.parse(request.FILES['xlsx'])
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.xlsx_converter.parse(serializer.validated_data['xlsx'])
