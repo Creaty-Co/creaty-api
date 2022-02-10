@@ -1,8 +1,7 @@
-from base.views.base import BaseView
+from base.views.xlsx import BaseXlsxView
 from forms.services.applications_xlsx import ApplicationsXlsxConverter
 
 
 # noinspection PyMethodMayBeStatic
-class FormsApplicationsXlsxView(BaseView):
-    def get(self, request):
-        return ApplicationsXlsxConverter().to_response()
+class FormsApplicationsXlsxView(BaseXlsxView):
+    xlsx_converter = ApplicationsXlsxConverter()

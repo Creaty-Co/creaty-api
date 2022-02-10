@@ -1,27 +1,34 @@
-from typing import Iterable
+from typing import Iterable, Type
 
-from django.db.models import F
+from django.db.models import Choices, F, TextChoices
 
 from base.services.xlsx import BaseXlsxConverter
 from base.utils.functions import reverse_choices
-from forms.models import Application
-from forms.models.choices import FormField, FormType
+from forms.models import Application, Form
+from forms.models.choices import FormField, FormType, rFormType
+
+
+_FormTypeByLabel = {_.label: _ for _ in FormField}
 
 
 class ApplicationsXlsxConverter(BaseXlsxConverter):
     MODEL = Application
-    # noinspection PyUnresolvedReferences
     FIELD_HEADER_MAP = {'type': 'Тип', 'id': 'Id'} | {_.value: _.label for _ in FormField}
     
     def __init__(self):
         super().__init__(self.FIELD_HEADER_MAP)
     
-    def _get_values(self) -> Iterable:
+    def _get_values(self):
         values = list(
             self.MODEL.objects.annotate(type=F('form__type')).order_by(
                 'type', 'id'
             ).values_list(*self.fields)
         )
-        for i in range(len(values)):
-            values[i] = (reverse_choices(FormType)['become_mentor'].label, *values[i][1:])
+        for i, value in enumerate(values):
+            values[i] = (rFormType[value[0]].label, *value[1:])
         return values
+    
+    def _update_objects(self, instances_data):
+        for instance_data in instances_data:
+            instance_data['form'] = Form.objects.get(type=_FormTypeByLabel[instance_data])
+        # TODO: WIP

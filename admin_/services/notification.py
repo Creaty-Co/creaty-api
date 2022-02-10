@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 
 from account.models import User
 from forms.models import Application
-from forms.models.choices import ReverseFormType, ReverseFormField
+from forms.models.choices import rFormType, rFormField
 
 
 class AdminNotificationService:
@@ -17,12 +17,12 @@ class AdminNotificationService:
     
     def on_application(self, application: Application):
         str_fields = '\n'.join(
-            f'{ReverseFormField[field].label}: {getattr(application, field)}' for field in
-            application.form.fields
+            f'{rFormField[field].label}: {getattr(application, field)}' for field in
+            [f.type for f in application.form.field_set.all()]
         )
         self._send_admin_emails(
             'Пришла заявка',
-            f'''Заявка: {ReverseFormType[application.form.type].label}\n{str_fields}'''
+            f'''Заявка: {rFormType[application.form.type].label}\n{str_fields}'''
         )
     
     def on_subscriber(self, subscriber):

@@ -1,4 +1,6 @@
-from django.db.models import TextChoices
+from typing import Type
+
+from django.db.models import Choices, TextChoices
 
 from base.utils.functions import reverse_choices
 
@@ -10,7 +12,8 @@ class FormType(TextChoices):
     STILL_QUESTIONS = 'still_questions', 'Ещё остались вопросы'
 
 
-ReverseFormType = reverse_choices(FormType)
+FormType: Type[str] | Type[Choices]
+rFormType = reverse_choices(FormType)
 
 
 class FormField(TextChoices):
@@ -20,7 +23,8 @@ class FormField(TextChoices):
     FACEBOOK = 'facebook', 'Facebook messanger'
     WHATS_APP = 'whats_app', 'WhatsApp'
     VIBER = 'viber', 'Viber'
-    ABOUT = 'about', 'О себе'
+    ABOUT = 'about', 'О вопросе'
 
 
-ReverseFormField = reverse_choices(FormField)
+FormField: Type[str] | Type[Choices]
+rFormField = reverse_choices(FormField)
