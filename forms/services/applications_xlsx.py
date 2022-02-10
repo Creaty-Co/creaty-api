@@ -1,14 +1,10 @@
-from typing import Iterable, Type
-
-from django.db.models import Choices, F, TextChoices
+from django.db.models import F
 
 from base.services.xlsx import BaseXlsxConverter
-from base.utils.functions import reverse_choices
 from forms.models import Application, Form
 from forms.models.choices import FormField, FormType, rFormType
 
-
-_FormTypeByLabel = {_.label: _ for _ in FormField}
+_FormTypeByLabel = {_.label: _ for _ in FormType}
 
 
 class ApplicationsXlsxConverter(BaseXlsxConverter):
@@ -29,6 +25,8 @@ class ApplicationsXlsxConverter(BaseXlsxConverter):
         return values
     
     def _update_objects(self, instances_data):
-        for instance_data in instances_data:
-            instance_data['form'] = Form.objects.get(type=_FormTypeByLabel[instance_data])
-        # TODO: WIP
+        for instance_data in instances_data.values():
+            instance_data['form'] = Form.objects.get(
+                type=_FormTypeByLabel[instance_data.pop(self._header_by_field('type'))]
+            )
+        super()._update_objects(instances_data)
