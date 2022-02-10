@@ -1,4 +1,7 @@
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, UpdateModelMixin
+from rest_framework.mixins import (
+    CreateModelMixin, DestroyModelMixin, ListModelMixin,
+    UpdateModelMixin
+)
 
 from admin_.views.base import BaseAdminView
 from base.views.base import BaseView
@@ -22,9 +25,12 @@ class PagesFaqsView(ListModelMixin, CreateModelMixin, BaseView):
         return self.create(request)
 
 
-class PagesFaqView(UpdateModelMixin, BaseView):
+class PagesFaqView(UpdateModelMixin, DestroyModelMixin, BaseAdminView):
     serializer_classes = {'patch': PagesFaqSerializer}
     queryset = Faq.objects.all()
     
     def patch(self, request, **_):
         return self.partial_update(request)
+    
+    def delete(self, request, **_):
+        return self.destroy(request)
