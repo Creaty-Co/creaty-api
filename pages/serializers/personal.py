@@ -6,7 +6,7 @@ from pages.serializers.main import PagesRetrieveMainSerializer, PagesUpdateMainS
 
 
 class PagesRetrievePersonalSerializer(PagesRetrieveMainSerializer):
-    title = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField(allow_null=True)
     
     class Meta(PagesRetrieveMainSerializer.Meta):
         fields = PagesRetrieveMainSerializer.Meta.fields[:]
@@ -15,6 +15,8 @@ class PagesRetrievePersonalSerializer(PagesRetrieveMainSerializer):
     @extend_schema_field(OpenApiTypes.STR)
     def get_title(self, page):
         if page.tag is None:
+            if page.category is None:
+                return None
             return page.category.title
         return page.tag.title
 

@@ -43,7 +43,11 @@ class PagesPersonalView(PagesMainView):
                 shortcut=shortcut
             ).first() or Category.objects.filter(shortcut=shortcut).first()
             if tag_or_category is None:
-                raise
-            page = PageService().get_or_create(tag_or_category)
+                if self.request.method.lower() == 'get':
+                    page = PageService().main
+                else:
+                    raise
+            else:
+                page = PageService().get_or_create(tag_or_category)
         self.check_object_permissions(self.request, page)
         return page
