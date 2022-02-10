@@ -68,6 +68,11 @@ Environment requirements:
         *EDIRECT_ON_UNSUBSCRIBE:
             :type: str
     
+    Celery beat:
+        UPDATE_RATES_INTERVAL:
+            :type: int
+            :default: 60 * 60 * 8
+    
     (Heroku):
         Cloudinary:
             *CLOUDINARY_URL:
@@ -118,7 +123,8 @@ env = environ.Env(
     LOG_LEVEL=(dict, {}),
     CELERY_REDIS_MAX_CONNECTIONS=(int, 10),
     ADMINS=(_env_value, {}),
-    HEROKU=(bool, False)
+    HEROKU=(bool, False),
+    UPDATE_RATES_INTERVAL=(int, 60 * 60 * 8)
 )
 
 if Path(env('ENV_FILE')).exists():
@@ -352,7 +358,7 @@ CELERY_TRACK_STARTED = True
 CELERY_BEAT_SCHEDULE = {
     'update_rates': {
         'task': 'geo.tasks.update_rates',
-        'schedule': timedelta(hours=8)
+        'schedule': timedelta(seconds=env('UPDATE_RATES_INTERVAL'))
     }
 }
 
