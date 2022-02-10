@@ -1,8 +1,6 @@
-from base.views.base import BaseView
+from base.views.xlsx import BaseXlsxView
 from mailings.services.subscribers_xlsx import SubscribersXlsxConverter
 
 
-# noinspection PyMethodMayBeStatic
-class MailingsSubscribersXlsxView(BaseView):
-    def get(self, request):
-        return SubscribersXlsxConverter().to_response()
+class MailingsSubscribersXlsxView(BaseXlsxView):
+    xlsx_converter = SubscribersXlsxConverter()

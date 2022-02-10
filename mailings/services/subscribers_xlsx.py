@@ -1,8 +1,8 @@
-from base.services.xlsx import XlsxConverter
+from base.services.xlsx import BaseXlsxConverter
 from mailings.models import Subscriber
 
 
-class SubscribersXlsxConverter(XlsxConverter):
+class SubscribersXlsxConverter(BaseXlsxConverter):
     MODEL = Subscriber
     FIELD_HEADER_MAP = {'id': 'Id', 'email': 'Email'}
     

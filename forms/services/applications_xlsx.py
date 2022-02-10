@@ -2,13 +2,13 @@ from typing import Iterable
 
 from django.db.models import F
 
-from base.services.xlsx import XlsxConverter
+from base.services.xlsx import BaseXlsxConverter
 from base.utils.functions import reverse_choices
 from forms.models import Application
 from forms.models.choices import FormField, FormType
 
 
-class ApplicationsXlsxConverter(XlsxConverter):
+class ApplicationsXlsxConverter(BaseXlsxConverter):
     MODEL = Application
     # noinspection PyUnresolvedReferences
     FIELD_HEADER_MAP = {'type': 'Тип', 'id': 'Id'} | {_.value: _.label for _ in FormField}

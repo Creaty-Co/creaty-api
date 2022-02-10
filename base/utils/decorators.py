@@ -9,7 +9,7 @@ def schema_response_204(f):
         f(*args, **kwargs)
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-    return extend_schema(responses={201: None, 204: ''})(_f_decorator)
+    return extend_schema(responses={200: None, 201: None, 204: ''})(_f_decorator)
 
 
 def schema_redirect(description: str = None):
