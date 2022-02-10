@@ -73,8 +73,13 @@ class Command(BaseCommand):
     }
     
     def handle(self, *args, **options):
+        is_reset = options.get('reset', False)
         for form_type, fields in self.DEFAULT_FORMS.items():
-            form = Form.objects.filter(type=form_type).first() or Form(type=form_type)
+            form = Form.objects.filter(type=form_type).first()
+            if form is None:
+                form = Form(type=form_type)
+            elif not is_reset:
+                return
             field_set = fields.pop('field_set')
             for field, value in fields.items():
                 setattr(form, field, value)
@@ -86,3 +91,9 @@ class Command(BaseCommand):
                 for f, v in field_data.items():
                     setattr(field_instance, f, v)
                 field_instance.save()
+    
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--reset', action='store_true', default=False,
+            help='Установить значения по умолчанию'
+        )
