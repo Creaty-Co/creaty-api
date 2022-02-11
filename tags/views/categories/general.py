@@ -15,3 +15,6 @@ class TagsCategoriesView(ListModelMixin, CreateModelMixin, BaseView):
     
     def get(self, request):
         return self.list(request)
+    
+    def post(self, request):
+        return self.create(request)
