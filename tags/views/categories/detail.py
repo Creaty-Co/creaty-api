@@ -6,7 +6,7 @@ from tags.serializers.categories.detail import TagsCategorySerializer
 
 
 class TagsCategoryView(UpdateModelMixin, DestroyModelMixin, BaseView):
-    serializer_classes = {'get': TagsCategorySerializer}
+    serializer_classes = {'patch': TagsCategorySerializer}
     queryset = Category.objects.all()
     
     def patch(self, request, **_):
