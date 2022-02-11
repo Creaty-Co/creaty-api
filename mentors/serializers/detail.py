@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from base.utils.functions import choices_to_help_text
 from geo.models import Country, Language
-from mentors.models import Mentor, MentorInfo
+from mentors.models import Mentor, MentorInfo, Package
 from tags.serializers.general import ListTagsSerializer
 
 
@@ -37,14 +37,21 @@ class _MentorCountrySerializer(serializers.ModelSerializer):
         fields = ['id', 'flag_unicode']
 
 
+class _MentorPackagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Package
+        fields = ['id', 'lessons_count', 'discount']
+
+
 class MentorSerializer(serializers.ModelSerializer):
     info = _MentorInfoSerializer()
     country = _MentorCountrySerializer()
     tags = ListTagsSerializer(many=True, source='tag_set')
+    packages = _MentorPackagesSerializer(many=True)
     
     class Meta:
         model = Mentor
         fields = [
             'id', 'avatar', 'company', 'profession', 'first_name', 'last_name', 'price',
-            'price_currency', 'country', 'tags', 'info'
+            'price_currency', 'country', 'tags', 'packages', 'info'
         ]

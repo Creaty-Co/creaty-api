@@ -20,10 +20,15 @@ class Mentor(AbstractModel):
     price: Money = MoneyField(max_digits=10, decimal_places=2)
     tag_set = models.ManyToManyField(Tag)
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
+    
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        if self.info:
+            self.info.delete()
 
 
 class Package(AbstractModel):
-    mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+    mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE, related_name='packages')
     lessons_count = models.SmallIntegerField(validators=[MinValueValidator(2)])
     discount = models.SmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(99)]

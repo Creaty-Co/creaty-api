@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from mentors.models import Mentor
-from mentors.serializers.general import MentorsListSerializer
+from mentors.serializers.general import ListMentorsSerializer
 from pages.models import Page, PageMentorSet, PageTagSet
 from tags.models import Tag
 from tags.serializers.general import ListTagsSerializer
@@ -9,7 +9,7 @@ from tags.serializers.general import ListTagsSerializer
 
 class PagesRetrieveMainSerializer(serializers.ModelSerializer):
     tags = ListTagsSerializer(many=True, source='tag_set')
-    mentors = MentorsListSerializer(many=True, source='mentor_set')
+    mentors = ListMentorsSerializer(many=True, source='mentor_set')
     
     class Meta:
         model = Page
