@@ -8,6 +8,6 @@ class TagsCategorySerializer(serializers.ModelSerializer):
         model = Category
         wo = {'write_only': True}
         extra_kwargs = {
-            'id': {}, 'shortcut': wo, 'title_ru': wo, 'title_en': wo, 'icon': wo
+            'id': {}, 'shortcut': wo, 'title': wo, 'icon': wo
         }
         fields = list(extra_kwargs.keys())

@@ -3,7 +3,7 @@ from modeltranslation.translator import register, TranslationOptions
 from forms.models import *
 from geo.models import *
 from mentors.models import *
-from pages.models._faq import Faq
+from pages.models import *
 from tags.models import *
 
 
