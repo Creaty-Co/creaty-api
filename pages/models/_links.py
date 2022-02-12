@@ -8,9 +8,9 @@ __all__ = ['SocialLink', 'DocumentLink']
 
 class SocialLink(AbstractModel):
     icon = models.ImageField(upload_to='pages/social_link/icon')
-    url = models.URLField()
+    url = models.TextField()
 
 
 class DocumentLink(AbstractModel):
     type = models.TextField(choices=DocumentLinkType.choices, unique=True)
-    url = models.URLField()
+    url = models.TextField()
