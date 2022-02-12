@@ -8,6 +8,7 @@ __all__ = ['Category', 'Tag']
 class Category(AbstractModel):
     shortcut = models.TextField(unique=True)
     title = models.TextField()
+    icon = models.ImageField(upload_to='tags/category/icon')
 
 
 class Tag(AbstractModel):
