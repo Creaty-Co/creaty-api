@@ -2,11 +2,11 @@ from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
 
 from base.views.base import BaseView
 from tags.models import Tag
-from tags.serializers.detail import TagSerializer
+from tags.serializers.detail import UpdateTagSerializer
 
 
 class TagView(UpdateModelMixin, DestroyModelMixin, BaseView):
-    serializer_classes = {'get': TagSerializer}
+    serializer_classes = {'patch': UpdateTagSerializer}
     queryset = Tag.objects.all()
     
     def patch(self, request, **_):
