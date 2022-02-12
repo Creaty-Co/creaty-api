@@ -1,12 +1,12 @@
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 
-from account.serializers.me.detail import AccountsMeSerializer
+from account.serializers.me.detail import RetrieveAccountsMeSerializer, UpdateMeSerializer
 from account.views.base import BaseAuthView
 
 
 class AccountsMeView(RetrieveModelMixin, UpdateModelMixin, BaseAuthView):
     serializer_classes = {
-        'get': AccountsMeSerializer, 'patch': AccountsMeSerializer
+        'get': RetrieveAccountsMeSerializer, 'patch': UpdateMeSerializer
     }
     
     def get(self, request):

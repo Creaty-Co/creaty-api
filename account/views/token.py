@@ -10,6 +10,7 @@ from base.views.base import BaseView
 # noinspection PyMethodMayBeStatic
 class AccountsTokenView(BaseView):
     serializer_classes = {'post': AccountsTokenSerializer}
+    permission_classes_map = {'delete': [IsAuthenticatedPermission]}
     
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -19,8 +20,3 @@ class AccountsTokenView(BaseView):
     def delete(self, request):
         AuthService(request).logout()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-    def get_permissions(self):
-        if self.request.method.lower() == 'delete':
-            return [IsAuthenticatedPermission()]
-        return []
