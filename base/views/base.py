@@ -82,7 +82,9 @@ class BaseView(GenericAPIView):
     def get_permissions(self):
         permissions = None
         if self.permission_classes_map:
-            permissions = self.permission_classes_map.get(self.request.method.lower())
+            permissions = [
+                p() for p in self.permission_classes_map.get(self.request.method.lower())
+            ]
             if permissions:
                 if isinstance(permissions, list):
                     return super().get_permissions() + permissions

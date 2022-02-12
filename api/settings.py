@@ -211,6 +211,7 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle'
     ],
+    'DEFAULT_PERMISSION_CLASSES': [],
     'DEFAULT_THROTTLE_RATES': {'anon': '1000/s', 'user': '10000/s'},
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'

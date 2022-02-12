@@ -1,6 +1,7 @@
 from django.conf import settings
 from drf_base64.fields import Base64ImageField
 from rest_framework import serializers
+from rest_framework.permissions import AllowAny
 
 from base.utils.functions import choices_to_help_text
 from geo.models import Country, Language
