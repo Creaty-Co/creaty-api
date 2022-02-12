@@ -1,7 +1,6 @@
 from django.conf import settings
 from drf_base64.fields import Base64ImageField
 from rest_framework import serializers
-from rest_framework.permissions import AllowAny
 
 from base.utils.functions import choices_to_help_text
 from geo.models import Country, Language
@@ -87,3 +86,4 @@ class CreateMentorsSerializer(serializers.ModelSerializer):
         mentor = super().create(vd)
         for package in vd['packages']:
             Package.objects.create(mentor=mentor, **package)
+        return mentor
