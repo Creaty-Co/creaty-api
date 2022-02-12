@@ -24,7 +24,6 @@ class _MentorsCountrySerializer(serializers.ModelSerializer):
 class ListMentorsSerializer(serializers.ModelSerializer):
     country = _MentorsCountrySerializer()
     tags = _MentorsTagsSerializer(many=True, source='tag_set')
-    avatar = Base64ImageField()
     
     class Meta:
         model = Mentor
@@ -71,6 +70,7 @@ class CreateMentorsSerializer(serializers.ModelSerializer):
         help_text=choices_to_help_text(settings.CURRENCY_CHOICES), write_only=True
     )
     packages = _CreateMentorsPackagesSerializer(many=True, write_only=True)
+    avatar = Base64ImageField()
     
     class Meta:
         model = Mentor
