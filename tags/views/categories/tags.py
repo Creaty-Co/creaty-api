@@ -10,7 +10,7 @@ class TagsCategoryTagsView(CreateModelMixin, BaseView):
     serializer_classes = {'post': TagsCategoryTagsSerializer}
     queryset = Category.objects.all()
     
-    def post(self, request):
+    def post(self, request, **_):
         return self.create(request)
     
     def perform_create(self, serializer):

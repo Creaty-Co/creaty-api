@@ -69,7 +69,7 @@ class CreateMentorsSerializer(serializers.ModelSerializer):
         help_text=choices_to_help_text(settings.CURRENCY_CHOICES), write_only=True
     )
     packages = _CreateMentorsPackagesSerializer(many=True, write_only=True)
-    avatar = Base64ImageField()
+    avatar = Base64ImageField(write_only=True)
     
     class Meta:
         model = Mentor
@@ -83,7 +83,10 @@ class CreateMentorsSerializer(serializers.ModelSerializer):
     
     def create(self, vd):
         vd['info'] = _MentorsCreateInfoSerializer().create(vd.pop('info'))
-        mentor = super().create(vd)
-        for package in vd['packages']:
+        tag_set = vd.pop('tag_set')
+        packages = vd.pop('packages')
+        mentor = Mentor.objects.create(**vd)
+        mentor.tag_set.add(*tag_set)
+        for package in packages:
             Package.objects.create(mentor=mentor, **package)
         return mentor
