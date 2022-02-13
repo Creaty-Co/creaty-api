@@ -11,4 +11,5 @@ class Subscriber(AbstractModel):
 class Mailing(AbstractModel):
     subject = models.TextField()
     content = models.TextField()
+    is_stopped = models.BooleanField(default=True)
     task_ids = ArrayField(models.TextField(), blank=True, null=True)

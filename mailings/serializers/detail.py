@@ -1,9 +1,10 @@
 from rest_framework import serializers
 
-from mailings.models import Mailing
+from mailings.serializers.base import BaseMailingsSerializer
 
 
-class MailingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Mailing
-        fields = ['id', 'subject', 'content']
+class MailingSerializer(BaseMailingsSerializer):
+    is_running = serializers.SerializerMethodField()
+    
+    class Meta(BaseMailingsSerializer.Meta):
+        fields = ['id', 'subject', 'content', 'is_running']
