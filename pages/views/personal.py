@@ -27,7 +27,7 @@ class PagesPersonalView(PagesMainView):
     def get(self, request, **_):
         return self.retrieve(request)
     
-    def patch(self, request):
+    def patch(self, request, **_):
         return self.partial_update(request)
     
     def get_object(self):
