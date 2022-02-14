@@ -1,2 +1,2 @@
 from .detail import *
-from .mentors import *
+from .mentor import *
