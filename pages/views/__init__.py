@@ -1,4 +1,5 @@
 from .main import *
-from .peronals import *
+from .mentor import *
 from .faqs import *
 from .links import *
+from .peronals import *

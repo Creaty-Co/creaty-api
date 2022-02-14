@@ -5,7 +5,7 @@ from base.schemas.mixins import SerializerSchemaMixin
 from base.serializers.base import BaseSerializer
 
 
-class UpdatePagesPersonalMentorSerializer(SerializerSchemaMixin, BaseSerializer):
+class UpdatePageMentorSerializer(SerializerSchemaMixin, BaseSerializer):
     WARNINGS = {
         409: APIWarning(
             'max_page_mentor_index',

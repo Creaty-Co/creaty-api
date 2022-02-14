@@ -4,9 +4,10 @@ from .views import *
 
 urlpatterns = [
     path('main/', PagesMainView.as_view()),
+    path('main/mentors/<int:mentor_id>/', PagesMainMentorView.as_view()),
     path('personal/<str:shortcut>/', PagesPersonalView.as_view()),
     path(
-        'personal/<int:page_id>/mentors/<int:mentor_id>/',
+        'personal/<str:shortcut>/mentors/<int:mentor_id>/',
         PagesPersonalMentorView.as_view()
     ),
     path('faqs/', PagesFaqsView.as_view()),
