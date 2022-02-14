@@ -4,7 +4,7 @@ from rest_framework.generics import get_object_or_404
 
 from mentors.views import MentorsView
 from pages.models import Page
-from pages.serializers.personal import (
+from pages.serializers.persoanls.detail import (
     PagesRetrievePersonalSerializer, PagesUpdatePersonalSerializer
 )
 from pages.services.page import PageService

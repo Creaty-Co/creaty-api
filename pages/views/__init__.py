@@ -1,4 +1,4 @@
 from .main import *
-from .personal import *
+from .peronals import *
 from .faqs import *
 from .links import *
