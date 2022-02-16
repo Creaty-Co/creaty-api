@@ -16,7 +16,7 @@ class AdminNotificationService:
         )
     
     def _send_admin_emails(self, subject: str, message: str):
-        send_mail(subject, message, None, [self._get_admins()])
+        send_mail(subject, message, None, self._get_admins())
     
     def on_application(self, application: Application):
         str_fields = '\n'.join(
