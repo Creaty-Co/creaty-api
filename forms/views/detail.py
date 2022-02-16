@@ -1,11 +1,11 @@
 from rest_framework.mixins import UpdateModelMixin
 
-from base.views.base import BaseView
+from admin_.views import BaseAdminView
 from forms.models import Form
 from forms.serializers.detail import FormSerializer
 
 
-class FormView(UpdateModelMixin, BaseView):
+class FormView(UpdateModelMixin, BaseAdminView):
     serializer_classes = {'patch': FormSerializer}
     queryset = Form.objects.all()
     

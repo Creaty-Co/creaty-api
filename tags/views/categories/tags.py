@@ -1,11 +1,11 @@
 from rest_framework.mixins import CreateModelMixin
 
-from base.views.base import BaseView
+from admin_.views import BaseAdminView
 from tags.models import Category
 from tags.serializers.categories.tags import TagsCategoryTagsSerializer
 
 
-class TagsCategoryTagsView(CreateModelMixin, BaseView):
+class TagsCategoryTagsView(CreateModelMixin, BaseAdminView):
     lookup_url_kwarg = 'category_id'
     serializer_classes = {'post': TagsCategoryTagsSerializer}
     queryset = Category.objects.all()

@@ -1,6 +1,5 @@
 from rest_framework.mixins import (
-    CreateModelMixin, DestroyModelMixin, ListModelMixin,
-    UpdateModelMixin
+    CreateModelMixin, DestroyModelMixin, ListModelMixin, UpdateModelMixin
 )
 
 from admin_.views.base import BaseAdminView
