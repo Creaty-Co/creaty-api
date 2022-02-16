@@ -24,20 +24,24 @@ class PagesMainMentorView(BaseMainPageView):
         serializer = self.get_serializer(page, data=request.data)
         serializer.is_valid(raise_exception=True)
         mentor = get_object_or_404(Mentor, id=kwargs['mentor_id'])
-        index = PageMentorSet.objects.filter(page=page).aggregate(
-            Max('index')
-        )['index__max']
-        index = 0 if index is None else index + 1
-        if index == PageService.MAX_MENTORS_COUNT:
-            raise serializer.WARNINGS[409]
-        PageMentorSet.objects.create(page=page, mentor=mentor, index=index)
+        if not PageMentorSet.objects.filter(page=page, mentor=mentor).exists():
+            index = PageMentorSet.objects.filter(page=page).aggregate(
+                Max('index')
+            )['index__max']
+            index = 0 if index is None else index + 1
+            if index == PageService.MAX_MENTORS_COUNT:
+                raise serializer.WARNINGS[409]
+            PageMentorSet.objects.create(page=page, mentor=mentor, index=index)
         return Response(serializer.data)
     
     @schema_response_204
     def delete(self, request, **kwargs):
         page = self.get_object()
         mentor = get_object_or_404(Mentor, id=kwargs['mentor_id'])
-        page__mentor = get_object_or_404(PageMentorSet, page=page, mentor=mentor)
+        try:
+            page__mentor = PageMentorSet.objects.get(page=page, mentor=mentor)
+        except PageMentorSet.DoesNotExist:
+            return
         page__mentor.delete()
         for index in range(page__mentor.index + 1, PageService.MAX_MENTORS_COUNT):
             try:
