@@ -9,7 +9,7 @@ from tags.models import Tag
 
 class BaseMainPageView(BaseView):
     queryset = Page.objects.prefetch_related(
-        Prefetch('tag_set', queryset=Tag.objects.order_by('pagetagset__index')),
+        Prefetch('tag_set', queryset=Tag.objects.order_by('?').nocache()),
         Prefetch(
             'mentor_set', queryset=MentorsView.queryset.order_by('pagementorset__index')
         )

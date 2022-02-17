@@ -1,5 +1,5 @@
 from mentors.models import Mentor
-from pages.models import Page, PageMentorSet, PageTagSet
+from pages.models import Page, PageMentorSet
 from tags.models import Category, Tag
 
 
@@ -11,12 +11,11 @@ class PageService:
     def main(self) -> Page:
         main_page, is_created = Page.objects.get_or_create(tag=None, category=None)
         if is_created:
-            mentor_qs = Mentor.objects.order_by('?')
-            tags_qs = Tag.objects.order_by('?')
+            mentor_qs = Mentor.objects.order_by('?').nocache()
+            tags_qs = Tag.objects.order_by('?').nocache()
             for index, mentor in enumerate(mentor_qs[:self.MAX_MENTORS_COUNT]):
                 PageMentorSet.objects.create(page=main_page, mentor=mentor, index=index)
-            for index, tag in enumerate(tags_qs[:self.MAX_TAGS_COUNT]):
-                PageTagSet.objects.create(page=main_page, tag=tag, index=index)
+            main_page.tag_set.set(tags_qs[:self.MAX_TAGS_COUNT])
         return main_page
     
     def get_or_create(self, tag_or_category: Tag | Category) -> Page:
@@ -29,8 +28,8 @@ class PageService:
         return page
     
     def _fill_random(self, page: Page) -> None:
-        mentor_qs = Mentor.objects.order_by('?')
-        tags_qs = Tag.objects.order_by('?')
+        mentor_qs = Mentor.objects.order_by('?').nocache()
+        tags_qs = Tag.objects.order_by('?').nocache()
         if page.tag is None:
             mentor_qs = mentor_qs.filter(tag_set__category=page.category)
         else:
@@ -38,5 +37,4 @@ class PageService:
             tags_qs = tags_qs.exclude(id=page.tag.id)
         for index, mentor in enumerate(mentor_qs[:self.MAX_MENTORS_COUNT]):
             PageMentorSet.objects.create(page=page, mentor=mentor, index=index)
-        for index, tag in enumerate(tags_qs[:self.MAX_TAGS_COUNT]):
-            PageTagSet.objects.create(page=page, tag=tag, index=index)
+        page.tag_set.set(tags_qs[:self.MAX_TAGS_COUNT])

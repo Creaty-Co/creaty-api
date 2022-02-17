@@ -12,7 +12,7 @@ from tags.models import Category, Tag
 class BasePersonalPageView(BaseView):
     queryset = Page.objects.prefetch_related(
         'tag', 'category',
-        Prefetch('tag_set', queryset=Tag.objects.order_by('pagetagset__index')),
+        Prefetch('tag_set', queryset=Tag.objects.order_by('?').nocache()),
         Prefetch(
             'mentor_set', queryset=MentorsView.queryset.order_by('pagementorset__index')
         )

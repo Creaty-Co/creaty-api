@@ -1,8 +1,10 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from mentors.models import Mentor
 from mentors.serializers.general import ListMentorsSerializer
-from pages.models import Page, PageMentorSet, PageTagSet
+from pages.models import Page, PageMentorSet
+from pages.services.page import PageService
 from tags.models import Tag
 from tags.serializers.general import ListTagsSerializer
 
@@ -28,14 +30,27 @@ class PagesUpdateMainSerializer(serializers.ModelSerializer):
         model = Page
         fields = ['id', 'tags', 'mentors']
     
+    def validate(self, attrs):
+        if tags := attrs.get('tag_set'):
+            max_tags = PageService.MAX_TAGS_COUNT
+            if len(tags) > max_tags:
+                raise ValidationError(
+                    f'Тегов на странице не может быть больше {max_tags}'
+                )
+        if mentors := attrs.get('mentor_set'):
+            max_mentors = PageService.MAX_MENTORS_COUNT
+            if len(mentors) > max_mentors:
+                raise ValidationError(
+                    f'Менторов на странице не может быть больше {max_mentors}'
+                )
+        return attrs
+    
     def update(self, instance, validated_data):
         tags = validated_data.pop('tag_set', None)
         mentors = validated_data.pop('mentor_set', None)
         main_page = super().update(instance, validated_data)
         if tags is not None:
-            PageTagSet.objects.filter(page=main_page).delete()
-            for index, tag in enumerate(tags):
-                PageTagSet.objects.create(page=main_page, index=index, tag=tag)
+            main_page.tag_set.set(tags)
         if mentors is not None:
             PageMentorSet.objects.filter(page=main_page).delete()
             for index, mentor in enumerate(mentors):
