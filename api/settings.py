@@ -92,6 +92,7 @@ from pathlib import Path
 # noinspection PyPackageRequirements
 import environ
 from celery.schedules import crontab
+from django.template.context_processors import media
 from pybase64 import b64decode, b64encode
 
 from base.logs.configs import LogConfig
@@ -372,6 +373,7 @@ CELERY_BEAT_SCHEDULE = {
 # media
 
 MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR + 'media'
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
 if HEROKU:

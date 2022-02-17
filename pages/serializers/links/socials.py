@@ -1,7 +1,7 @@
-from drf_base64.fields import Base64ImageField
+from drf_base64.fields import Base64FileField
 from rest_framework import serializers
 
-from pages.models import Faq, SocialLink
+from pages.models import SocialLink
 
 
 class ListPagesLinksSocialsSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class ListPagesLinksSocialsSerializer(serializers.ModelSerializer):
 
 
 class CreatePagesLinksSocialsSerializer(serializers.ModelSerializer):
-    icon = Base64ImageField(write_only=True)
+    icon = Base64FileField(write_only=True)
     
     class Meta:
         model = SocialLink
@@ -21,7 +21,7 @@ class CreatePagesLinksSocialsSerializer(serializers.ModelSerializer):
 
 
 class PagesLinksSocialSerializer(serializers.ModelSerializer):
-    icon = Base64ImageField(write_only=True)
+    icon = Base64FileField(write_only=True)
     
     class Meta:
         model = SocialLink
