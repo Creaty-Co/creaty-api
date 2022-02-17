@@ -40,5 +40,5 @@ class Page(AbstractModel):
             raise ValidationError(f'У Page({self.id}) заданы tag и category')
         from pages.services.page import PageService
         max_tags = PageService.MAX_TAGS_COUNT
-        if self.tag_set and self.tag_set.count() > max_tags:
+        if self.id is not None and self.tag_set.count() > max_tags:
             raise ValidationError(f'Тегов не может быть больше {max_tags}')
