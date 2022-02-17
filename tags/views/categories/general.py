@@ -1,3 +1,4 @@
+from django.db.models import Count
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 
 from admin_.views import BaseAdminView
@@ -13,7 +14,9 @@ class TagsCategoriesView(ListModelMixin, CreateModelMixin, BaseView):
         'get': ListTagsCategoriesSerializer, 'post': CreateTagsCategoriesSerializer
     }
     permission_classes_map = {'post': BaseAdminView.permission_classes}
-    queryset = Category.objects.prefetch_related('tag_set').all()
+    queryset = Category.objects.annotate(Count('tag')).exclude(
+        tag__count=0
+    ).prefetch_related('tag_set')
     
     def get(self, request):
         return self.list(request)
