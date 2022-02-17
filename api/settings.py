@@ -258,7 +258,9 @@ TEMPLATES = [
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = []
+
+DEBUG_TOOLBAR_CONFIG = {'SHOW_TOOLBAR_CALLBACK': lambda *_, **__: True}
 
 # allow
 ###
@@ -284,7 +286,7 @@ REDIS_URL = env.cache('REDIS_URL')['LOCATION']
 CACHEOPS_REDIS = REDIS_URL
 
 CACHEOPS_DEFAULTS = {
-    'timeout': 60 * 5, 'cache_on_save': True, 'ops': ['get', 'fetch', 'exists']
+    'timeout': 60 * 5, 'cache_on_save': True, 'ops': ['get', 'fetch', 'exists', 'count']
 }
 CACHEOPS = {
     'account.*': {},
