@@ -9,7 +9,8 @@ dumps/
 staticfiles/
 media/
 logs/logs.log
-envs/**
+envs/
+certs/
 
 # Custom
 ###

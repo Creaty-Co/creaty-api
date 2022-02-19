@@ -3,7 +3,7 @@ Environment requirements:
     Environ:
         ENV_FILE:
             :type: str
-            :default: envs/.debug.env
+            :default: .env
     
     Django:
         *SECRET_KEY:
@@ -73,11 +73,10 @@ Environment requirements:
             :type: int
             :default: 60 * 60 * 8
     
-    (Heroku):
-        Cloudinary:
-            *CLOUDINARY_URL:
-                :type: str
-                :pattern: cloudinary://.+
+    Cloudinary:
+        *CLOUDINARY_URL:
+            :type: str
+            :pattern: cloudinary://.+
 """
 
 ###
@@ -109,7 +108,7 @@ base64.b64decode = b64decode
 _env_value = {'value': lambda s: s.split(',')}
 
 env = environ.Env(
-    ENV_FILE=(str, 'envs/.debug.env'),
+    ENV_FILE=(str, '.env'),
     DEBUG=(bool, False),
     TEST=(bool, False),
     EMAIL_BACKEND=(str, None),
@@ -124,7 +123,6 @@ env = environ.Env(
     LOG_LEVEL=(dict, {}),
     CELERY_REDIS_MAX_CONNECTIONS=(int, 10),
     ADMINS=(_env_value, {}),
-    HEROKU=(bool, False),
     UPDATE_RATES_INTERVAL=(int, 60 * 60 * 8)
 )
 
@@ -162,7 +160,6 @@ SITE_NAME = 'Creaty'
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 TEST = env('TEST')
-HEROKU = env('HEROKU')
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -178,7 +175,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_spectacular',
     'cacheops',
-    *(['cloudinary_storage', 'cloudinary'] if HEROKU else []),
+    'cloudinary_storage',
+    'cloudinary',
     'django_cleanup.apps.CleanupConfig',
     'djcelery_email',
     'django_celery_beat',
@@ -376,9 +374,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR + 'media'
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
-if HEROKU:
-    CLOUDINARY_URL = env('CLOUDINARY_URL')
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUDINARY_URL = env('CLOUDINARY_URL')
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # media
 ###
