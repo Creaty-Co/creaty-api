@@ -15,6 +15,16 @@ class AdminEmailHandler(DjangoAdminEmailHandler):
         super().__init__(include_html, email_backend, reporter_class)
         self.record = None
     
+    @staticmethod
+    def get_admins(level: str) -> set[str]:
+        if not settings.LOG_ADMINS:
+            return set()
+        admins = set()
+        for email, levels in settings.LOG_ADMINS.items():
+            if level.lower() in levels:
+                admins.add(email)
+        return admins
+    
     def emit(self, record):
         self.record = record
         return super().emit(record)
@@ -27,13 +37,8 @@ class AdminEmailHandler(DjangoAdminEmailHandler):
         return subject
     
     def send_mail(self, _, message, fail_silently=True, html_message=None):
-        if not settings.LOG_ADMINS:
-            return
         record = self.record
-        admins = set()
-        for email, levels in settings.LOG_ADMINS.items():
-            if record.levelname.lower() in levels:
-                admins.add(email)
+        admins = self.get_admins(record.levelname)
         if not admins:
             return
         mail = EmailMultiAlternatives(
