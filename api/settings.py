@@ -77,6 +77,10 @@ Environment requirements:
         *CLOUDINARY_URL:
             :type: str
             :pattern: cloudinary://.+
+    
+    Fixer:
+        *FIXER_ACCESS_KEY:
+            :type: str
 """
 
 ###
@@ -493,7 +497,7 @@ CURRENCY_CHOICES = [('RUB', 'Рубль (₽)'), ('USD', 'Доллар США ($
 DEFAULT_CURRENCY = 'USD'
 
 EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
-FIXER_ACCESS_KEY = '7d40b06656a86772ec7155c040ee5b65'
+FIXER_ACCESS_KEY = env('FIXER_ACCESS_KEY')
 
 # money
 ###
