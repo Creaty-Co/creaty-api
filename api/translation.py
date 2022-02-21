@@ -27,6 +27,11 @@ class LanguageTranslationOptions(TranslationOptions):
     fields = ['name']
 
 
+@register(Mentor)
+class MentorTranslationOptions(TranslationOptions):
+    fields = ['profession', 'first_name', 'last_name']
+
+
 @register(MentorInfo)
 class MentorInfoTranslationOptions(TranslationOptions):
     fields = ['city']
