@@ -313,13 +313,16 @@ CACHEOPS_DEGRADE_ON_FAILURE = True
 EMAIL_HOST: str
 EMAIL_PORT: int
 EMAIL_USE_SSL: bool
-EMAIL_HOST_USER: str
+EMAIL_HOST_USER: str = None
 EMAIL_HOST_PASSWORD: str
 EMAIL_BACKEND: str
 
 vars().update(
     env.email('EMAIL_URL', backend='djcelery_email.backends.CeleryEmailBackend')
 )
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
 
 # email
 ###
