@@ -26,5 +26,5 @@ class TagsCategoriesView(ListModelMixin, CreateModelMixin, BaseView):
     def get_queryset(self):
         queryset = super().get_queryset()
         if IsAdminPermission().has_permission(self.request, self):
-            return queryset.annotate(Count('tag')).exclude(tag__count=0)
-        return queryset
+            return queryset
+        return queryset.annotate(Count('tag')).exclude(tag__count=0)
