@@ -1,4 +1,3 @@
-from django.shortcuts import redirect
 from django.utils.crypto import get_random_string
 from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
 from rest_framework import serializers, status
@@ -21,22 +20,35 @@ class BaseXlsxView(BaseAdminView):
     cache_service: BaseCacheService = _XlsxCacheService()
     
     serializer_classes = {
+        'post': schema_serializer(
+            'CreateXlsxSerializer', link=serializers.CharField(read_only=True)
+        ),
         'put': extend_schema_serializer(
-            examples=[OpenApiExample('XlsxExample', {'xlsx': 'file.xlsx'})]
-        )(schema_serializer('XlsxSerializer', xlsx=serializers.CharField()))
+            examples=[OpenApiExample('UpdateXlsxExample', {'xlsx': 'file.xlsx'})]
+        )(
+            schema_serializer(
+                'UpdateXlsxSerializer', xlsx=serializers.CharField(write_only=True)
+            )
+        )
     }
+    
+    def post(self, request):
+        session_id = get_random_string(10)
+        self.cache_service.set(session_id, 'session_id', timeout=30)
+        return Response(
+            {
+                'link': add_query_params(
+                    request.build_absolute_uri(), session_id=session_id
+                )
+            }
+        )
     
     def get(self, request):
         if session_id := request.query_params.get('session_id'):
             if self.cache_service.get('session_id') == session_id:
                 self.cache_service.delete('session_id')
                 return self.xlsx_converter.to_response()
-            return Response(status=status.HTTP_403_FORBIDDEN)
-        session_id = get_random_string(10)
-        self.cache_service.set(session_id, 'session_id', timeout=30)
-        return redirect(
-            add_query_params(request.build_absolute_uri(), session_id=session_id)
-        )
+        return Response(status=status.HTTP_403_FORBIDDEN)
     
     @schema_response_204
     def put(self, request):
