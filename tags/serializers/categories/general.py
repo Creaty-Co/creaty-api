@@ -1,6 +1,6 @@
-from drf_base64.fields import Base64FileField
 from rest_framework import serializers
 
+from base.serializers.fields.image import Base64ImageField
 from tags.models import Category
 from tags.serializers.general import ListTagsSerializer
 
@@ -14,7 +14,7 @@ class ListTagsCategoriesSerializer(serializers.ModelSerializer):
 
 
 class CreateTagsCategoriesSerializer(serializers.ModelSerializer):
-    icon = Base64FileField(write_only=True)
+    icon = Base64ImageField(write_only=True)
     
     class Meta:
         model = Category
