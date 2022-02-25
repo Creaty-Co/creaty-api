@@ -9,13 +9,14 @@ from base.services.cache.cache import BaseCacheService
 from base.services.xlsx import BaseXlsxConverter
 from base.utils.decorators import schema_response_204
 from base.utils.functions import add_query_params, schema_serializer
+from base.views import BaseView
 
 
 class _XlsxCacheService(BaseCacheService):
     SCOPE = 'xlsx'
 
 
-class BaseXlsxView(BaseAdminView):
+class BaseXlsxView(BaseView):
     xlsx_converter: BaseXlsxConverter
     cache_service: BaseCacheService = _XlsxCacheService()
     
@@ -30,6 +31,9 @@ class BaseXlsxView(BaseAdminView):
                 'UpdateXlsxSerializer', xlsx=serializers.CharField(write_only=True)
             )
         )
+    }
+    permission_classes_map = {
+        'post': BaseAdminView.permission_classes, 'put': BaseAdminView.permission_classes
     }
     
     def post(self, request):
