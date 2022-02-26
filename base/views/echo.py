@@ -55,7 +55,9 @@ class EchoView(BaseView):
                 'uri': request.build_absolute_uri(),
                 'files': str(request.FILES),
                 'language': str(get_language()),
-                '__dict__': str(request.__dict__)
+                'headers': str(request.headers),
+                'META': str(request.META),
+                '__dict__': str(request.__dict__),
             }
         )
     

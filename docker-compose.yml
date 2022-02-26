@@ -5,6 +5,7 @@ services:
     image: redis:6.2.6
     networks:
       - redis_network
+    restart: unless-stopped
   api:
     build:
       context: .
@@ -22,6 +23,7 @@ services:
       - db_network
       - redis_network
       - nginx_network
+    restart: unless-stopped
   nginx:
     image: nginx:1.21.6
     depends_on:
@@ -40,6 +42,7 @@ services:
       - ./certs:/api/certs
     networks:
       - nginx_network
+    restart: unless-stopped
   celery:
     build:
       context: .
@@ -51,6 +54,7 @@ services:
     networks:
       - db_network
       - redis_network
+    restart: unless-stopped
   celery_beat:
     build:
       context: .
@@ -62,6 +66,7 @@ services:
     networks:
       - db_network
       - redis_network
+    restart: unless-stopped
 
 volumes:
   static_volume:
