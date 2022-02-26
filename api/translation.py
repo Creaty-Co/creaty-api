@@ -34,7 +34,7 @@ class MentorTranslationOptions(TranslationOptions):
 
 @register(MentorInfo)
 class MentorInfoTranslationOptions(TranslationOptions):
-    fields = ['city']
+    fields = ['city', 'resume', 'what_help', 'experience', 'portfolio']
 
 
 @register(Form)
