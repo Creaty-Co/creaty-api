@@ -1,7 +1,8 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from base.serializers.fields.image import Base64ImageField
-from tags.models import Category
+from tags.models import Category, Tag
 from tags.serializers.general import ListTagsSerializer
 
 
@@ -20,6 +21,11 @@ class CreateTagsCategoriesSerializer(serializers.ModelSerializer):
         model = Category
         wo = {'write_only': True}
         extra_kwargs = {
-            'id': {}, 'shortcut': wo, 'title_ru': wo, 'title_en': wo, 'icon': {}
+            'id': {}, 'shortcut': wo | {
+                'validators': [
+                    UniqueValidator(Tag.objects.all()),
+                    UniqueValidator(Category.objects.all())
+                ]
+            }, 'title_ru': wo, 'title_en': wo, 'icon': {}
         }
         fields = list(extra_kwargs.keys())

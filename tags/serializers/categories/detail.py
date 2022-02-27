@@ -1,6 +1,7 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
-from tags.models import Category
+from tags.models import Category, Tag
 
 
 class TagsCategorySerializer(serializers.ModelSerializer):
@@ -8,6 +9,11 @@ class TagsCategorySerializer(serializers.ModelSerializer):
         model = Category
         wo = {'write_only': True}
         extra_kwargs = {
-            'id': {}, 'shortcut': wo, 'title': wo, 'icon': wo
+            'id': {}, 'shortcut': wo | {
+                'validators': [
+                    UniqueValidator(Tag.objects.all()),
+                    UniqueValidator(Category.objects.all())
+                ]
+            }, 'title': wo, 'icon': wo
         }
         fields = list(extra_kwargs.keys())
