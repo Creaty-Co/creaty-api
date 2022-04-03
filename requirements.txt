@@ -31,7 +31,6 @@ gunicorn==20.1.0
 whitenoise==5.3.0
 celery==5.0.2  # на версиях 5.0.3+ наблюдается утечка соединений для Redis result backend
 gevent==21.12.0
-git+git://github.com/jokerinteractive/travelpayouts-python@master#egg=travelpayouts
 git+https://github.com/GentleEnvy/drf-spectacular  # modfidied drf-spectacular==0.20.2
 git+https://github.com/GentleEnvy/django-cacheops  # modfidied django-cacheops==6.0
 

@@ -11,7 +11,7 @@ from tags.models import Tag
 class _MentorsTagsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['id', 'title']
+        fields = ['id', 'shortcut', 'title']
 
 
 class _MentorsCountrySerializer(serializers.ModelSerializer):
