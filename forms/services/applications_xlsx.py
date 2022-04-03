@@ -9,7 +9,9 @@ _FormTypeByLabel = {_.label: _ for _ in FormType}
 
 class ApplicationsXlsxConverter(BaseXlsxConverter):
     MODEL = Application
-    FIELD_HEADER_MAP = {'type': 'Тип', 'id': 'Id'} | {_.value: _.label for _ in FormField}
+    FIELD_HEADER_MAP = {'type': 'Тип', 'id': 'Id', 'URL': 'url'} | {
+        _.value: _.label for _ in FormField
+    }
     
     def __init__(self):
         super().__init__(self.FIELD_HEADER_MAP)

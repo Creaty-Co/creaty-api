@@ -23,6 +23,7 @@ class Field(AbstractModel):
 
 class Application(AbstractModel):
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
+    url = models.URLField(blank=True)
     name = models.TextField(blank=True)
     email = models.EmailField(blank=True)
     telegram = models.TextField(blank=True)

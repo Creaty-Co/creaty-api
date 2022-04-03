@@ -26,7 +26,9 @@ class AdminNotificationService:
         )
         self._send_admin_emails(
             'Пришла заявка',
-            f'''Заявка: {rFormType[application.form.type].label}\n{str_fields}'''
+            f'''Заявка: {rFormType[application.form.type].label}\n{str_fields}
+
+URL: {application.url}'''
         )
     
     def on_subscriber(self, subscriber):
