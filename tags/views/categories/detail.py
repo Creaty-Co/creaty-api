@@ -1,4 +1,4 @@
-from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
+from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 
 from admin_.views import BaseAdminView
 from tags.models import Category
@@ -12,5 +12,5 @@ class TagsCategoryView(UpdateModelMixin, DestroyModelMixin, BaseAdminView):
     def patch(self, request, **_):
         return self.partial_update(request)
     
-    def destroy(self, request, **_):
+    def delete(self, request, **_):
         return self.destroy(request)
