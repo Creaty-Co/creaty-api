@@ -4,7 +4,8 @@
       "src": "api/wsgi.py",
       "use": "@ardnt/vercel-python-wsgi",
       "config": {
-        "maxLambdaSize": "15mb"
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.10.0"
       }
     }
   ],
