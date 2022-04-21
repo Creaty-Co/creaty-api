@@ -1,6 +1,20 @@
 version: '3.9'
 
 services:
+  db:
+    image: postgres:13
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - 54322:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db
+      - POSTGRES_HOST=127.0.0.1
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    networks:
+      - db_network
   redis:
     image: redis:6.2.6
     networks:
@@ -17,8 +31,10 @@ services:
     ports:
       - "8000:8000"
     depends_on:
+      - db
       - redis
     networks:
+      - db_network
       - redis_network
       - nginx_network
     restart: unless-stopped
@@ -56,6 +72,7 @@ services:
     depends_on:
       - nginx
     networks:
+      - db_network
       - redis_network
     restart: unless-stopped
   celery_beat:
@@ -67,13 +84,16 @@ services:
     depends_on:
       - celery
     networks:
+      - db_network
       - redis_network
     restart: unless-stopped
 
 volumes:
+  pg_data:
   static_volume:
   web_volume:
 
 networks:
+  db_network:
   redis_network:
   nginx_network:

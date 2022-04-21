@@ -11,6 +11,7 @@ media/
 logs/logs.log
 envs/
 certs/
+web/
 
 # Custom
 ###
