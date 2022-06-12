@@ -1,8 +1,17 @@
 ---
-name: 'Enhancement'
-about: 'Enhancement'
-title: 'Реализовать '
-labels: ['enhancement']
-assignees: ['GentleEnvy']
+name: Enhancement
+about: Запрос на улучшение / изменение существующего функционала
+title: Доработать
+labels: enhancement
+assignees: 'GentleEnvy'
 
 ---
+
+## Связанные вопросы
+- [ ] #`issue id`
+
+## Описание
+Максимально подробно расписать что нужно доработать
+
+## Дополнительная информация
+Любая другая информация по этой доработки
