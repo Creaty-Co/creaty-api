@@ -127,7 +127,9 @@ env = environ.Env(
     LOG_LEVEL=(dict, {}),
     CELERY_REDIS_MAX_CONNECTIONS=(int, 10),
     ADMINS=(_env_value, {}),
-    UPDATE_RATES_INTERVAL=(int, 60 * 60 * 8)
+    UPDATE_RATES_INTERVAL=(int, 60 * 60 * 8),
+    API_DOMAIN=(str, 'api.local.dev'),
+    WEB_DOMAIN=(str, 'local.dev')
 )
 
 if Path(env('ENV_FILE')).exists():
@@ -154,6 +156,9 @@ ROOT_URLCONF = (SETTINGS_PATH - 1)().split('\\')[-1].split('/')[-1] + '.urls'
 
 SITE_ROOT = BASE_DIR
 SITE_NAME = 'Creaty'
+API_DOMAIN = env('API_DOMAIN')
+WEB_DOMAIN = env('WEB_DOMAIN')
+DOMAIN = WEB_DOMAIN
 
 # site
 ###
@@ -314,7 +319,7 @@ CACHEOPS_DEGRADE_ON_FAILURE = True
 EMAIL_HOST: str
 EMAIL_PORT: int
 EMAIL_USE_SSL: bool
-EMAIL_HOST_USER: str = None
+EMAIL_HOST_USER: str | None = None
 EMAIL_HOST_PASSWORD: str
 EMAIL_BACKEND: str
 

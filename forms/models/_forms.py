@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from base.models import AbstractModel
@@ -23,7 +24,7 @@ class Field(AbstractModel):
 
 class Application(AbstractModel):
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
-    url = models.URLField(blank=True)
+    path = models.TextField()
     name = models.TextField(blank=True)
     email = models.EmailField(blank=True)
     telegram = models.TextField(blank=True)
@@ -31,3 +32,7 @@ class Application(AbstractModel):
     whats_app = models.TextField(blank=True)
     viber = models.TextField(blank=True)
     about = models.TextField(blank=True)
+    
+    @property
+    def url(self) -> str:
+        return settings.WEB_DOMAIN

@@ -8,7 +8,7 @@ class FormApplicationsSerializer(serializers.ModelSerializer):
         model = Application
         wo = {'write_only': True}
         extra_kwargs = {
-            'url': wo | {'allow_blank': False}, 'name': wo, 'email': wo, 'telegram': wo,
+            'path': wo, 'name': wo, 'email': wo, 'telegram': wo,
             'facebook': wo, 'whats_app': wo, 'viber': wo, 'about': wo
         }
         fields = list(extra_kwargs.keys())
