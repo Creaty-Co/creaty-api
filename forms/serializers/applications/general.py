@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from base.exceptions import ClientError
 from forms.models import Application
 
 
@@ -12,3 +13,8 @@ class FormApplicationsSerializer(serializers.ModelSerializer):
             'facebook': wo, 'whats_app': wo, 'viber': wo, 'about': wo
         }
         fields = list(extra_kwargs.keys())
+    
+    def validate_path(self, path: str):
+        if not path.startswith('/'):
+            raise ClientError('path should start with /')
+        return path

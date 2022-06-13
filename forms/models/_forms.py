@@ -35,4 +35,4 @@ class Application(AbstractModel):
     
     @property
     def url(self) -> str:
-        return f'https://{settings.WEB_DOMAIN}/{self.path}'
+        return f'https://{settings.WEB_DOMAIN}{self.path}'
