@@ -4,7 +4,7 @@ from tags.models import Category, Tag
 
 
 class PageService:
-    MAX_MENTORS_COUNT = 20
+    MENTORS_COUNT = 20
     MAX_TAGS_COUNT = 20
     
     @property
@@ -13,7 +13,7 @@ class PageService:
         if is_created:
             mentor_qs = Mentor.objects.order_by('?').nocache()
             tags_qs = Tag.objects.order_by('?').nocache()
-            for index, mentor in enumerate(mentor_qs[:self.MAX_MENTORS_COUNT]):
+            for index, mentor in enumerate(mentor_qs[:self.MENTORS_COUNT]):
                 PageMentorSet.objects.create(page=main_page, mentor=mentor, index=index)
             main_page.tag_set.set(tags_qs[:self.MAX_TAGS_COUNT])
         return main_page
@@ -28,13 +28,17 @@ class PageService:
         return page
     
     def _fill_random(self, page: Page) -> None:
-        mentor_qs = Mentor.objects.order_by('?').nocache()
+        raw_mentor_qs = Mentor.objects.order_by('?').nocache()
         tags_qs = Tag.objects.order_by('?').nocache()
         if page.tag is None:
-            mentor_qs = mentor_qs.filter(tag_set__category=page.category)
+            mentor_qs = raw_mentor_qs.filter(tag_set__category=page.category)
         else:
-            mentor_qs = mentor_qs.filter(tag_set=page.tag)
+            mentor_qs = raw_mentor_qs.filter(tag_set=page.tag)
             tags_qs = tags_qs.exclude(id=page.tag.id)
-        for index, mentor in enumerate(mentor_qs[:self.MAX_MENTORS_COUNT]):
+        mentors = set(mentor_qs)
+        if len(mentors) < self.MENTORS_COUNT:
+            remaining_mentor_qs = raw_mentor_qs.exclude(id__in={m.id for m in mentors})
+            mentors |= set(remaining_mentor_qs[:self.MENTORS_COUNT - len(mentors)])
+        for index, mentor in enumerate(mentors):
             PageMentorSet.objects.create(page=page, mentor=mentor, index=index)
         page.tag_set.set(tags_qs[:self.MAX_TAGS_COUNT])

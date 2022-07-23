@@ -29,7 +29,7 @@ class PagesMainMentorView(BaseMainPageView):
                 Max('index')
             )['index__max']
             index = 0 if index is None else index + 1
-            if index == PageService.MAX_MENTORS_COUNT:
+            if index == PageService.MENTORS_COUNT:
                 raise serializer.WARNINGS[409]
             PageMentorSet.objects.create(page=page, mentor=mentor, index=index)
         return Response(serializer.data)
@@ -43,7 +43,7 @@ class PagesMainMentorView(BaseMainPageView):
         except PageMentorSet.DoesNotExist:
             return
         page__mentor.delete()
-        for index in range(page__mentor.index + 1, PageService.MAX_MENTORS_COUNT):
+        for index in range(page__mentor.index + 1, PageService.MENTORS_COUNT):
             try:
                 next_page__mentor = PageMentorSet.objects.get(page=page, index=index)
             except PageMentorSet.DoesNotExist:

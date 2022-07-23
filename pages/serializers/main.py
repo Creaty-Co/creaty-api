@@ -38,7 +38,7 @@ class PagesUpdateMainSerializer(serializers.ModelSerializer):
                     f'Тегов на странице не может быть больше {max_tags}'
                 )
         if mentors := attrs.get('mentor_set'):
-            max_mentors = PageService.MAX_MENTORS_COUNT
+            max_mentors = PageService.MENTORS_COUNT
             if len(mentors) > max_mentors:
                 raise ValidationError(
                     f'Менторов на странице не может быть больше {max_mentors}'
