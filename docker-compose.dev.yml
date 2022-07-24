@@ -42,7 +42,7 @@ services:
     build:
       context: ./web
     volumes:
-      - web_volume:/frontend/build
+      - web_volume:/usr/src/app/build
   nginx:
     image: nginx:1.21.6
     depends_on:

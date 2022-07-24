@@ -1,3 +1,5 @@
+from django.db.models import Count
+
 from mentors.models import Mentor
 from pages.models import Page, PageMentorSet
 from tags.models import Category, Tag
@@ -29,7 +31,9 @@ class PageService:
     
     def _fill_random(self, page: Page) -> None:
         raw_mentor_qs = Mentor.objects.order_by('?').nocache()
-        tags_qs = Tag.objects.order_by('?').nocache()
+        tags_qs = Tag.objects.annotate(Count('mentor')).exclude(
+            mentor__count=0
+        ).order_by('?').nocache()
         if page.tag is None:
             mentor_qs = raw_mentor_qs.filter(tag_set__category=page.category)
         else:

@@ -17,7 +17,6 @@ class PagesMainMentorView(BaseMainPageView):
         'patch': BaseAdminView.permission_classes,
         'delete': BaseAdminView.permission_classes
     }
-    queryset = Page.objects.all()
     
     def patch(self, request, **kwargs):
         page = self.get_object()

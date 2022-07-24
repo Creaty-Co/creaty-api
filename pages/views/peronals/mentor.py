@@ -11,4 +11,6 @@ class PagesPersonalMentorView(BasePersonalPageView, PagesMainMentorView):
         'patch': BaseAdminView.permission_classes,
         'delete': BaseAdminView.permission_classes
     }
-    queryset = Page.objects.all()
+
+    def get_queryset(self):
+        return PagesMainMentorView.get_queryset(self)
