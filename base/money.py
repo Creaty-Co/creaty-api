@@ -9,7 +9,7 @@ class Money(_Money):
         if len(args) <= 1:
             kwargs.setdefault('currency', settings.DEFAULT_CURRENCY)
         super().__init__(*args, **kwargs)
-    
+
     def convert(self, currency: str = settings.DEFAULT_CURRENCY):
         return convert_money(self, currency)
 

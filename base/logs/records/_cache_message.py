@@ -12,7 +12,7 @@ class CacheMessageLogRecord(LogRecord):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.__message: Optional[str] = None
-    
+
     def getMessage(self) -> str:
         if self.__message:
             return self.__message
@@ -26,7 +26,7 @@ class CacheMessageLogRecord(LogRecord):
                 self.msg, width=settings.LOG_MAX_LENGTH - 4, depth=10, sort_dicts=False
             )
         return str(self.msg)
-    
+
     def setMessage(self, message: str) -> None:
         if not self.__message:
             self.__message = message

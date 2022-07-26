@@ -8,6 +8,6 @@ from geo.serializers.languages import GeoLanguagesSerializer
 class GeoLanguagesView(ListModelMixin, BaseView):
     serializer_classes = {'get': GeoLanguagesSerializer}
     queryset = Language.objects.all()
-    
+
     def get(self, request):
         return self.list(request)

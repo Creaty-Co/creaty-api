@@ -13,7 +13,7 @@ class MentorInfoFactory(DjangoModelFactory):
     experience = factory.Faker('text')
     portfolio = factory.Faker('text')
     city = factory.Faker('city')
-    
+
     class Meta:
         model = MentorInfo
 
@@ -25,6 +25,6 @@ class MentorFactory(DjangoModelFactory):
     last_name = factory.Faker('last_name')
     price = factory.LazyAttribute(lambda m: random.randint(1, 1000))
     country = factory.LazyAttribute(lambda m: random.choice(Country.objects.all()))
-    
+
     class Meta:
         model = Mentor

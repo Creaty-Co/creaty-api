@@ -7,7 +7,7 @@ class Base64ImageField(_Base64ImageField):
     def __init__(self, *args, **kwargs):
         kwargs['_DjangoImageField'] = SvgAndImageFormField
         super().__init__(*args, **kwargs)
-    
+
     def _decode(self, data):
         try:
             value = super()._decode(data)

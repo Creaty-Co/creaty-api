@@ -19,7 +19,7 @@ class _XlsxCacheService(BaseCacheService):
 class BaseXlsxView(BaseView):
     xlsx_converter: BaseXlsxConverter
     cache_service: BaseCacheService = _XlsxCacheService()
-    
+
     serializer_classes = {
         'post': schema_serializer(
             'CreateXlsxSerializer', link=serializers.CharField(read_only=True)
@@ -30,12 +30,13 @@ class BaseXlsxView(BaseView):
             schema_serializer(
                 'UpdateXlsxSerializer', xlsx=serializers.CharField(write_only=True)
             )
-        )
+        ),
     }
     permission_classes_map = {
-        'post': BaseAdminView.permission_classes, 'put': BaseAdminView.permission_classes
+        'post': BaseAdminView.permission_classes,
+        'put': BaseAdminView.permission_classes,
     }
-    
+
     def post(self, request):
         session_id = get_random_string(10)
         self.cache_service.set(session_id, 'session_id', timeout=30)
@@ -46,14 +47,14 @@ class BaseXlsxView(BaseView):
                 )
             }
         )
-    
+
     def get(self, request):
         if session_id := request.query_params.get('session_id'):
             if self.cache_service.get('session_id') == session_id:
                 self.cache_service.delete('session_id')
                 return self.xlsx_converter.to_response()
         return Response(status=status.HTTP_403_FORBIDDEN)
-    
+
     @schema_response_204
     def put(self, request):
         try:

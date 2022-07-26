@@ -12,7 +12,7 @@ def extract_detail(api_exception: APIException):
         elif isinstance(detail, list):
             return [_extract_detail(d) for d in detail]
         return detail
-    
+
     return _extract_detail(api_exception.get_full_details())
 
 
@@ -31,11 +31,17 @@ def extract_first_code(api_exception: APIException):
 
 def warning_cast_rest_api_exception(exception: APIException):
     from base.exceptions.warning import APIWarning
+
     code = extract_first_code(exception)
-    return APIWarning(code, extract_detail(exception), getattr(exception, 'status_code'))
+    return APIWarning(
+        code, extract_detail(exception), getattr(exception, 'status_code')
+    )
 
 
 def client_error_cast_rest_api_exception(exception: APIException):
     from base.exceptions.client import ClientError
+    
     code = extract_first_code(exception)
-    return ClientError(extract_detail(exception), getattr(exception, 'status_code'), code)
+    return ClientError(
+        extract_detail(exception), getattr(exception, 'status_code'), code
+    )

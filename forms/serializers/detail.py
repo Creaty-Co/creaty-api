@@ -9,21 +9,21 @@ class _FormsFieldsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Field
         extra_kwargs = {
-            'type': {'help_text': choices_to_help_text(FormField)},
-            'placeholder': {'allow_blank': True}
-        }
+    'type': {'help_text': choices_to_help_text(FormField)},
+    'placeholder': {'allow_blank': True},
+}
         fields = ['type', 'placeholder']
 
 
 class FormSerializer(serializers.ModelSerializer):
     fields = _FormsFieldsSerializer(many=True, source='field_set', write_only=True)
-    
+
     class Meta:
         model = Form
         wo = {'write_only': True}
         extra_kwargs = {'id': {}, 'description': wo, 'post_send': wo, 'fields': {}}
         fields = list(extra_kwargs.keys())
-    
+
     def update(self, form, validated_data):
         fields = validated_data.pop('field_set', None)
         if fields:

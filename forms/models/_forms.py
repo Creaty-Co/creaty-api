@@ -17,7 +17,7 @@ class Field(AbstractModel):
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
     type = models.TextField(choices=FormField.choices)
     placeholder = models.TextField()
-    
+
     class Meta:
         unique_together = ('form', 'type')
 
@@ -32,7 +32,7 @@ class Application(AbstractModel):
     whats_app = models.TextField(blank=True)
     viber = models.TextField(blank=True)
     about = models.TextField(blank=True)
-    
+
     @property
     def url(self) -> str:
         return f'https://{settings.WEB_DOMAIN}{self.path}'

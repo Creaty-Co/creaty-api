@@ -14,7 +14,7 @@ class _FormsFieldsSerializer(serializers.ModelSerializer):
 
 class FormsSerializer(serializers.ModelSerializer):
     fields = _FormsFieldsSerializer(many=True, source='field_set')
-    
+
     class Meta:
         model = Form
         extra_kwargs = {'type': {'help_text': choices_to_help_text(FormType)}}

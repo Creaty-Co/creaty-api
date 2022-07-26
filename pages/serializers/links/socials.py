@@ -12,7 +12,7 @@ class ListPagesLinksSocialsSerializer(serializers.ModelSerializer):
 
 class CreatePagesLinksSocialsSerializer(serializers.ModelSerializer):
     icon = Base64FileField(write_only=True)
-    
+
     class Meta:
         model = SocialLink
         wo = {'write_only': True}
@@ -22,7 +22,7 @@ class CreatePagesLinksSocialsSerializer(serializers.ModelSerializer):
 
 class PagesLinksSocialSerializer(serializers.ModelSerializer):
     icon = Base64FileField(write_only=True)
-    
+
     class Meta:
         model = SocialLink
         wo = {'write_only': True}

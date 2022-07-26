@@ -6,8 +6,12 @@ from django.db.models import Choices
 from rest_framework import serializers
 
 __all__ = [
-    'status_by_method', 'choices_to_help_text', 'add_query_params', 'schema_serializer',
-    'reverse_choices', 'choices_to_dict'
+    'status_by_method',
+    'choices_to_help_text',
+    'add_query_params',
+    'schema_serializer',
+    'reverse_choices',
+    'choices_to_dict',
 ]
 
 _Choices = TypeVar('_Choices', bound=models.Choices)

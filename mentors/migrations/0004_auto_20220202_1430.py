@@ -26,13 +26,20 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='mentor',
             name='country',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='geo.country'),
+            field=models.ForeignKey(
+                default=1, on_delete=django.db.models.deletion.PROTECT, to='geo.country'
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='mentor',
             name='price_currency',
-            field=djmoney.models.fields.CurrencyField(choices=[('EUR', 'EUR €'), ('RUB', 'RUB ₽'), ('USD', 'USD $')], default='USD', editable=False, max_length=3),
+            field=djmoney.models.fields.CurrencyField(
+                choices=[('EUR', 'EUR €'), ('RUB', 'RUB ₽'), ('USD', 'USD $')],
+                default='USD',
+                editable=False,
+                max_length=3,
+            ),
         ),
         migrations.AddField(
             model_name='mentor',

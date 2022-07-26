@@ -34,8 +34,10 @@ def _cut_back(value, max_length=200):
         if length > max_length:
             type_name = type(value).__name__
             try:
-                return f'{value[:max_length // 2]}<<<{length - max_length} more ' \
-                       f'{type_name}>>> {value[-max_length // 2:]}'
+                return (
+                    f'{value[:max_length // 2]}<<<{length - max_length} more '
+                    f'{type_name}>>> {value[-max_length // 2:]}'
+                )
             except Exception:
                 return f'<<<{type_name} of length {length}>>>'
         return value
@@ -63,13 +65,15 @@ class RequestLogMiddleware(MiddlewareMixin):
         if request.method in ['POST', 'PUT', 'PATCH']:
             request.req_body = request.body
         request.start_time = time.time()
-    
+
     def extract_log_info(self, request, response):
         log_data = {
-            'run_time': time.time() - request.start_time, 'request': {}, 'response': {},
-            'url': f'{request.method.upper()} {unquote(request.get_full_path())}'
+            'run_time': time.time() - request.start_time,
+            'request': {},
+            'response': {},
+            'url': f'{request.method.upper()} {unquote(request.get_full_path())}',
         }
-        
+
         log_data['request']['headers'] = _cut_back_dict(dict(request.headers))
         log_data['request']['cookies'] = _cut_back_dict(dict(request.COOKIES))
         if request.method in ['PUT', 'POST', 'PATCH']:
@@ -94,7 +98,7 @@ class RequestLogMiddleware(MiddlewareMixin):
                     log_data['request']['files'] = {}
                 if not log_data['request']['files']:
                     del log_data['request']['files']
-        
+
         if response:
             log_data['response']['headers'] = _cut_back_dict(dict(response.headers))
             log_data['response']['cookies'] = _cut_back_dict(dict(response.cookies))
@@ -116,15 +120,17 @@ class RequestLogMiddleware(MiddlewareMixin):
                     pass
             if hasattr(response, 'content'):
                 try:
-                    log_data['response']['body'] = _cut_back_dict(dict(response.content))
+                    log_data['response']['body'] = _cut_back_dict(
+                        dict(response.content)
+                    )
                 except Exception:
                     log_data['response']['body'] = _cut_back(response.content)
         return log_data
-    
+
     def process_response(self, request, response):
         self.log(request, response)
         return response
-    
+
     def log(self, request, response):
         log_data = self.extract_log_info(request=request, response=response)
         if request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:

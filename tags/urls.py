@@ -7,5 +7,5 @@ urlpatterns = [
     path('<int:id>/', TagView.as_view()),
     path('categories/', TagsCategoriesView.as_view()),
     path('categories/<int:id>/', TagsCategoryView.as_view()),
-    path('categories/<category_id>/tags/', TagsCategoryTagsView.as_view())
+    path('categories/<category_id>/tags/', TagsCategoryTagsView.as_view()),
 ]

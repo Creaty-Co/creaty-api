@@ -12,24 +12,24 @@ web_console = {
     'level': _level,
     'class': 'logging.StreamHandler',
     'formatter': web,
-    'stream': 'ext://sys.stdout'
+    'stream': 'ext://sys.stdout',
 }
 
 web_file = {
     '__name__': 'web_file_handler',
     'level': _level,
     'class': 'base.logs.handlers.FileHandler',
-    'formatter':  web,
+    'formatter': web,
     'filename': _log_filename,
     'mode': _file_mode,
-    'encoding': _file_encoding
+    'encoding': _file_encoding,
 }
 
 api_console = {
     '__name__': 'api_console_handler',
     'level': _level,
     'class': 'base.logs.handlers.StdHandler',
-    'formatter': api
+    'formatter': api,
 }
 
 api_file = {
@@ -39,7 +39,7 @@ api_file = {
     'formatter': api,
     'filename': _log_filename,
     'mode': _file_mode,
-    'encoding': _file_encoding
+    'encoding': _file_encoding,
 }
 
 email_admins = {
@@ -47,5 +47,5 @@ email_admins = {
     'level': 'ERROR',
     'class': 'base.logs.handlers.AdminEmailHandler',
     'formatter': api,
-    'include_html': True
+    'include_html': True,
 }

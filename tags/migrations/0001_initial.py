@@ -8,16 +8,23 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.TextField()),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    ('title', models.TextField()),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,
@@ -26,10 +33,23 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tag',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.TextField()),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tags.category')),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    ('title', models.TextField()),
+    (
+        'category',
+        models.ForeignKey(
+            on_delete=django.db.models.deletion.CASCADE, to='tags.category'
+        ),
+    ),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,

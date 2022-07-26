@@ -40,12 +40,12 @@ def _exception_handler(exception):
             api_error = ClientError.cast_exception(exception_to_cast)
         except tuple(CriticalError.EXCEPTION__CAST.keys()) as exception_to_cast:
             api_error = CriticalError.cast_exception(exception_to_cast)
-        
+
         error = api_error
-    
+
     except Exception as e:
         error = CriticalError(str(e))
-    
+
     error.log()
     return error.to_response()
 
@@ -60,7 +60,7 @@ class BaseView(GenericAPIView):
     permission_classes_map: dict[
         str, list[Type[BasePermission]] | tuple[Type[BasePermission]]
     ] = {}
-    
+
     @classmethod
     def _extract_serializer_class_with_status(
         cls, method_name: str
@@ -70,7 +70,7 @@ class BaseView(GenericAPIView):
             status = status_by_method(method_name)
             return status, serializer_class
         return serializer_class
-    
+
     def get_serializer_class(self):
         serializer_class = self._extract_serializer_class_with_status(
             self.request.method.lower()
@@ -78,19 +78,21 @@ class BaseView(GenericAPIView):
         if serializer_class is None:
             return self.serializer_class
         return serializer_class[1]
-    
+
     def get_permissions(self):
         permissions = None
         if self.permission_classes_map:
             permissions = [
-                p() for p in
-                self.permission_classes_map.get(self.request.method.lower(), [])
+                p()
+                for p in self.permission_classes_map.get(
+                    self.request.method.lower(), []
+                )
             ]
             if permissions:
                 if isinstance(permissions, list):
                     return super().get_permissions() + permissions
         return permissions or super().get_permissions()
-    
+
     @classmethod
     def _to_schema(cls, class_: Type[BaseView]) -> None:
         for method_name in class_.http_method_names:
@@ -99,26 +101,26 @@ class BaseView(GenericAPIView):
             except AttributeError:
                 continue
             responses = {}
-            
+
             extracted = class_._extract_serializer_class_with_status(method_name)
             if extracted:
                 serializer_class = extracted[1]
                 if issubclass(serializer_class, SerializerSchemaMixin):
                     responses |= serializer_class.to_schema(extracted[0])
-            
+
             if issubclass(class_, ViewSchemaMixin):
                 responses |= class_.to_schema()
-            
+
             setattr(class_, method_name, extend_schema(responses=responses)(method))
-    
+
     @classmethod
     def as_view(cls, **initkwargs):
         cls._to_schema(cls)
         return csrf_exempt(super().as_view(**initkwargs))
-    
+
     def handle_exception(self, exception):
         return _exception_handler(exception)
-    
+
     def permission_denied(self, request, message=None, code=None):
         if request.authenticators and not request.successful_authenticator:
             getattr(request, 'on_auth_fail', lambda: None)()
@@ -137,13 +139,13 @@ class BaseViewSet(ViewSetMixin, BaseView):
             except AttributeError:
                 continue
             responses = {}
-            
+
             extracted = class_._extract_serializer_class_with_status(method_name)
             if extracted:
                 serializer_class = extracted[1]
                 if issubclass(serializer_class, SerializerSchemaMixin):
                     responses |= serializer_class.to_schema(extracted[0])
-            
+
             # noinspection PyBroadException
             try:
                 action_serializer = class_.get_serializer_class(
@@ -155,17 +157,17 @@ class BaseViewSet(ViewSetMixin, BaseView):
                     )
             except Exception:
                 pass
-            
+
             if issubclass(class_, ViewSchemaMixin):
                 responses |= class_.to_schema()
-            
+
             setattr(class_, action_name, extend_schema(responses=responses)(action))
-    
+
     @classmethod
     def as_view(cls, actions=None, **initkwargs):
         view = super().as_view(actions, **initkwargs)
         cls._to_schema(cls, actions)
         return csrf_exempt(view)
-    
+
     def handle_exception(self, exception):
         return _exception_handler(exception)

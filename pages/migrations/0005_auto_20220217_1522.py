@@ -14,7 +14,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='page',
             name='tag_set',
-            field=models.ManyToManyField(related_name='page_set_by_tag_set', to='tags.Tag'),
+            field=models.ManyToManyField(
+                related_name='page_set_by_tag_set', to='tags.Tag'
+            ),
         ),
         migrations.DeleteModel(
             name='PageTagSet',

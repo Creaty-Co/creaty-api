@@ -18,7 +18,7 @@ class _RetrieveMentorInfoSerializer(serializers.ModelSerializer):
     languages = _RetrieveMentorInfoLanguagesSerializer(
         many=True, read_only=True, source='language_set'
     )
-    
+
     class Meta:
         model = MentorInfo
         extra_kwargs = {
@@ -27,8 +27,14 @@ class _RetrieveMentorInfoSerializer(serializers.ModelSerializer):
             }
         }
         fields = [
-            'trial_meeting', 'resume', 'what_help', 'experience', 'portfolio',
-            'languages', 'city_ru', 'city_en'
+            'trial_meeting',
+            'resume',
+            'what_help',
+            'experience',
+            'portfolio',
+            'languages',
+            'city_ru',
+            'city_en',
         ]
 
 
@@ -49,21 +55,33 @@ class RetrieveMentorSerializer(serializers.ModelSerializer):
     country = _RetrieveMentorCountrySerializer()
     tags = ListTagsSerializer(many=True, source='tag_set')
     packages = _RetrieveMentorPackagesSerializer(many=True)
-    
+
     class Meta:
         model = Mentor
         fields = [
-            'id', 'avatar', 'company', 'profession', 'first_name', 'last_name', 'price',
-            'price_currency', 'country', 'tags', 'packages', 'info'
+            'id',
+            'avatar',
+            'company',
+            'profession',
+            'first_name',
+            'last_name',
+            'price',
+            'price_currency',
+            'country',
+            'tags',
+            'packages',
+            'info',
         ]
 
 
 class _UpdateMentorInfoSerializer(serializers.ModelSerializer):
     languages = serializers.PrimaryKeyRelatedField(
-        allow_empty=False, many=True, queryset=Language.objects.all(),
-        source='language_set'
+        allow_empty=False,
+        many=True,
+        queryset=Language.objects.all(),
+        source='language_set',
     )
-    
+
     class Meta:
         model = MentorInfo
         extra_kwargs = {
@@ -72,8 +90,14 @@ class _UpdateMentorInfoSerializer(serializers.ModelSerializer):
             }
         }
         fields = [
-            'trial_meeting', 'resume', 'what_help', 'experience', 'portfolio',
-            'languages', 'city_ru', 'city_en'
+            'trial_meeting',
+            'resume',
+            'what_help',
+            'experience',
+            'portfolio',
+            'languages',
+            'city_ru',
+            'city_en',
         ]
 
 
@@ -83,7 +107,7 @@ class _UpdateMentorPackagesSerializer(serializers.ModelSerializer):
         # FIXME
         self.parent = None
         self.partial = False
-    
+
     class Meta:
         model = Package
         fields = ['lessons_count', 'discount']
@@ -93,18 +117,30 @@ class UpdateMentorSerializer(serializers.ModelSerializer):
     info = _UpdateMentorInfoSerializer(write_only=True)
     price_currency = serializers.ChoiceField(
         choices=settings.CURRENCY_CHOICES,
-        help_text=choices_to_help_text(settings.CURRENCY_CHOICES), write_only=True
+        help_text=choices_to_help_text(settings.CURRENCY_CHOICES),
+        write_only=True,
     )
-    packages = _UpdateMentorPackagesSerializer(many=True, write_only=True, partial=False)
+    packages = _UpdateMentorPackagesSerializer(
+        many=True, write_only=True, partial=False
+    )
     avatar = Base64ImageField(write_only=True)
     
     class Meta:
         model = Mentor
         wo = {'write_only': True}
         extra_kwargs = {
-            'id': {}, 'info': {}, 'avatar': wo, 'company': wo, 'profession': wo,
-            'first_name': wo, 'last_name': wo, 'price': wo, 'price_currency': {},
-            'tag_set': wo, 'country': wo, 'packages': {}
+            'id': {},
+            'info': {},
+            'avatar': wo,
+            'company': wo,
+            'profession': wo,
+            'first_name': wo,
+            'last_name': wo,
+            'price': wo,
+            'price_currency': {},
+            'tag_set': wo,
+            'country': wo,
+            'packages': {},
         }
         fields = list(extra_kwargs.keys())
     

@@ -8,6 +8,6 @@ from mentors.models import Mentor
 class AdminMentorsView(ListModelMixin, BaseAdminView):
     serializer_classes = {'get': ListAdminMentorsSerializer}
     queryset = Mentor.objects.all()
-    
+
     def get(self, request):
         return self.list(request)

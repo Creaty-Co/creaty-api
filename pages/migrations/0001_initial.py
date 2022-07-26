@@ -18,9 +18,25 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Page',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('category', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='tags.category')),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    (
+        'category',
+        models.OneToOneField(
+            blank=True,
+            null=True,
+            on_delete=django.db.models.deletion.CASCADE,
+            to='tags.category',
+        ),
+    ),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,
@@ -29,11 +45,25 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PageTagSet',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('index', models.IntegerField()),
-                ('page', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pages.page')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tags.tag')),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    ('index', models.IntegerField()),
+    (
+        'page',
+        models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pages.page'),
+    ),
+    (
+        'tag',
+        models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tags.tag'),
+    ),
+],
             options={
                 'db_table': 'page_tag_set',
             },
@@ -41,11 +71,32 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PageMentorSet',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('index', models.PositiveSmallIntegerField(validators=[django.core.validators.MaxValueValidator(19)])),
-                ('mentor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mentors.mentor')),
-                ('page', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pages.page')),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    (
+        'index',
+        models.PositiveSmallIntegerField(
+            validators=[django.core.validators.MaxValueValidator(19)]
+        ),
+    ),
+    (
+        'mentor',
+        models.ForeignKey(
+            on_delete=django.db.models.deletion.CASCADE, to='mentors.mentor'
+        ),
+    ),
+    (
+        'page',
+        models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pages.page'),
+    ),
+],
             options={
                 'db_table': 'page_mentor_set',
             },
@@ -53,32 +104,51 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='page',
             name='mentor_set',
-            field=models.ManyToManyField(through='pages.PageMentorSet', to='mentors.Mentor'),
+            field=models.ManyToManyField(
+                through='pages.PageMentorSet', to='mentors.Mentor'
+            ),
         ),
         migrations.AddField(
             model_name='page',
             name='tag',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='tags.tag'),
+            field=models.OneToOneField(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='tags.tag',
+            ),
         ),
         migrations.AddField(
             model_name='page',
             name='tag_set',
-            field=models.ManyToManyField(related_name='page_set_by_tag_set', through='pages.PageTagSet', to='tags.Tag'),
+            field=models.ManyToManyField(
+                related_name='page_set_by_tag_set',
+                through='pages.PageTagSet',
+                to='tags.Tag',
+            ),
         ),
         migrations.AddConstraint(
             model_name='pagetagset',
-            constraint=models.UniqueConstraint(fields=('page', 'tag'), name='page_tag_set__unique__page__tag'),
+            constraint=models.UniqueConstraint(
+                fields=('page', 'tag'), name='page_tag_set__unique__page__tag'
+            ),
         ),
         migrations.AddConstraint(
             model_name='pagetagset',
-            constraint=models.UniqueConstraint(fields=('page', 'index'), name='page_tag_set__unique__page__index'),
+            constraint=models.UniqueConstraint(
+                fields=('page', 'index'), name='page_tag_set__unique__page__index'
+            ),
         ),
         migrations.AddConstraint(
             model_name='pagementorset',
-            constraint=models.UniqueConstraint(fields=('page', 'mentor'), name='page_mentor_set__unique__page__mentor'),
+            constraint=models.UniqueConstraint(
+                fields=('page', 'mentor'), name='page_mentor_set__unique__page__mentor'
+            ),
         ),
         migrations.AddConstraint(
             model_name='pagementorset',
-            constraint=models.UniqueConstraint(fields=('page', 'index'), name='page_mentor_set__unique__page__index'),
+            constraint=models.UniqueConstraint(
+                fields=('page', 'index'), name='page_mentor_set__unique__page__index'
+            ),
         ),
     ]

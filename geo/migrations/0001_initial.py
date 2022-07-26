@@ -7,20 +7,27 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Country',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(max_length=2, unique=True)),
-                ('flag_unicode', models.CharField(max_length=11, unique=True)),
-                ('name', models.TextField()),
-                ('name_ru', models.TextField(null=True)),
-                ('name_en', models.TextField(null=True)),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    ('code', models.CharField(max_length=2, unique=True)),
+    ('flag_unicode', models.CharField(max_length=11, unique=True)),
+    ('name', models.TextField()),
+    ('name_ru', models.TextField(null=True)),
+    ('name_en', models.TextField(null=True)),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,

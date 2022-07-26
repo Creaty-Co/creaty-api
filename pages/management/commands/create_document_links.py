@@ -5,7 +5,9 @@ from pages.models.choices import DocumentLinkType
 
 
 class Command(BaseCommand):
-    DEFAULT_DOCUMENT_LINKS = {t: {'url': 'https://google.com'} for t in DocumentLinkType}
+    DEFAULT_DOCUMENT_LINKS = {
+        t: {'url': 'https://google.com'} for t in DocumentLinkType
+    }
     
     def handle(self, *args, **options):
         is_reset = options.get('reset', False)
@@ -18,9 +20,11 @@ class Command(BaseCommand):
             for field, value in fields.items():
                 setattr(document_link, field, value)
             document_link.save()
-    
+
     def add_arguments(self, parser):
         parser.add_argument(
-            '--reset', action='store_true', default=False,
-            help='Установить значения по умолчанию'
+            '--reset',
+            action='store_true',
+            default=False,
+            help='Установить значения по умолчанию',
         )

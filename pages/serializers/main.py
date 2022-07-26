@@ -12,7 +12,7 @@ from tags.serializers.general import ListTagsSerializer
 class PagesRetrieveMainSerializer(serializers.ModelSerializer):
     tags = ListTagsSerializer(many=True, source='tag_set')
     mentors = ListMentorsSerializer(many=True, source='mentor_set')
-    
+
     class Meta:
         model = Page
         fields = ['id', 'tags', 'mentors']
@@ -25,11 +25,11 @@ class PagesUpdateMainSerializer(serializers.ModelSerializer):
     mentors = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Mentor.objects.all(), source='mentor_set', write_only=True
     )
-    
+
     class Meta:
         model = Page
         fields = ['id', 'tags', 'mentors']
-    
+
     def validate(self, attrs):
         if tags := attrs.get('tag_set'):
             max_tags = PageService.MAX_TAGS_COUNT
@@ -44,7 +44,7 @@ class PagesUpdateMainSerializer(serializers.ModelSerializer):
                     f'Менторов на странице не может быть больше {max_mentors}'
                 )
         return attrs
-    
+
     def update(self, instance, validated_data):
         tags = validated_data.pop('tag_set', None)
         mentors = validated_data.pop('mentor_set', None)

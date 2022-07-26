@@ -6,7 +6,7 @@ from mailings.serializers.base import BaseMailingsSerializer
 
 class MailingsListSerializer(BaseMailingsSerializer):
     is_running = serializers.SerializerMethodField()
-    
+
     class Meta(BaseMailingsSerializer.Meta):
         fields = ['id', 'subject', 'is_running']
 

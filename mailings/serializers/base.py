@@ -9,7 +9,7 @@ from mailings.models import Mailing
 class BaseMailingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mailing
-    
+
     @extend_schema_field(OpenApiTypes.BOOL)
     def get_is_running(self, mailing):
         if mailing.is_stopped:

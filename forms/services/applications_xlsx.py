@@ -12,18 +12,20 @@ _FormTypeByLabel = {_.label: _ for _ in FormType}
 
 class ApplicationsXlsxConverter(BaseXlsxConverter):
     MODEL = Application
-    FIELD_HEADER_MAP = {'type': 'Тип', 'id': 'Id', 'path': 'Path'} | {
-        _.value: _.label for _ in FormField
-    } | {'mentor_fullname': 'Имя ментора'}
-    
+    FIELD_HEADER_MAP = (
+        {'type': 'Тип', 'id': 'Id', 'path': 'Path'}
+        | {_.value: _.label for _ in FormField}
+        | {'mentor_fullname': 'Имя ментора'}
+    )
+
     def __init__(self):
         super().__init__(self.FIELD_HEADER_MAP)
-    
+
     def _get_values(self):
         values = list(
-            self.MODEL.objects.annotate(type=F('form__type')).order_by(
-                'type', 'id'
-            ).values_list(*self.fields[:-1])
+            self.MODEL.objects.annotate(type=F('form__type'))
+                .order_by('type', 'id')
+                .values_list(*self.fields[:-1])
         )
         for i, value in enumerate(values):
             application_type = rFormType[value[0]]
@@ -33,7 +35,7 @@ class ApplicationsXlsxConverter(BaseXlsxConverter):
                     mentor_fullname = f'{mentor.first_name_en} {mentor.last_name_en}'
             values[i] = (application_type.label, *value[1:], mentor_fullname)
         return values
-    
+
     def _update_objects(self, instances_data):
         for instance_data in instances_data.values():
             instance_data['form'] = Form.objects.get(

@@ -8,6 +8,6 @@ from forms.serializers.detail import FormSerializer
 class FormView(UpdateModelMixin, BaseAdminView):
     serializer_classes = {'patch': FormSerializer}
     queryset = Form.objects.all()
-    
+
     def patch(self, request, **_):
         return self.partial_update(request)

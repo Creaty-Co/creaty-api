@@ -13,10 +13,31 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DocumentLink',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.TextField(choices=[('facebook', 'Facebook'), ('instagram', 'Instagram'), ('help', 'Написать в поддержку'), ('user_agreement', 'Пользовательское соглашение'), ('privacy_policy', 'Политика конфиденциальности'), ('cookie_policy', 'Cookie Policy')], unique=True)),
-                ('url', models.URLField()),
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    (
+        'type',
+        models.TextField(
+            choices=[
+                ('facebook', 'Facebook'),
+                ('instagram', 'Instagram'),
+                ('help', 'Написать в поддержку'),
+                ('user_agreement', 'Пользовательское соглашение'),
+                ('privacy_policy', 'Политика конфиденциальности'),
+                ('cookie_policy', 'Cookie Policy'),
             ],
+            unique=True,
+        ),
+    ),
+    ('url', models.URLField()),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,
@@ -25,14 +46,22 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Faq',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('question', models.TextField()),
-                ('question_ru', models.TextField(null=True)),
-                ('question_en', models.TextField(null=True)),
-                ('answer', models.TextField()),
-                ('answer_ru', models.TextField(null=True)),
-                ('answer_en', models.TextField(null=True)),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    ('question', models.TextField()),
+    ('question_ru', models.TextField(null=True)),
+    ('question_en', models.TextField(null=True)),
+    ('answer', models.TextField()),
+    ('answer_ru', models.TextField(null=True)),
+    ('answer_en', models.TextField(null=True)),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,
@@ -41,10 +70,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SocialLink',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('icon', models.ImageField(upload_to='pages/social_link/icon')),
-                ('url', models.URLField()),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    ('icon', models.ImageField(upload_to='pages/social_link/icon')),
+    ('url', models.URLField()),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,

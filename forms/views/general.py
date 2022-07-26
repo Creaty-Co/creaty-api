@@ -10,6 +10,6 @@ class FormsView(ListModelMixin, BaseView):
     serializer_classes = {'get': FormsSerializer}
     queryset = Form.objects.all()
     filterset_class = FormsFilterSet
-    
+
     def get(self, request):
         return self.list(request)

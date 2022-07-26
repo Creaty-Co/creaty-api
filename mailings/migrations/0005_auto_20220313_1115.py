@@ -13,11 +13,11 @@ def gen_uuid(apps, _):
 
 
 class Migration(migrations.Migration):
-    
+
     dependencies = [
         ('mailings', '0004_subscriber_uuid'),
     ]
-    
+
     operations = [
         migrations.RunPython(gen_uuid, reverse_code=migrations.RunPython.noop),
     ]

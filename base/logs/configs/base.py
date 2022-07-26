@@ -3,5 +3,5 @@ base_config = {
     'disable_existing_loggers': True,
     'formatters': {},
     'handlers': {},
-    'loggers': {}
+    'loggers': {},
 }

@@ -14,6 +14,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='package',
             name='mentor',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='packages', to='mentors.mentor'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='packages',
+                to='mentors.mentor',
+            ),
         ),
     ]

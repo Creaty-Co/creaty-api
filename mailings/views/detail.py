@@ -8,6 +8,6 @@ from mailings.serializers.detail import MailingSerializer
 class MailingView(RetrieveModelMixin, BaseAdminView):
     serializer_class = MailingSerializer
     queryset = Mailing.objects.all()
-    
+
     def get(self, request, **_):
         return self.retrieve(request)

@@ -12,9 +12,9 @@ class MentorsView(ListModelMixin, CreateModelMixin, BaseView):
     permission_classes_map = {'post': BaseAdminView.permission_classes}
     queryset = Mentor.objects.prefetch_related('tag_set', 'country')
     filterset_class = MentorsFilterSet
-    
+
     def get(self, request):
         return self.list(request)
-    
+
     def post(self, request):
         return self.create(request)

@@ -119,17 +119,20 @@ env = environ.Env(
     LOG_CONF=(_env_value, {'api': ['api_console'], 'django.server': ['web_console']}),
     LOG_PRETTY=(bool, True),
     LOG_MAX_LENGTH=(int, 130),
-    LOG_FORMATTERS=(dict, {
-        'api': '%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%('
-               'lineno)d)>: %(message)s',
-        'web': 'WEB     | %(asctime)s: %(message)s'
-    }),
+    LOG_FORMATTERS=(
+        dict,
+        {
+            'api': '%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%('
+                   'lineno)d)>: %(message)s',
+            'web': 'WEB     | %(asctime)s: %(message)s',
+        },
+    ),
     LOG_LEVEL=(dict, {}),
     CELERY_REDIS_MAX_CONNECTIONS=(int, 10),
     ADMINS=(_env_value, {}),
     UPDATE_RATES_INTERVAL=(int, 60 * 60 * 8),
     API_DOMAIN=(str, 'api.local.dev'),
-    WEB_DOMAIN=(str, 'local.dev')
+    WEB_DOMAIN=(str, 'local.dev'),
 )
 
 if Path(env('ENV_FILE')).exists():
@@ -144,8 +147,9 @@ if Path(env('ENV_FILE')).exists():
 SETTINGS_PATH = environ.Path(__file__)
 BASE_DIR = SETTINGS_PATH - 2
 
-WSGI_APPLICATION = (SETTINGS_PATH - 1)().split('\\')[-1].split('/')[-1] + \
-                   '.wsgi.application'
+WSGI_APPLICATION = (SETTINGS_PATH - 1)().split('\\')[-1].split('/')[
+    -1
+] + '.wsgi.application'
 ROOT_URLCONF = (SETTINGS_PATH - 1)().split('\\')[-1].split('/')[-1] + '.urls'
 
 # root
@@ -177,7 +181,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
-    
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
@@ -195,9 +198,7 @@ INSTALLED_APPS = [
     'djmoney',
     'djmoney.contrib.exchange',
     *(['debug_toolbar'] if DEBUG else []),
-    
     'django.contrib.admin',
-    
     'base',
     'account',
     'admin_',
@@ -206,28 +207,25 @@ INSTALLED_APPS = [
     'geo',
     'forms',
     'mailings',
-    'pages'
+    'pages',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'account.authentications.token.TokenAuthentication',
-        'account.authentications.session.SessionAuthentication'
+        'account.authentications.session.SessionAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'base.paginations.base.BasePagination',
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle'
-    ],
+    'DEFAULT_THROTTLE_CLASSES': ['rest_framework.throttling.AnonRateThrottle'],
     'DEFAULT_PERMISSION_CLASSES': [],
     'DEFAULT_THROTTLE_RATES': {'anon': '1000/s', 'user': '10000/s'},
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -235,11 +233,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
     'whitenoise.middleware.WhiteNoiseMiddleware',
     *(['debug_toolbar.middleware.DebugToolbarMiddleware'] if DEBUG else []),
-    
-    'base.middlewares.RequestLogMiddleware'
+    'base.middlewares.RequestLogMiddleware',
 ]
 
 TEMPLATES = [
@@ -252,9 +248,9 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages'
+                'django.contrib.messages.context_processors.messages',
             ]
-        }
+        },
     }
 ]
 
@@ -280,7 +276,7 @@ DEBUG_TOOLBAR_CONFIG = {'SHOW_TOOLBAR_CALLBACK': lambda *_, **__: True}
 CACHES = {
     'default': {
         **env.cache('REDIS_URL'),
-        'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'}
+        'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
     }
 }
 
@@ -295,7 +291,9 @@ REDIS_URL = env.cache('REDIS_URL')['LOCATION']
 CACHEOPS_REDIS = REDIS_URL
 
 CACHEOPS_DEFAULTS = {
-    'timeout': 60 * 5, 'cache_on_save': True, 'ops': ['get', 'fetch', 'exists', 'count']
+    'timeout': 60 * 5,
+    'cache_on_save': True,
+    'ops': ['get', 'fetch', 'exists', 'count'],
 }
 CACHEOPS = {
     'account.*': {},
@@ -336,13 +334,12 @@ SERVER_EMAIL = EMAIL_HOST_USER
 ###
 # celery_email
 
-CELERY_EMAIL_BACKEND = f"django.core.mail.backends" \
-                       f".{env('EMAIL_BACKEND') or 'console' if DEBUG else 'smtp'}" \
-                       f".EmailBackend"
-CELERY_EMAIL_TASK_CONFIG = {
-    'name': None,
-    'ignore_result': False
-}
+CELERY_EMAIL_BACKEND = (
+    f"django.core.mail.backends"
+    f".{env('EMAIL_BACKEND') or 'console' if DEBUG else 'smtp'}"
+    f".EmailBackend"
+)
+CELERY_EMAIL_TASK_CONFIG = {'name': None, 'ignore_result': False}
 CELERY_EMAIL_CHUNK_SIZE = 1
 
 # celery_email
@@ -358,8 +355,9 @@ CELERY_REDIS_MAX_CONNECTIONS = env('CELERY_REDIS_MAX_CONNECTIONS')
 CELERY_REDIS_SOCKET_KEEPALIVE = True
 
 CELERY_BROKER_TRANSPORT_OPTIONS = {
-    'visibility_timeout': 20, 'max_connections': CELERY_REDIS_MAX_CONNECTIONS,
-    'socket_keepalive': True
+    'visibility_timeout': 20,
+    'max_connections': CELERY_REDIS_MAX_CONNECTIONS,
+    'socket_keepalive': True,
 }
 CELERY_BROKER_POOL_LIMIT = 0
 
@@ -373,7 +371,7 @@ CELERY_TRACK_STARTED = True
 CELERY_BEAT_SCHEDULE = {
     'update_rates': {
         'task': 'geo.tasks.update_rates',
-        'schedule': timedelta(seconds=env('UPDATE_RATES_INTERVAL'))
+        'schedule': timedelta(seconds=env('UPDATE_RATES_INTERVAL')),
     }
 }
 
@@ -407,10 +405,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ###
 # swagger
 
-SPECTACULAR_SETTINGS = {
-    'TITLE': f'{SITE_NAME} API',
-    'VERSION': '1.0'
-}
+SPECTACULAR_SETTINGS = {'TITLE': f'{SITE_NAME} API', 'VERSION': '1.0'}
 
 # swagger
 ###
@@ -437,21 +432,20 @@ REDIRECT_ON_UNSUBSCRIBE = env('REDIRECT_ON_UNSUBSCRIBE')
 # auth
 
 AUTH_PASSWORD_VALIDATORS = [
-    # {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'}
+    # {'NAME': 'django.contrib.auth.password_validation
+    # .UserAttributeSimilarityValidator'}
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {'min_length': 6}
+        'OPTIONS': {'min_length': 6},
     },
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 AUTH_USER_MODEL = 'account.User'
 SESSION_ON_LOGIN = env('SESSION_ON_LOGIN', bool, DEBUG)
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend'
-]
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 # auth
 ###
@@ -459,7 +453,9 @@ AUTHENTICATION_BACKENDS = [
 ###
 # logs
 
-LOG_ADMINS = {v[0]: list(map(lambda s: s.lower(), v[1:])) for v in env('ADMINS').values()}
+LOG_ADMINS = {
+    v[0]: list(map(lambda s: s.lower(), v[1:])) for v in env('ADMINS').values()
+}
 ADMINS = [(name, email__levels[0]) for name, email__levels in env('ADMINS').items()]
 EMAIL_SUBJECT_PREFIX = f'{SITE_NAME} logger > '
 
@@ -473,10 +469,12 @@ _loggers = {
             map(
                 partial(
                     getattr, importlib.import_module('.handlers', 'base.logs.configs')
-                ), v
+                ),
+                v,
             )
         )
-    } for k, v in env('LOG_CONF').items()
+    }
+    for k, v in env('LOG_CONF').items()
 }
 for k, v in env('LOG_LEVEL').items():
     _loggers.setdefault(k, {})['level'] = v
@@ -502,7 +500,11 @@ USE_I18N = True
 # money
 
 CURRENCIES = ('RUB', 'USD', 'EUR')
-CURRENCY_CHOICES = [('RUB', 'Рубль (₽)'), ('USD', 'Доллар США ($)'), ('EUR', 'Евро (€)')]
+CURRENCY_CHOICES = [
+    ('RUB', 'Рубль (₽)'),
+    ('USD', 'Доллар США ($)'),
+    ('EUR', 'Евро (€)'),
+]
 DEFAULT_CURRENCY = 'USD'
 
 EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'

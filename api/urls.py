@@ -14,7 +14,6 @@ urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
     path('', SpectacularSwaggerView.as_view(url_name='__docs__')),
     path('django_admin/', admin.site.urls),
-    
     path('base/', include('base.urls')),
     path('account/', include('account.urls')),
     path('admin/', include('admin_.urls')),
@@ -24,7 +23,6 @@ urlpatterns = [
     path('mailings/', include('mailings.urls')),
     path('pages/', include('pages.urls')),
     path('geo/', include('geo.urls')),
-    
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
-    *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]

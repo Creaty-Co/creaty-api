@@ -7,7 +7,7 @@ from mailings.serializers.subscribe import MailingsSubscribeSerializer
 
 class MailingsSubscribeView(CreateModelMixin, BaseView):
     serializer_classes = {'post': MailingsSubscribeSerializer}
-    
+
     @schema_response_204
     def post(self, request):
         self.create(request)

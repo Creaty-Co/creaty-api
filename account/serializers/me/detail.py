@@ -8,9 +8,7 @@ from base.utils.functions import choices_to_help_text
 class RetrieveAccountsMeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        extra_kwargs = {
-            'type': {'help_text': choices_to_help_text(UserType)}
-        }
+        extra_kwargs = {'type': {'help_text': choices_to_help_text(UserType)}}
         fields = ['email', 'first_name', 'last_name', 'type']
 
 

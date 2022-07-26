@@ -4,11 +4,11 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    
+
     dependencies = [
         ('mailings', '0005_auto_20220313_1115'),
     ]
-    
+
     operations = [
         migrations.AlterField(
             model_name='subscriber',

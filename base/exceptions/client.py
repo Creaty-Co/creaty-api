@@ -1,8 +1,13 @@
 from django.http import Http404
 from rest_framework import status as rest_status
 from rest_framework.exceptions import (
-    MethodNotAllowed, NotAuthenticated, NotFound, ParseError, PermissionDenied,
-    UnsupportedMediaType, ValidationError as RestValidationError
+    MethodNotAllowed,
+    NotAuthenticated,
+    NotFound,
+    ParseError,
+    PermissionDenied,
+    UnsupportedMediaType,
+    ValidationError as RestValidationError,
 )
 
 from base.exceptions.base import *
@@ -17,7 +22,7 @@ def _cast_404(exception):
 
 class ClientError(CastSupportsError):
     TYPE_NAME = 'error'
-    
+
     EXCEPTION__CAST = {
         RestValidationError: client_error_cast_rest_api_exception,
         ParseError: client_error_cast_rest_api_exception,
@@ -28,9 +33,10 @@ class ClientError(CastSupportsError):
         MethodNotAllowed: client_error_cast_rest_api_exception,
         UnsupportedMediaType: client_error_cast_rest_api_exception,
     }
-    
+
     def __init__(self, detail=None, status=None, code=None):
         super().__init__(
-            code or 'invalid', detail or 'Client error',
-            status or rest_status.HTTP_400_BAD_REQUEST
+            code or 'invalid',
+            detail or 'Client error',
+            status or rest_status.HTTP_400_BAD_REQUEST,
         )

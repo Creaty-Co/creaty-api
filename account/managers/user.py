@@ -5,7 +5,9 @@ from account.models.choices import UserType
 
 
 class UserManager(_UserManager):
-    def _create_user(self, email, password, first_name='', last_name='', **extra_fields):
+    def _create_user(
+        self, email, password, first_name='', last_name='', **extra_fields
+    ):
         email = self.normalize_email(email)
         user = self.model(
             email=email, first_name=first_name, last_name=last_name, **extra_fields

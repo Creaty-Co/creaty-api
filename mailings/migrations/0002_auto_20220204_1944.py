@@ -14,11 +14,24 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Mailing',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('subject', models.TextField()),
-                ('content', models.TextField()),
-                ('task_ids', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, null=True, size=None)),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    ('subject', models.TextField()),
+    ('content', models.TextField()),
+    (
+        'task_ids',
+        django.contrib.postgres.fields.ArrayField(
+            base_field=models.TextField(), blank=True, null=True, size=None
+        ),
+    ),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,

@@ -11,7 +11,7 @@ __all__ = ['BaseAuthView']
 class BaseAuthView(BaseView):
     permission_classes = BaseView.permission_classes + [IsAuthenticatedPermission]
     throttle_classes = BaseView.throttle_classes + [UserRateThrottle]
-    
+
     @classmethod
     def _to_auth_schema(cls, class_) -> None:
         auth_schema = TokenAuthentication.WARNING_401.to_schema()
@@ -23,7 +23,7 @@ class BaseAuthView(BaseView):
             setattr(
                 class_, method_name, extend_schema(responses={401: auth_schema})(method)
             )
-    
+
     @classmethod
     def _to_schema(cls, class_) -> None:
         cls._to_auth_schema(class_)

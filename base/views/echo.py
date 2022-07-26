@@ -15,7 +15,9 @@ class EchoView(BaseView):
     @extend_schema(
         responses={
             200: type(
-                'Echo', (BaseSerializer,), {
+                'Echo',
+                (BaseSerializer,),
+                {
                     'GET': serializers.DictField(
                         default={'key': 'value'}, read_only=True
                     ),
@@ -35,8 +37,8 @@ class EchoView(BaseView):
                         default={'key': 'value'}, read_only=True
                     ),
                     'queries': serializers.IntegerField(read_only=True),
-                    'uri': serializers.CharField(read_only=True)
-                }
+                    'uri': serializers.CharField(read_only=True),
+                },
             )
         }
     )
@@ -60,15 +62,15 @@ class EchoView(BaseView):
                 '__dict__': str(request.__dict__),
             }
         )
-    
+
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
-    
+
     def put(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
-    
+
     def patch(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
-    
+
     def delete(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)

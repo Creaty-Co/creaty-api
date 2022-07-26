@@ -66,11 +66,35 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Field',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.TextField(choices=[('name', 'Имя'), ('email', 'Email'), ('telegram', 'Telegram'), ('facebook', 'Facebook messanger'), ('whats_app', 'WhatsApp'), ('viber', 'Viber'), ('about', 'О себе')])),
-                ('placeholder', models.TextField()),
-                ('form', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='forms.form')),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    (
+        'type',
+        models.TextField(
+            choices=[
+                ('name', 'Имя'),
+                ('email', 'Email'),
+                ('telegram', 'Telegram'),
+                ('facebook', 'Facebook messanger'),
+                ('whats_app', 'WhatsApp'),
+                ('viber', 'Viber'),
+                ('about', 'О себе'),
+            ]
+        ),
+    ),
+    ('placeholder', models.TextField()),
+    (
+        'form',
+        models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='forms.form'),
+    ),
+],
             options={
                 'unique_together': {('form', 'type')},
             },

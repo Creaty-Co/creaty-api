@@ -11,12 +11,12 @@ from base.views.base import BaseView
 class AccountsTokenView(BaseView):
     serializer_classes = {'post': AccountsTokenSerializer}
     permission_classes_map = {'delete': [IsAuthenticatedPermission]}
-    
+
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     def delete(self, request):
         AuthService(request).logout()
         return Response(status=status.HTTP_204_NO_CONTENT)

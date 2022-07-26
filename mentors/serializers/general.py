@@ -23,7 +23,7 @@ class _MentorsCountrySerializer(serializers.ModelSerializer):
 class ListMentorsSerializer(serializers.ModelSerializer):
     country = _MentorsCountrySerializer()
     tags = _MentorsTagsSerializer(many=True, source='tag_set')
-    
+
     class Meta:
         model = Mentor
         extra_kwargs = {
@@ -32,17 +32,27 @@ class ListMentorsSerializer(serializers.ModelSerializer):
             }
         }
         fields = [
-            'id', 'avatar', 'company', 'profession', 'first_name', 'last_name', 'price',
-            'price_currency', 'country', 'tags'
+            'id',
+            'avatar',
+            'company',
+            'profession',
+            'first_name',
+            'last_name',
+            'price',
+            'price_currency',
+            'country',
+            'tags',
         ]
 
 
 class _MentorsCreateInfoSerializer(serializers.ModelSerializer):
     languages = serializers.PrimaryKeyRelatedField(
-        allow_empty=False, many=True, queryset=Language.objects.all(),
-        source='language_set'
+        allow_empty=False,
+        many=True,
+        queryset=Language.objects.all(),
+        source='language_set',
     )
-    
+
     class Meta:
         model = MentorInfo
         extra_kwargs = {
@@ -51,8 +61,14 @@ class _MentorsCreateInfoSerializer(serializers.ModelSerializer):
             }
         }
         fields = [
-            'trial_meeting', 'resume', 'what_help', 'experience', 'portfolio',
-            'languages', 'city_ru', 'city_en'
+            'trial_meeting',
+            'resume',
+            'what_help',
+            'experience',
+            'portfolio',
+            'languages',
+            'city_ru',
+            'city_en',
         ]
 
 
@@ -66,21 +82,31 @@ class CreateMentorsSerializer(serializers.ModelSerializer):
     info = _MentorsCreateInfoSerializer(write_only=True)
     price_currency = serializers.ChoiceField(
         choices=settings.CURRENCY_CHOICES,
-        help_text=choices_to_help_text(settings.CURRENCY_CHOICES), write_only=True
+        help_text=choices_to_help_text(settings.CURRENCY_CHOICES),
+        write_only=True,
     )
     packages = _CreateMentorsPackagesSerializer(many=True, write_only=True)
     avatar = Base64ImageField(write_only=True)
-    
+
     class Meta:
         model = Mentor
         wo = {'write_only': True}
         extra_kwargs = {
-            'id': {}, 'info': {}, 'avatar': wo, 'company': wo, 'profession': wo,
-            'first_name': wo, 'last_name': wo, 'price': wo, 'price_currency': {},
-            'tag_set': wo, 'country': wo, 'packages': {}
+            'id': {},
+            'info': {},
+            'avatar': wo,
+            'company': wo,
+            'profession': wo,
+            'first_name': wo,
+            'last_name': wo,
+            'price': wo,
+            'price_currency': {},
+            'tag_set': wo,
+            'country': wo,
+            'packages': {},
         }
         fields = list(extra_kwargs.keys())
-    
+
     def create(self, vd):
         vd['info'] = _MentorsCreateInfoSerializer().create(vd.pop('info'))
         tag_set = vd.pop('tag_set')

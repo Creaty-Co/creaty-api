@@ -10,7 +10,7 @@ from mailings.models import Subscriber
 class MailingsUnsubscribeView(BaseView):
     queryset = Subscriber.objects.all()
     lookup_field = 'uuid'
-    
+
     @schema_redirect(f'redirect: {settings.REDIRECT_ON_UNSUBSCRIBE}')
     def get(self, request, **_):
         try:

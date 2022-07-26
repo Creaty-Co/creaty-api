@@ -6,72 +6,88 @@ from forms.models.choices import *
 _default_post_send_ru = 'Мы в ближайшее время свяжемся с вами, чтобы осбудить детали!'
 _default_post_send_en = 'We will contact you soon to discuss the details!'
 _default_field_set = [
+    {'type': FormField.NAME, 'placeholder_ru': 'Имя', 'placeholder_en': 'Name'},
+    {'type': FormField.EMAIL, 'placeholder_ru': 'Email', 'placeholder_en': 'Email'},
     {
-        'type': FormField.NAME, 'placeholder_ru': 'Имя', 'placeholder_en': 'Name'
+        'type': FormField.TELEGRAM,
+        'placeholder_ru': 'Номер или ник в ',
+        'placeholder_en': 'Number or nickname in ',
     },
     {
-        'type': FormField.EMAIL, 'placeholder_ru': 'Email', 'placeholder_en': 'Email'
+        'type': FormField.FACEBOOK,
+        'placeholder_ru': 'Номер или ник в ',
+        'placeholder_en': 'Number or nickname in ',
     },
     {
-        'type': FormField.TELEGRAM, 'placeholder_ru': 'Номер или ник в ',
-        'placeholder_en': 'Number or nickname in '
-    },
+    'type': FormField.WHATS_APP,
+    'placeholder_ru': 'Номер или ник в ',
+    'placeholder_en': 'Number or nickname in ',
+},
     {
-        'type': FormField.FACEBOOK, 'placeholder_ru': 'Номер или ник в ',
-        'placeholder_en': 'Number or nickname in '
-    },
-    {
-        'type': FormField.WHATS_APP, 'placeholder_ru': 'Номер или ник в ',
-        'placeholder_en': 'Number or nickname in '
-    },
-    {
-        'type': FormField.VIBER, 'placeholder_ru': 'Номер или ник в ',
-        'placeholder_en': 'Number or nickname in '
-    }
+    'type': FormField.VIBER,
+    'placeholder_ru': 'Номер или ник в ',
+    'placeholder_en': 'Number or nickname in ',
+},
 ]
 
 
 class Command(BaseCommand):
     DEFAULT_FORMS = {
         FormType.BECOME_MENTOR: {
-            'post_send_ru': _default_post_send_ru,
-            'post_send_en': _default_post_send_en,
-            'field_set': _default_field_set + [{
-                'type': FormField.ABOUT,
-                'placeholder_ru': 'Расскажите кратко о себе!\nМожно поделиться позже :)',
-                'placeholder_en': 'Tell us briefly about yourself!\nYou can share it '
-                                  'later :)'
-            }]
-        },
+    'post_send_ru': _default_post_send_ru,
+    'post_send_en': _default_post_send_en,
+    'field_set': _default_field_set
+    + [
+        {
+            'type': FormField.ABOUT,
+            'placeholder_ru': 'Расскажите кратко о себе!\nМожно '
+            'поделиться позже '
+            ':)',
+            'placeholder_en': 'Tell us briefly about '
+            'yourself!\nYou can share it '
+            'later :)',
+        }
+    ],
+},
         FormType.CHOOSE_MENTOR: {
-            'post_send_ru': _default_post_send_ru,
-            'post_send_en': _default_post_send_en,
-            'field_set': _default_field_set + [{
-                'type': FormField.ABOUT,
-                'placeholder_ru': 'С чем требуется помощь ментора?\nМожно обсудить '
-                                  'позже :)',
-                'placeholder_en': 'What does a mentor need help with?\nWe can discuss '
-                                  'it later :)'
-            }]
-        },
+    'post_send_ru': _default_post_send_ru,
+    'post_send_en': _default_post_send_en,
+    'field_set': _default_field_set
+    + [
+        {
+            'type': FormField.ABOUT,
+            'placeholder_ru': 'С чем требуется помощь '
+            'ментора?\nМожно обсудить '
+            'позже :)',
+            'placeholder_en': 'What does a mentor need help '
+            'with?\nWe can discuss '
+            'it later :)',
+        }
+    ],
+},
         FormType.TEST_MEETING: {
             'post_send_ru': _default_post_send_ru,
             'post_send_en': _default_post_send_en,
-            'field_set': _default_field_set + [{
-                'type': FormField.ABOUT,
-                'placeholder_ru': 'С чем требуется помощь ментора?\nМожно обсудить '
-                                  'позже :)',
-                'placeholder_en': 'What does a mentor need help with?\nWe can discuss '
-                                  'it later :)'
-            }]
+            'field_set': _default_field_set
+                         + [
+                             {
+                                 'type': FormField.ABOUT,
+                                 'placeholder_ru': 'С чем требуется помощь '
+                                                   'ментора?\nМожно обсудить '
+                                                   'позже :)',
+                                 'placeholder_en': 'What does a mentor need help '
+                                                   'with?\nWe can discuss '
+                                                   'it later :)',
+                             }
+                         ],
         },
         FormType.STILL_QUESTIONS: {
             'post_send_ru': _default_post_send_ru,
             'post_send_en': _default_post_send_en,
-            'field_set': _default_field_set
-        }
+            'field_set': _default_field_set,
+        },
     }
-    
+
     def handle(self, *args, **options):
         is_reset = options.get('reset', False)
         for form_type, fields in self.DEFAULT_FORMS.items():
@@ -91,9 +107,11 @@ class Command(BaseCommand):
                 for f, v in field_data.items():
                     setattr(field_instance, f, v)
                 field_instance.save()
-    
+
     def add_arguments(self, parser):
         parser.add_argument(
-            '--reset', action='store_true', default=False,
-            help='Установить значения по умолчанию'
+            '--reset',
+            action='store_true',
+            default=False,
+            help='Установить значения по умолчанию',
         )

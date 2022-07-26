@@ -8,7 +8,7 @@ from tags.serializers.general import ListTagsSerializer
 
 class ListTagsCategoriesSerializer(serializers.ModelSerializer):
     tags = ListTagsSerializer(many=True, source='tag_set')
-    
+
     class Meta:
         model = Category
         fields = ['id', 'shortcut', 'title', 'icon', 'tags']
@@ -16,16 +16,21 @@ class ListTagsCategoriesSerializer(serializers.ModelSerializer):
 
 class CreateTagsCategoriesSerializer(serializers.ModelSerializer):
     icon = Base64ImageField(write_only=True)
-    
+
     class Meta:
         model = Category
         wo = {'write_only': True}
         extra_kwargs = {
-            'id': {}, 'shortcut': wo | {
-                'validators': [
-                    UniqueValidator(Tag.objects.all()),
-                    UniqueValidator(Category.objects.all())
-                ]
-            }, 'title_ru': wo, 'title_en': wo, 'icon': {}
+            'id': {},
+            'shortcut': wo
+                        | {
+                            'validators': [
+                                UniqueValidator(Tag.objects.all()),
+                                UniqueValidator(Category.objects.all()),
+                            ]
+                        },
+            'title_ru': wo,
+            'title_en': wo,
+            'icon': {},
         }
         fields = list(extra_kwargs.keys())

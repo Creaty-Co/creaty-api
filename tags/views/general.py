@@ -10,10 +10,10 @@ from tags.serializers.general import ListTagsSerializer
 class TagsView(ListModelMixin, CreateModelMixin, BaseView):
     serializer_classes = {'get': ListTagsSerializer}
     queryset = Tag.objects.all()
-    
+
     def get(self, request):
         return self.list(request)
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
         if IsAdminPermission().has_permission(self.request, self):

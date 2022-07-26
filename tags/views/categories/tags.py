@@ -9,9 +9,9 @@ class TagsCategoryTagsView(CreateModelMixin, BaseAdminView):
     lookup_url_kwarg = 'category_id'
     serializer_classes = {'post': TagsCategoryTagsSerializer}
     queryset = Category.objects.all()
-    
+
     def post(self, request, **_):
         return self.create(request)
-    
+
     def perform_create(self, serializer):
         serializer.save(category=self.get_object())

@@ -15,19 +15,17 @@ __all__ = ['APIWarning']
 class APIWarning(CastSupportsError):
     TYPE_NAME = 'warning'
     LOG_FUNC = warning
-    
-    EXCEPTION__CAST = {
-        Throttled: warning_cast_rest_api_exception
-    }
-    
+
+    EXCEPTION__CAST = {Throttled: warning_cast_rest_api_exception}
+
     __schema_cache = {}
-    
+
     def __init__(self, code, detail=None, status=None):
         assert code is not None
         super().__init__(
             code, detail or 'Warning', status or rest_status.HTTP_423_LOCKED
         )
-    
+
     def to_schema(self, serializer_name: str = None):
         if serializer_name is None:
             serializer_name = ''
@@ -37,15 +35,14 @@ class APIWarning(CastSupportsError):
             serializer = self.__schema_cache[serializer_name]
         except KeyError:
             serializer = type(
-                serializer_name, (BaseSerializer,), {
-                    'error': serializers.DictField(
-                        default={'type': self.TYPE_NAME, 'code': self.code},
-                        read_only=True
-                    )
-                }
-            )
-            self.__schema_cache[serializer_name] = serializer
-        return OpenApiResponse(
-            response=serializer,
-            description='\t' + self.detail
+    serializer_name,
+    (BaseSerializer,),
+    {
+        'error': serializers.DictField(
+            default={'type': self.TYPE_NAME, 'code': self.code},
+            read_only=True,
         )
+    },
+)
+            self.__schema_cache[serializer_name] = serializer
+        return OpenApiResponse(response=serializer, description='\t' + self.detail)

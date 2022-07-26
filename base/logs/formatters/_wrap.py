@@ -30,7 +30,7 @@ class WrapFormatter(Formatter):
     def __init__(self, *args, max_length: int = settings.LOG_MAX_LENGTH, **kwargs):
         super().__init__(*args, **kwargs)
         self._max_length: Final[int] = max_length
-    
+
     def format(self, record: CacheMessageLogRecord):
         formatted = super().format(record)
         if settings.LOG_PRETTY and (

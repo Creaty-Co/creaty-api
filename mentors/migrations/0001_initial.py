@@ -9,20 +9,27 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Mentor',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('avatar', models.ImageField(upload_to='avatars')),
-                ('company', models.TextField(blank=True, null=True)),
-                ('profession', models.TextField(blank=True, null=True)),
-                ('first_name', models.TextField()),
-                ('last_name', models.TextField()),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    ('avatar', models.ImageField(upload_to='avatars')),
+    ('company', models.TextField(blank=True, null=True)),
+    ('profession', models.TextField(blank=True, null=True)),
+    ('first_name', models.TextField()),
+    ('last_name', models.TextField()),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,
@@ -31,13 +38,28 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MentorInfo',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('trial_meeting', models.SmallIntegerField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(1)])),
-                ('resume', models.TextField()),
-                ('what_help', models.TextField()),
-                ('experience', models.TextField()),
-                ('portfolio', models.TextField()),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    (
+        'trial_meeting',
+        models.SmallIntegerField(
+            blank=True,
+            null=True,
+            validators=[django.core.validators.MinValueValidator(1)],
+        ),
+    ),
+    ('resume', models.TextField()),
+    ('what_help', models.TextField()),
+    ('experience', models.TextField()),
+    ('portfolio', models.TextField()),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,
@@ -46,11 +68,37 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Package',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('lessons_count', models.SmallIntegerField(validators=[django.core.validators.MinValueValidator(2)])),
-                ('discount', models.SmallIntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(99)])),
-                ('mentor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mentors.mentor')),
-            ],
+    (
+        'id',
+        models.BigAutoField(
+            auto_created=True,
+            primary_key=True,
+            serialize=False,
+            verbose_name='ID',
+        ),
+    ),
+    (
+        'lessons_count',
+        models.SmallIntegerField(
+            validators=[django.core.validators.MinValueValidator(2)]
+        ),
+    ),
+    (
+        'discount',
+        models.SmallIntegerField(
+            validators=[
+                django.core.validators.MinValueValidator(1),
+                django.core.validators.MaxValueValidator(99),
+            ]
+        ),
+    ),
+    (
+        'mentor',
+        models.ForeignKey(
+            on_delete=django.db.models.deletion.CASCADE, to='mentors.mentor'
+        ),
+    ),
+],
             options={
                 'ordering': ['id'],
                 'abstract': False,
@@ -59,6 +107,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='mentor',
             name='info',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='mentors.mentorinfo'),
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to='mentors.mentorinfo'
+            ),
         ),
     ]

@@ -13,6 +13,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='field',
             name='type',
-            field=models.TextField(choices=[('name', 'Имя'), ('email', 'Email'), ('telegram', 'Telegram'), ('facebook', 'Facebook messanger'), ('whats_app', 'WhatsApp'), ('viber', 'Viber'), ('about', 'О вопросе')]),
+            field=models.TextField(
+                choices=[
+                    ('name', 'Имя'),
+                    ('email', 'Email'),
+                    ('telegram', 'Telegram'),
+                    ('facebook', 'Facebook messanger'),
+                    ('whats_app', 'WhatsApp'),
+                    ('viber', 'Viber'),
+                    ('about', 'О вопросе'),
+                ]
+            ),
         ),
     ]

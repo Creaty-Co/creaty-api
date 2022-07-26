@@ -4,7 +4,6 @@ from django.conf import settings, global_settings
 from django.core.management.base import BaseCommand
 from django.utils import translation
 from django.utils.translation import gettext_lazy
-
 from django_countries import countries as raw_countries
 
 from geo.models import *
@@ -17,11 +16,11 @@ def _get_name(code):
 class Command(BaseCommand):
     FLAG_UNICODES_FILEPATH = 'geo/management/commands/data/flag_unicodes.json'
     LANGUAGES_FILEPATH = 'geo/management/commands/data/languages.json'
-    
+
     def handle(self, *args, **options):
         self.import_countries()
         self.import_languages()
-    
+
     def import_countries(self):
         flag_unicodes = json.load(open(self.FLAG_UNICODES_FILEPATH))
         countries = {country.code: country for country in Country.objects.all()}
@@ -35,7 +34,7 @@ class Command(BaseCommand):
                 country.flag_unicode = flag_unicodes[code]
         for country in countries.values():
             country.save()
-    
+
     def import_languages(self):
         language_codes = json.load(open(self.LANGUAGES_FILEPATH))
         languages = {language.code: language for language in Language.objects.all()}

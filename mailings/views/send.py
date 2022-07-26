@@ -13,7 +13,7 @@ class MailingSendView(BaseAdminView):
         'AdminMailingSend', id=serializers.IntegerField(read_only=True)
     )
     queryset = Mailing.objects.all()
-    
+
     def post(self, request, **_):
         mailing = self.get_object()
         connection = get_connection()

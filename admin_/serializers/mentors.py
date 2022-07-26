@@ -1,10 +1,9 @@
 from django.conf import settings
+from rest_framework import serializers
 
 from base.utils.functions import choices_to_help_text
 from geo.models import Country
 from mentors.models import Mentor, MentorInfo
-
-from rest_framework import serializers
 
 
 class _ListAdminMentorsInfoSerializer(serializers.ModelSerializer):
@@ -22,7 +21,7 @@ class _ListAdminMentorsCountrySerializer(serializers.ModelSerializer):
 class ListAdminMentorsSerializer(serializers.ModelSerializer):
     info = _ListAdminMentorsInfoSerializer()
     country = _ListAdminMentorsCountrySerializer()
-    
+
     class Meta:
         model = Mentor
         extra_kwargs = {
@@ -31,6 +30,14 @@ class ListAdminMentorsSerializer(serializers.ModelSerializer):
             }
         }
         fields = [
-            'id', 'info', 'avatar', 'company', 'profession', 'first_name', 'last_name',
-            'price', 'price_currency', 'country'
+            'id',
+            'info',
+            'avatar',
+            'company',
+            'profession',
+            'first_name',
+            'last_name',
+            'price',
+            'price_currency',
+            'country',
         ]

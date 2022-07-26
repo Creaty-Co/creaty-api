@@ -14,7 +14,7 @@ class BaseMainPageView(BaseView):
             'mentor_set', queryset=MentorsView.queryset.order_by('pagementorset__index')
         )
     )
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
         tag_set_prefetch_qs = Tag.objects.order_by('?').nocache()
@@ -25,7 +25,7 @@ class BaseMainPageView(BaseView):
         return queryset.prefetch_related(
             Prefetch('tag_set', queryset=tag_set_prefetch_qs)
         )
-    
+
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
         main_page = queryset.first()

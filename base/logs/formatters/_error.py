@@ -13,7 +13,7 @@ class ErrorFormatter(WrapFormatter):
     def formatException(self, ei):
         formatted_exception = super().formatException(ei)
         return _tab(
-            f'<<<\n{_tab(formatted_exception)}' +
-            ('' if formatted_exception.endswith('\n') else '\n') +
-            '>>>'
-        )
+    f'<<<\n{_tab(formatted_exception)}'
+    + ('' if formatted_exception.endswith('\n') else '\n')
+    + '>>>'
+)

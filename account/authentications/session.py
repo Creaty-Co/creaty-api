@@ -1,7 +1,7 @@
 from django.conf import settings
 from drf_spectacular.extensions import OpenApiAuthenticationExtension
 from rest_framework.authentication import (
-    SessionAuthentication as _SessionAuthentication
+    SessionAuthentication as _SessionAuthentication,
 )
 
 
@@ -14,7 +14,7 @@ class SessionScheme(OpenApiAuthenticationExtension):
     target_class = 'account.authentications.session.SessionAuthentication'
     name = 'Cookie'
     priority = -2
-    
+
     def get_security_definition(self, auto_schema):
         return {
             'type': 'apiKey',

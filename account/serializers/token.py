@@ -11,37 +11,39 @@ from base.schemas.mixins import SerializerSchemaMixin
 
 class AccountsTokenSerializer(SerializerSchemaMixin, serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
-    
+
     WARNINGS = {
         401: APIWarning(
             'invalid_password', 'Неверный пароль', status.HTTP_401_UNAUTHORIZED
         ),
         404: APIWarning(
-            'email_not_found', 'Пользователя с таким email не существует',
-            status.HTTP_404_NOT_FOUND
+            'email_not_found',
+            'Пользователя с таким email не существует',
+            status.HTTP_404_NOT_FOUND,
         ),
         406: APIWarning(
-            'not_verified', 'Пользователь не верифицирован',
-            status.HTTP_406_NOT_ACCEPTABLE
-        )
+            'not_verified',
+            'Пользователь не верифицирован',
+            status.HTTP_406_NOT_ACCEPTABLE,
+        ),
     }
-    
+
     class Meta:
         model = User
         extra_kwargs = {
             'email': {'write_only': True, 'validators': []},
-            'password': {'write_only': True}
+            'password': {'write_only': True},
         }
         fields = list(extra_kwargs.keys()) + ['token']
-    
+
     @extend_schema_field(OpenApiTypes.STR)
     def get_token(self, user):
         return AuthService(self.context['request'], user).login()
-    
+
     def validate(self, attrs):
         email = attrs['email']
         password = attrs['password']
-        
+
         user: User = authenticate(
             request=self.context.get('request'), email=email, password=password
         )
