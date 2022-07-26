@@ -35,6 +35,7 @@ def choices_to_help_text(
         for member in choices:
             transcripts.append(f'{member.value} — {member.name} ({member.label})')
     else:
+        choices: Iterable
         for member in choices:
             transcripts.append(f'{member[0]} — {member[1]}')
     return '\n\n'.join(transcripts)
