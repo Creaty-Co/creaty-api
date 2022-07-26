@@ -35,14 +35,14 @@ class APIWarning(CastSupportsError):
             serializer = self.__schema_cache[serializer_name]
         except KeyError:
             serializer = type(
-    serializer_name,
-    (BaseSerializer,),
-    {
-        'error': serializers.DictField(
-            default={'type': self.TYPE_NAME, 'code': self.code},
-            read_only=True,
-        )
-    },
-)
+                serializer_name,
+                (BaseSerializer,),
+                {
+                    'error': serializers.DictField(
+                        default={'type': self.TYPE_NAME, 'code': self.code},
+                        read_only=True,
+                    )
+                },
+            )
             self.__schema_cache[serializer_name] = serializer
         return OpenApiResponse(response=serializer, description='\t' + self.detail)

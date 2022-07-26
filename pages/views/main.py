@@ -10,9 +10,9 @@ from pages.views.base import BaseMainPageView
 
 class PagesMainView(RetrieveModelMixin, UpdateModelMixin, BaseMainPageView):
     serializer_classes = {
-    'get': PagesRetrieveMainSerializer,
-    'patch': PagesUpdateMainSerializer,
-}
+        'get': PagesRetrieveMainSerializer,
+        'patch': PagesUpdateMainSerializer,
+    }
     permission_classes_map = {'patch': BaseAdminView.permission_classes}
 
     def get(self, request):

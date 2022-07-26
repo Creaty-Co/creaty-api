@@ -9,14 +9,14 @@ class UpdateTagSerializer(serializers.ModelSerializer):
         model = Tag
         wo = {'write_only': True}
         extra_kwargs = {
-    'id': {},
-    'shortcut': wo
-    | {
-        'validators': [
-            UniqueValidator(Tag.objects.all()),
-            UniqueValidator(Category.objects.all()),
-        ]
-    },
-    'title': wo,
-}
+            'id': {},
+            'shortcut': wo
+            | {
+                'validators': [
+                    UniqueValidator(Tag.objects.all()),
+                    UniqueValidator(Category.objects.all()),
+                ]
+            },
+            'title': wo,
+        }
         fields = list(extra_kwargs.keys())

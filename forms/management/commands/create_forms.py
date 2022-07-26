@@ -37,49 +37,49 @@ class Command(BaseCommand):
             'post_send_ru': _default_post_send_ru,
             'post_send_en': _default_post_send_en,
             'field_set': _default_field_set
-                         + [
-                             {
-                                 'type': FormField.ABOUT,
-                                 'placeholder_ru': 'Расскажите кратко о себе!\nМожно '
-                                                   'поделиться позже '
-                                                   ':)',
-                                 'placeholder_en': 'Tell us briefly about '
-                                                   'yourself!\nYou can share it '
-                                                   'later :)',
-                             }
-                         ],
+            + [
+                {
+                    'type': FormField.ABOUT,
+                    'placeholder_ru': 'Расскажите кратко о себе!\nМожно '
+                    'поделиться позже '
+                    ':)',
+                    'placeholder_en': 'Tell us briefly about '
+                    'yourself!\nYou can share it '
+                    'later :)',
+                }
+            ],
         },
         FormType.CHOOSE_MENTOR: {
             'post_send_ru': _default_post_send_ru,
             'post_send_en': _default_post_send_en,
             'field_set': _default_field_set
-                         + [
-                             {
-                                 'type': FormField.ABOUT,
-                                 'placeholder_ru': 'С чем требуется помощь '
-                                                   'ментора?\nМожно обсудить '
-                                                   'позже :)',
-                                 'placeholder_en': 'What does a mentor need help '
-                                                   'with?\nWe can discuss '
-                                                   'it later :)',
-                             }
-                         ],
+            + [
+                {
+                    'type': FormField.ABOUT,
+                    'placeholder_ru': 'С чем требуется помощь '
+                    'ментора?\nМожно обсудить '
+                    'позже :)',
+                    'placeholder_en': 'What does a mentor need help '
+                    'with?\nWe can discuss '
+                    'it later :)',
+                }
+            ],
         },
         FormType.TEST_MEETING: {
             'post_send_ru': _default_post_send_ru,
             'post_send_en': _default_post_send_en,
             'field_set': _default_field_set
-                         + [
-                             {
-                                 'type': FormField.ABOUT,
-                                 'placeholder_ru': 'С чем требуется помощь '
-                                                   'ментора?\nМожно обсудить '
-                                                   'позже :)',
-                                 'placeholder_en': 'What does a mentor need help '
-                                                   'with?\nWe can discuss '
-                                                   'it later :)',
-                             }
-                         ],
+            + [
+                {
+                    'type': FormField.ABOUT,
+                    'placeholder_ru': 'С чем требуется помощь '
+                    'ментора?\nМожно обсудить '
+                    'позже :)',
+                    'placeholder_en': 'What does a mentor need help '
+                    'with?\nWe can discuss '
+                    'it later :)',
+                }
+            ],
         },
         FormType.STILL_QUESTIONS: {
             'post_send_ru': _default_post_send_ru,

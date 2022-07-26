@@ -21,16 +21,16 @@ class CreateTagsCategoriesSerializer(serializers.ModelSerializer):
         model = Category
         wo = {'write_only': True}
         extra_kwargs = {
-    'id': {},
-    'shortcut': wo
-    | {
-        'validators': [
-            UniqueValidator(Tag.objects.all()),
-            UniqueValidator(Category.objects.all()),
-        ]
-    },
-    'title_ru': wo,
-    'title_en': wo,
-    'icon': {},
-}
+            'id': {},
+            'shortcut': wo
+            | {
+                'validators': [
+                    UniqueValidator(Tag.objects.all()),
+                    UniqueValidator(Category.objects.all()),
+                ]
+            },
+            'title_ru': wo,
+            'title_en': wo,
+            'icon': {},
+        }
         fields = list(extra_kwargs.keys())
