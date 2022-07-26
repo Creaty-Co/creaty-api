@@ -18,25 +18,25 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Page',
             fields=[
-    (
-        'id',
-        models.BigAutoField(
-            auto_created=True,
-            primary_key=True,
-            serialize=False,
-            verbose_name='ID',
-        ),
-    ),
-    (
-        'category',
-        models.OneToOneField(
-            blank=True,
-            null=True,
-            on_delete=django.db.models.deletion.CASCADE,
-            to='tags.category',
-        ),
-    ),
-],
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'category',
+                    models.OneToOneField(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='tags.category',
+                    ),
+                ),
+            ],
             options={
                 'ordering': ['id'],
                 'abstract': False,
@@ -45,25 +45,29 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PageTagSet',
             fields=[
-    (
-        'id',
-        models.BigAutoField(
-            auto_created=True,
-            primary_key=True,
-            serialize=False,
-            verbose_name='ID',
-        ),
-    ),
-    ('index', models.IntegerField()),
-    (
-        'page',
-        models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pages.page'),
-    ),
-    (
-        'tag',
-        models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tags.tag'),
-    ),
-],
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                ('index', models.IntegerField()),
+                (
+                    'page',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to='pages.page'
+                    ),
+                ),
+                (
+                    'tag',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to='tags.tag'
+                    ),
+                ),
+            ],
             options={
                 'db_table': 'page_tag_set',
             },
@@ -71,32 +75,34 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PageMentorSet',
             fields=[
-    (
-        'id',
-        models.BigAutoField(
-            auto_created=True,
-            primary_key=True,
-            serialize=False,
-            verbose_name='ID',
-        ),
-    ),
-    (
-        'index',
-        models.PositiveSmallIntegerField(
-            validators=[django.core.validators.MaxValueValidator(19)]
-        ),
-    ),
-    (
-        'mentor',
-        models.ForeignKey(
-            on_delete=django.db.models.deletion.CASCADE, to='mentors.mentor'
-        ),
-    ),
-    (
-        'page',
-        models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pages.page'),
-    ),
-],
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'index',
+                    models.PositiveSmallIntegerField(
+                        validators=[django.core.validators.MaxValueValidator(19)]
+                    ),
+                ),
+                (
+                    'mentor',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to='mentors.mentor'
+                    ),
+                ),
+                (
+                    'page',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to='pages.page'
+                    ),
+                ),
+            ],
             options={
                 'db_table': 'page_mentor_set',
             },

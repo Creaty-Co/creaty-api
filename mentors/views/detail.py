@@ -12,13 +12,13 @@ from mentors.serializers.detail import RetrieveMentorSerializer, UpdateMentorSer
 
 class MentorView(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, BaseView):
     serializer_classes = {
-    'get': RetrieveMentorSerializer,
-    'patch': UpdateMentorSerializer,
-}
+        'get': RetrieveMentorSerializer,
+        'patch': UpdateMentorSerializer,
+    }
     permission_classes_map = {
-    'patch': BaseAdminView.permission_classes,
-    'delete': BaseAdminView.permission_classes,
-}
+        'patch': BaseAdminView.permission_classes,
+        'delete': BaseAdminView.permission_classes,
+    }
     queryset = Mentor.objects.all()
 
     def get(self, request, **_):

@@ -9,9 +9,9 @@ from account.views.base import BaseAuthView
 
 class AccountsMeView(RetrieveModelMixin, UpdateModelMixin, BaseAuthView):
     serializer_classes = {
-    'get': RetrieveAccountsMeSerializer,
-    'patch': UpdateMeSerializer,
-}
+        'get': RetrieveAccountsMeSerializer,
+        'patch': UpdateMeSerializer,
+    }
 
     def get(self, request):
         return self.retrieve(request)

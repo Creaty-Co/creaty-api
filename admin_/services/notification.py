@@ -21,7 +21,7 @@ class AdminNotificationService:
     def on_application(self, application: Application):
         str_fields = '\n'.join(
             f'{rFormField[field].label}: {getattr(application, field)}'
-                for field in [f.type for f in application.form.field_set.all()]
+            for field in [f.type for f in application.form.field_set.all()]
         )
         self._send_admin_emails(
             'Пришла заявка',

@@ -122,10 +122,10 @@ env = environ.Env(
     LOG_FORMATTERS=(
         dict,
         {
-            'api': '%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%('
-                   'lineno)d)>: %(message)s',
-            'web': 'WEB     | %(asctime)s: %(message)s',
-        },
+    'api': '%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%('
+    'lineno)d)>: %(message)s',
+    'web': 'WEB     | %(asctime)s: %(message)s',
+},
     ),
     LOG_LEVEL=(dict, {}),
     CELERY_REDIS_MAX_CONNECTIONS=(int, 10),

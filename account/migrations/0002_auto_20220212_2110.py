@@ -6,11 +6,11 @@ import account.managers.user
 
 
 class Migration(migrations.Migration):
-    
+
     dependencies = [
         ('account', '0001_initial'),
     ]
-    
+
     operations = [
         migrations.AlterModelOptions(
             name='user',

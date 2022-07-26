@@ -40,7 +40,7 @@ def warning_cast_rest_api_exception(exception: APIException):
 
 def client_error_cast_rest_api_exception(exception: APIException):
     from base.exceptions.client import ClientError
-    
+
     code = extract_first_code(exception)
     return ClientError(
         extract_detail(exception), getattr(exception, 'status_code'), code

@@ -10,9 +10,9 @@ from mailings.serializers.general import (
 
 class MailingsView(ListModelMixin, CreateModelMixin, BaseAdminView):
     serializer_classes = {
-    'get': MailingsListSerializer,
-    'post': MailingsCreateSerializer,
-}
+        'get': MailingsListSerializer,
+        'post': MailingsCreateSerializer,
+    }
     queryset = Mailing.objects.all()
 
     def get(self, request):

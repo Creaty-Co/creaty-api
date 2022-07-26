@@ -11,12 +11,12 @@ from tags.models import Category, Tag
 
 class BasePersonalPageView(BaseView):
     queryset = Page.objects.prefetch_related(
-    'tag',
-    'category',
-    Prefetch(
-        'mentor_set', queryset=MentorsView.queryset.order_by('pagementorset__index')
-    ),
-)
+        'tag',
+        'category',
+        Prefetch(
+            'mentor_set', queryset=MentorsView.queryset.order_by('pagementorset__index')
+        ),
+    )
 
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())

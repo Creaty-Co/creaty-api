@@ -124,7 +124,7 @@ class UpdateMentorSerializer(serializers.ModelSerializer):
         many=True, write_only=True, partial=False
     )
     avatar = Base64ImageField(write_only=True)
-    
+
     class Meta:
         model = Mentor
         wo = {'write_only': True}
@@ -143,7 +143,7 @@ class UpdateMentorSerializer(serializers.ModelSerializer):
             'packages': {},
         }
         fields = list(extra_kwargs.keys())
-    
+
     def update(self, mentor, vd):
         if vd.get('info'):
             vd['info'] = _UpdateMentorInfoSerializer(partial=True).update(

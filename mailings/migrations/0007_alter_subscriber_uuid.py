@@ -6,11 +6,11 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    
+
     dependencies = [
         ('mailings', '0006_auto_20220313_1116'),
     ]
-    
+
     operations = [
         migrations.AlterField(
             model_name='subscriber',

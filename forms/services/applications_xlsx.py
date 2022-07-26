@@ -24,8 +24,8 @@ class ApplicationsXlsxConverter(BaseXlsxConverter):
     def _get_values(self):
         values = list(
             self.MODEL.objects.annotate(type=F('form__type'))
-                .order_by('type', 'id')
-                .values_list(*self.fields[:-1])
+            .order_by('type', 'id')
+            .values_list(*self.fields[:-1])
         )
         for i, value in enumerate(values):
             application_type = rFormType[value[0]]

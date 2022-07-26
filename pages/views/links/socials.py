@@ -17,9 +17,9 @@ from pages.serializers.links.socials import (
 
 class PagesLinksSocialsView(ListModelMixin, CreateModelMixin, BaseView):
     serializer_classes = {
-    'get': ListPagesLinksSocialsSerializer,
-    'post': CreatePagesLinksSocialsSerializer,
-}
+        'get': ListPagesLinksSocialsSerializer,
+        'post': CreatePagesLinksSocialsSerializer,
+    }
     permission_classes_map = {'post': BaseAdminView.permission_classes}
     queryset = SocialLink.objects.all()
 

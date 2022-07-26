@@ -9,15 +9,15 @@ class FormApplicationsSerializer(serializers.ModelSerializer):
         model = Application
         wo = {'write_only': True}
         extra_kwargs = {
-    'path': wo,
-    'name': wo,
-    'email': wo,
-    'telegram': wo,
-    'facebook': wo,
-    'whats_app': wo,
-    'viber': wo,
-    'about': wo,
-}
+            'path': wo,
+            'name': wo,
+            'email': wo,
+            'telegram': wo,
+            'facebook': wo,
+            'whats_app': wo,
+            'viber': wo,
+            'about': wo,
+        }
         fields = list(extra_kwargs.keys())
 
     def validate_path(self, path: str):

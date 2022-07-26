@@ -9,9 +9,9 @@ class _FormsFieldsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Field
         extra_kwargs = {
-    'type': {'help_text': choices_to_help_text(FormField)},
-    'placeholder': {'allow_blank': True},
-}
+            'type': {'help_text': choices_to_help_text(FormField)},
+            'placeholder': {'allow_blank': True},
+        }
         fields = ['type', 'placeholder']
 
 

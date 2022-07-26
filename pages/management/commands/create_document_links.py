@@ -8,7 +8,7 @@ class Command(BaseCommand):
     DEFAULT_DOCUMENT_LINKS = {
         t: {'url': 'https://google.com'} for t in DocumentLinkType
     }
-    
+
     def handle(self, *args, **options):
         is_reset = options.get('reset', False)
         for document_type, fields in self.DEFAULT_DOCUMENT_LINKS.items():

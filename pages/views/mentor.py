@@ -14,9 +14,9 @@ from pages.views import BaseMainPageView
 class PagesMainMentorView(BaseMainPageView):
     serializer_classes = {'patch': UpdatePageMentorSerializer}
     permission_classes_map = {
-    'patch': BaseAdminView.permission_classes,
-    'delete': BaseAdminView.permission_classes,
-}
+        'patch': BaseAdminView.permission_classes,
+        'delete': BaseAdminView.permission_classes,
+    }
 
     def patch(self, request, **kwargs):
         page = self.get_object()

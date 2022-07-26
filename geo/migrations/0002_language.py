@@ -13,21 +13,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Language',
             fields=[
-    (
-        'id',
-        models.BigAutoField(
-            auto_created=True,
-            primary_key=True,
-            serialize=False,
-            verbose_name='ID',
-        ),
-    ),
-    ('code', models.CharField(max_length=6, unique=True)),
-    ('name', models.TextField()),
-    ('name_ru', models.TextField(null=True)),
-    ('name_en', models.TextField(null=True)),
-    ('name_native', models.TextField()),
-],
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                ('code', models.CharField(max_length=6, unique=True)),
+                ('name', models.TextField()),
+                ('name_ru', models.TextField(null=True)),
+                ('name_en', models.TextField(null=True)),
+                ('name_native', models.TextField()),
+            ],
             options={
                 'ordering': ['id'],
                 'abstract': False,

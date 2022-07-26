@@ -13,17 +13,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Subscribe',
             fields=[
-    (
-        'id',
-        models.BigAutoField(
-            auto_created=True,
-            primary_key=True,
-            serialize=False,
-            verbose_name='ID',
-        ),
-    ),
-    ('email', models.EmailField(max_length=254)),
-],
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                ('email', models.EmailField(max_length=254)),
+            ],
             options={
                 'ordering': ['id'],
                 'abstract': False,

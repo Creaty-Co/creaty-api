@@ -17,9 +17,9 @@ from pages.serializers.faqs import (
 
 class PagesFaqsView(ListModelMixin, CreateModelMixin, BaseView):
     serializer_classes = {
-    'get': ListPagesFaqsSerializer,
-    'post': CreatePagesFaqsSerializer,
-}
+        'get': ListPagesFaqsSerializer,
+        'post': CreatePagesFaqsSerializer,
+    }
     permission_classes_map = {'post': BaseAdminView.permission_classes}
     queryset = Faq.objects.all()
 

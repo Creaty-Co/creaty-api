@@ -33,9 +33,9 @@ class PageService:
         raw_mentor_qs = Mentor.objects.order_by('?').nocache()
         tags_qs = (
             Tag.objects.annotate(Count('mentor'))
-                .exclude(mentor__count=0)
-                .order_by('?')
-                .nocache()
+            .exclude(mentor__count=0)
+            .order_by('?')
+            .nocache()
         )
         if page.tag is None:
             mentor_qs = raw_mentor_qs.filter(tag_set__category=page.category)
