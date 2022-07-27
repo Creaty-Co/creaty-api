@@ -44,6 +44,6 @@ class MentorInfo(AbstractModel):
     resume = models.TextField()
     what_help = models.TextField()
     experience = models.TextField()
-    portfolio = models.TextField()
+    portfolio = models.TextField(null=True, blank=True)  # 80
     language_set = models.ManyToManyField(Language)
     city = models.TextField()
