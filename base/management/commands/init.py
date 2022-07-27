@@ -2,12 +2,12 @@ from django.core.management.base import BaseCommand
 
 from forms.management.commands import create_forms
 from geo.management.commands import import_geo
-from pages.management.commands import create_document_links
+from pages.management.commands import create_document_links, create_locales
 
 
 class Command(BaseCommand):
     COMMANDS = [import_geo]
-    RESET_COMMANDS = [create_forms, create_document_links]
+    RESET_COMMANDS = [create_forms, create_document_links, create_locales]
 
     def handle(self, *args, **options):
         for command in self.COMMANDS:

@@ -1,4 +1,5 @@
-from django.urls import path
+from django.conf import settings
+from django.urls import path, re_path
 
 from .views import *
 
@@ -16,4 +17,9 @@ urlpatterns = [
     path('links/socials/<int:id>/', PagesLinksSocialView.as_view()),
     path('links/documents/', PagesLinksDocumentsView.as_view()),
     path('links/documents/<int:id>/', PagesLinksDocumentView.as_view()),
+    re_path(
+        f'locales/(?P<language>{"|".join(l[0] for l in settings.LANGUAGES)})'
+        f'/translation.json/',
+        PagesLocaleView.as_view(),
+    ),
 ]

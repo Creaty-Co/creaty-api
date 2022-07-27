@@ -3,3 +3,4 @@ from .mentor import *
 from .faqs import *
 from .links import *
 from .peronals import *
+from .locale import *

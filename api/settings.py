@@ -293,7 +293,7 @@ CACHEOPS_REDIS = REDIS_URL
 CACHEOPS_DEFAULTS = {
     'timeout': 60 * 5,
     'cache_on_save': True,
-    'ops': ['get', 'fetch', 'exists', 'count'],
+    'ops': ['get', 'fetch', 'exists'],
 }
 CACHEOPS = {
     'account.*': {},
@@ -301,9 +301,10 @@ CACHEOPS = {
     'geo.*': {'timeout': 60 * 60},
     'tags.*': {'timeout': 60 * 60},
     'mentors.*': {},
-    'forms.*': {},
+    'forms.Application': None,
+    'forms.*': {'timeout': 60 * 60},
     'mailings.*': {},
-    'pages.*': {},
+    'pages.*': {'timeout': 60 * 60},
 }
 
 CACHEOPS_DEGRADE_ON_FAILURE = True
