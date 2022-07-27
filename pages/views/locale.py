@@ -3,15 +3,16 @@ from rest_framework.mixins import UpdateModelMixin, RetrieveModelMixin
 
 from admin_.views import BaseAdminView
 from base.utils.decorators import schema_response_204
+from base.views import BaseView
 from pages.models import Locale
 from pages.serializers.locale import PagesLocaleSerializer
 
 
-class PagesLocaleView(RetrieveModelMixin, UpdateModelMixin, BaseAdminView):
+class PagesLocaleView(RetrieveModelMixin, UpdateModelMixin, BaseView):
     queryset = Locale.objects.all()
     lookup_field = 'language'
     serializer_classes = {'get': PagesLocaleSerializer, 'put': PagesLocaleSerializer}
-    permission_classes_map = {'get': ()}
+    permission_classes_map = {'get': (), 'put': BaseAdminView.permission_classes}
 
     def get(self, request, **_):
         return self.retrieve(request)
