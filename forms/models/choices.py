@@ -10,6 +10,7 @@ class FormType(TextChoices):
     CHOOSE_MENTOR = 'choose_mentor', 'Получить помощь в подборе ментора'
     TEST_MEETING = 'test_meeting', 'Беспатная тестовая встреча'
     STILL_QUESTIONS = 'still_questions', 'Ещё остались вопросы'
+    SIGNUP_MENTOR = 'signup_mentor', 'Записаться к ментору'
 
 
 FormType: Type[str] | Type[Choices]

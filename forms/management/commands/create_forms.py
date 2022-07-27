@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from forms.models import *
 from forms.models.choices import *
 
-_default_post_send_ru = 'Мы в ближайшее время свяжемся с вами, чтобы осбудить детали!'
+_default_post_send_ru = 'Мы в ближайшее время свяжемся с вами, чтобы обсудить детали!'
 _default_post_send_en = 'We will contact you soon to discuss the details!'
 _default_field_set = [
     {'type': FormField.NAME, 'placeholder_ru': 'Имя', 'placeholder_en': 'Name'},
@@ -40,12 +40,12 @@ class Command(BaseCommand):
             + [
                 {
                     'type': FormField.ABOUT,
-                    'placeholder_ru': 'Расскажите кратко о себе!\nМожно '
-                    'поделиться позже '
-                    ':)',
-                    'placeholder_en': 'Tell us briefly about '
-                    'yourself!\nYou can share it '
-                    'later :)',
+                    'placeholder_ru': (
+                        'Расскажите кратко о себе!\nМожно поделиться позже :)'
+                    ),
+                    'placeholder_en': (
+                        'Tell us briefly about yourself!\nYou can share it later :)'
+                    ),
                 }
             ],
         },
@@ -56,12 +56,13 @@ class Command(BaseCommand):
             + [
                 {
                     'type': FormField.ABOUT,
-                    'placeholder_ru': 'С чем требуется помощь '
-                    'ментора?\nМожно обсудить '
-                    'позже :)',
-                    'placeholder_en': 'What does a mentor need help '
-                    'with?\nWe can discuss '
-                    'it later :)',
+                    'placeholder_ru': (
+                        'С чем требуется помощь ментора?\nМожно обсудить позже :)'
+                    ),
+                    'placeholder_en': (
+                        'What does a mentor need help with?\nWe can '
+                        'discuss it later :)'
+                    ),
                 }
             ],
         },
@@ -72,16 +73,21 @@ class Command(BaseCommand):
             + [
                 {
                     'type': FormField.ABOUT,
-                    'placeholder_ru': 'С чем требуется помощь '
-                    'ментора?\nМожно обсудить '
-                    'позже :)',
-                    'placeholder_en': 'What does a mentor need help '
-                    'with?\nWe can discuss '
-                    'it later :)',
+                    'placeholder_ru': (
+                        'С чем требуется помощь ментора?\nМожно обсудить позже :)'
+                    ),
+                    'placeholder_en': (
+                        'What does a mentor need help with?\nWe can discuss it later :)'
+                    ),
                 }
             ],
         },
         FormType.STILL_QUESTIONS: {
+            'post_send_ru': _default_post_send_ru,
+            'post_send_en': _default_post_send_en,
+            'field_set': _default_field_set,
+        },
+        FormType.SIGNUP_MENTOR: {
             'post_send_ru': _default_post_send_ru,
             'post_send_en': _default_post_send_en,
             'field_set': _default_field_set,

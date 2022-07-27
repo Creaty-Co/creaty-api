@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from pages.models import DocumentLink
@@ -6,7 +7,7 @@ from pages.models.choices import DocumentLinkType
 
 class Command(BaseCommand):
     DEFAULT_DOCUMENT_LINKS = {
-        t: {'url': 'https://google.com'} for t in DocumentLinkType
+        t: {'url': f'https://{settings.WEB_DOMAIN}'} for t in DocumentLinkType
     }
 
     def handle(self, *args, **options):
