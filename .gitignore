@@ -12,6 +12,7 @@ logs/logs.log
 envs/
 certs/
 web/
+profiles/
 
 # Custom
 ###
