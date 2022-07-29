@@ -13,7 +13,8 @@ services:
     env_file:
       - .env
     volumes:
-      - static_volume:/api/staticfiles
+      - static_volume:/api/static
+      - profile_volume:/api/profile
     ports:
       - "8000:8000"
     depends_on:
@@ -40,7 +41,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - static_volume:/api/staticfiles
+      - static_volume:/api/static
       - web_volume:/usr/share/nginx/html
       - ./nginx.conf.conf:/etc/nginx/templates/nginx.conf.conf:ro
       - ./certs:/api/certs
@@ -73,6 +74,7 @@ services:
 volumes:
   static_volume:
   web_volume:
+  profile_volume:
 
 networks:
   redis_network:

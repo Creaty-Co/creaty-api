@@ -10,7 +10,7 @@
 schema.yaml
 .idea/
 dumps/
-staticfiles/
+static/
 media/
 logs/logs.log
 envs/

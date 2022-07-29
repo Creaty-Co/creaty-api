@@ -91,6 +91,7 @@ import importlib
 from datetime import timedelta
 from functools import partial
 from pathlib import Path
+import os
 
 # noinspection PyPackageRequirements
 import environ
@@ -197,7 +198,7 @@ INSTALLED_APPS = [
     'django_countries',
     'djmoney',
     'djmoney.contrib.exchange',
-    *(['debug_toolbar'] if DEBUG else []),
+    'silk',
     'django.contrib.admin',
     'base',
     'account',
@@ -226,16 +227,12 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    *(['debug_toolbar.middleware.DebugToolbarMiddleware'] if DEBUG else []),
-    'base.middlewares.RequestLogMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 TEMPLATES = [
@@ -264,8 +261,6 @@ ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 INTERNAL_IPS = []
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-DEBUG_TOOLBAR_CONFIG = {'SHOW_TOOLBAR_CALLBACK': lambda *_, **__: True}
 
 # allow
 ###
@@ -296,6 +291,7 @@ CACHEOPS_DEFAULTS = {
     'ops': ['get', 'fetch', 'exists'],
 }
 CACHEOPS = {
+    'authtoken.*': {},
     'account.*': {},
     'admin_.*': {},
     'geo.*': {'timeout': 60 * 60},
@@ -396,11 +392,30 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # static
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR + 'staticfiles'
+STATIC_ROOT = BASE_DIR + 'static'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # static
+###
+
+###
+# silk
+
+SILKY_INTERCEPT_FUNC = lambda r: DEBUG
+
+SILKY_META = True
+SILKY_ANALYZE_QUERIES = True
+SILKY_PYTHON_PROFILER = True
+SILKY_PYTHON_PROFILER_BINARY = True
+SILKY_PYTHON_PROFILER_RESULT_PATH = BASE_DIR + 'profiles/'
+if not os.path.exists(SILKY_PYTHON_PROFILER_RESULT_PATH):
+    os.makedirs(SILKY_PYTHON_PROFILER_RESULT_PATH)
+
+SILKY_MAX_RECORDED_REQUESTS = 1_000
+SILKY_MAX_RECORDED_REQUESTS_CHECK_PERCENT = 50
+
+# silk
 ###
 
 ###
@@ -433,8 +448,6 @@ REDIRECT_ON_UNSUBSCRIBE = env('REDIRECT_ON_UNSUBSCRIBE')
 # auth
 
 AUTH_PASSWORD_VALIDATORS = [
-    # {'NAME': 'django.contrib.auth.password_validation
-    # .UserAttributeSimilarityValidator'}
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS': {'min_length': 6},

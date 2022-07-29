@@ -11,6 +11,8 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import set_rollback
 from rest_framework.viewsets import ViewSetMixin
+# noinspection PyPackageRequirements
+from silk.profiling.profiler import silk_profile
 
 from base.exceptions import *
 from base.permissions.base import BasePermission
@@ -111,7 +113,13 @@ class BaseView(GenericAPIView):
             if issubclass(class_, ViewSchemaMixin):
                 responses |= class_.to_schema()
 
-            setattr(class_, method_name, extend_schema(responses=responses)(method))
+            setattr(
+                class_,
+                method_name,
+                silk_profile(name=f'{cls.__name__}__{method_name}')(
+                    extend_schema(responses=responses)(method)
+                ),
+            )
 
     @classmethod
     def as_view(cls, **initkwargs):
