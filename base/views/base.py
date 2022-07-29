@@ -11,6 +11,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import set_rollback
 from rest_framework.viewsets import ViewSetMixin
+
 # noinspection PyPackageRequirements
 from silk.profiling.profiler import silk_profile
 
