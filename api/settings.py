@@ -288,21 +288,21 @@ REDIS_URL = env.cache('REDIS_URL')['LOCATION']
 CACHEOPS_REDIS = REDIS_URL
 
 CACHEOPS_DEFAULTS = {
-    'timeout': 60 * 5,
+    'timeout': 60 * 60,
     'cache_on_save': True,
-    'ops': ['get', 'fetch', 'exists'],
+    'ops': ['get', 'fetch', 'exists', 'count'],
 }
 CACHEOPS = {
-    'authtoken.*': {},
-    'account.*': {},
+    'authtoken.*': {'timeout': 60 * 60 * 8},
+    'account.*': {'timeout': 60 * 60 * 2},
     'admin_.*': {},
-    'geo.*': {'timeout': 60 * 60},
-    'tags.*': {'timeout': 60 * 60},
+    'geo.*': {'local_get': True},
+    'tags.*': {'timeout': 60 * 60 * 4},
     'mentors.*': {},
     'forms.Application': None,
-    'forms.*': {'timeout': 60 * 60},
+    'forms.*': {'timeout': 60 * 60 * 4},
     'mailings.*': {},
-    'pages.*': {'timeout': 60 * 60},
+    'pages.*': {'timeout': 60 * 60 * 4},
 }
 
 CACHEOPS_DEGRADE_ON_FAILURE = True
