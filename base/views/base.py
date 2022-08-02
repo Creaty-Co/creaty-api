@@ -114,18 +114,12 @@ class BaseView(GenericAPIView):
             if issubclass(class_, ViewSchemaMixin):
                 responses |= class_.to_schema()
 
-            setattr(
-                class_,
-                method_name,
-                silk_profile(name=f'{cls.__name__}__{method_name}')(
-                    extend_schema(responses=responses)(method)
-                ),
-            )
+            setattr(cls, method_name, extend_schema(responses=responses)(method))
 
     @classmethod
     def as_view(cls, **initkwargs):
         cls._to_schema(cls)
-        return csrf_exempt(super().as_view(**initkwargs))
+        return silk_profile(name='view')(csrf_exempt(super().as_view(**initkwargs)))
 
     def handle_exception(self, exception):
         return _exception_handler(exception)

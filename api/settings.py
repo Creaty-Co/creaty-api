@@ -124,7 +124,7 @@ env = environ.Env(
         dict,
         {
             'api': '%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%('
-            'lineno)d)>: %(message)s',
+                   'lineno)d)>: %(message)s',
             'web': 'WEB     | %(asctime)s: %(message)s',
         },
     ),
@@ -134,6 +134,7 @@ env = environ.Env(
     UPDATE_RATES_INTERVAL=(int, 60 * 60 * 8),
     API_DOMAIN=(str, 'api.local.dev'),
     WEB_DOMAIN=(str, 'local.dev'),
+    USE_SILK=(bool, True),
 )
 
 if Path(env('ENV_FILE')).exists():
@@ -403,7 +404,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ###
 # silk
 
-SILKY_INTERCEPT_FUNC = lambda r: DEBUG
+USE_SILK = env('USE_SILK')
+SILKY_INTERCEPT_FUNC = lambda r: USE_SILK
 
 SILKY_META = True
 SILKY_ANALYZE_QUERIES = True
