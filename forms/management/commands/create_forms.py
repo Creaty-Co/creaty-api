@@ -88,10 +88,21 @@ class Command(BaseCommand):
             'field_set': _default_field_set,
         },
         FormType.SIGNUP_MENTOR: {
-            'post_send_ru': _default_post_send_ru,
-            'post_send_en': _default_post_send_en,
-            'field_set': _default_field_set,
-        },
+    'post_send_ru': _default_post_send_ru,
+    'post_send_en': _default_post_send_en,
+    'field_set': _default_field_set
+    + [
+        {
+            'type': FormField.ABOUT,
+            'placeholder_ru': (
+                'С чем требуется помощь ментора?\nМожно обсудить позже :)'
+            ),
+            'placeholder_en': (
+                'What does a mentor need help with?\nWe can ' 'discuss it later :)'
+            ),
+        }
+    ],
+},
     }
 
     def handle(self, *args, **options):
