@@ -4,6 +4,7 @@ from rest_framework import serializers
 from base.utils.functions import choices_to_help_text
 from geo.models import Country
 from mentors.models import Mentor, MentorInfo
+from pages.models import Page
 
 
 class _ListAdminMentorsInfoSerializer(serializers.ModelSerializer):
@@ -18,9 +19,16 @@ class _ListAdminMentorsCountrySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
+class _ListAdminMentorsPagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = ['id', 'tag', 'category']
+
+
 class ListAdminMentorsSerializer(serializers.ModelSerializer):
     info = _ListAdminMentorsInfoSerializer()
     country = _ListAdminMentorsCountrySerializer()
+    pages = _ListAdminMentorsPagesSerializer(many=True, source='page_set')
 
     class Meta:
         model = Mentor
@@ -40,4 +48,5 @@ class ListAdminMentorsSerializer(serializers.ModelSerializer):
             'price',
             'price_currency',
             'country',
+            'pages',
         ]
