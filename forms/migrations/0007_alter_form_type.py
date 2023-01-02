@@ -13,6 +13,15 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='form',
             name='type',
-            field=models.TextField(choices=[('become_mentor', 'Станьте ментором'), ('choose_mentor', 'Получить помощь в подборе ментора'), ('test_meeting', 'Беспатная тестовая встреча'), ('still_questions', 'Ещё остались вопросы'), ('signup_mentor', 'Записаться к ментору')], unique=True),
+            field=models.TextField(
+                choices=[
+                    ('become_mentor', 'Станьте ментором'),
+                    ('choose_mentor', 'Получить помощь в подборе ментора'),
+                    ('test_meeting', 'Беспатная тестовая встреча'),
+                    ('still_questions', 'Ещё остались вопросы'),
+                    ('signup_mentor', 'Записаться к ментору'),
+                ],
+                unique=True,
+            ),
         ),
     ]

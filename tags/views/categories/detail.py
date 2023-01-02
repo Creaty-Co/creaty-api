@@ -1,4 +1,4 @@
-from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
+from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
 
 from admin_.views import BaseAdminView
 from tags.models import Category

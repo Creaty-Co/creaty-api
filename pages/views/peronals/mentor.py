@@ -1,7 +1,7 @@
 from admin_.views import BaseAdminView
 from pages.serializers.mentor import UpdatePageMentorSerializer
-from pages.views.peronals.base import BasePersonalPageView
 from pages.views.mentor import PagesMainMentorView
+from pages.views.peronals.base import BasePersonalPageView
 
 
 class PagesPersonalMentorView(BasePersonalPageView, PagesMainMentorView):

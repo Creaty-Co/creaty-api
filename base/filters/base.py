@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.forms import SimpleArrayField
-from django_filters import filterset, rest_framework as filters
+from django_filters import filterset
+from django_filters import rest_framework as filters
 from django_filters.rest_framework.filters import Filter
 
 

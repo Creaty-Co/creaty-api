@@ -1,7 +1,8 @@
 import string
 
 from drf_spectacular.utils import OpenApiResponse
-from rest_framework import serializers, status as rest_status
+from rest_framework import serializers
+from rest_framework import status as rest_status
 from rest_framework.exceptions import Throttled
 
 from base.exceptions.base import *

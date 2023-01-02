@@ -1,6 +1,5 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template import Template
-
 from django.template.context import make_context
 from django.utils.functional import cached_property
 from templated_mail.mail import BaseEmailMessage

@@ -1,7 +1,19 @@
 from django.conf import settings
 from django.urls import path, re_path
 
-from .views import *
+from .views import (
+    PagesFaqsView,
+    PagesFaqView,
+    PagesLinksDocumentsView,
+    PagesLinksDocumentView,
+    PagesLinksSocialsView,
+    PagesLinksSocialView,
+    PagesLocaleView,
+    PagesMainMentorView,
+    PagesMainView,
+    PagesPersonalMentorView,
+    PagesPersonalView,
+)
 
 urlpatterns = [
     path('main/', PagesMainView.as_view()),

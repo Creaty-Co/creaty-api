@@ -13,9 +13,9 @@ from tags.serializers.categories.general import (
 
 class TagsCategoriesView(ListModelMixin, CreateModelMixin, BaseView):
     serializer_classes = {
-    'get': ListTagsCategoriesSerializer,
-    'post': CreateTagsCategoriesSerializer,
-}
+        'get': ListTagsCategoriesSerializer,
+        'post': CreateTagsCategoriesSerializer,
+    }
     permission_classes_map = {'post': BaseAdminView.permission_classes}
     queryset = Category.objects.prefetch_related('tag_set')
 

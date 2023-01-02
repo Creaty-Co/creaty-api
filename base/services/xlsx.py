@@ -1,4 +1,6 @@
-from typing import Iterable, Type
+from __future__ import annotations
+
+from collections.abc import Iterable
 
 import tablib
 from django.http import HttpResponse
@@ -7,7 +9,7 @@ from base.models import AbstractModel
 
 
 class BaseXlsxConverter:
-    MODEL: Type[AbstractModel]
+    MODEL: type[AbstractModel]
     CONTENT_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
     def __init__(self, field_header_map: dict[str, str], filename: str = None):

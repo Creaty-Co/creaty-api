@@ -1,12 +1,12 @@
 import json
 
-from django.conf import settings, global_settings
+from django.conf import global_settings, settings
 from django.core.management.base import BaseCommand
 from django.utils import translation
 from django.utils.translation import gettext_lazy
 from django_countries import countries as raw_countries
 
-from geo.models import *
+from geo.models import Country, Language
 
 
 def _get_name(code):

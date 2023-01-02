@@ -1,4 +1,4 @@
-from django.db.models import Prefetch, Count
+from django.db.models import Count, Prefetch
 
 from admin_.permissions import IsAdminPermission
 from base.views.base import BaseView

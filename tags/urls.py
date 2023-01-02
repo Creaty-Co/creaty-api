@@ -1,6 +1,12 @@
 from django.urls import path
 
-from .views import *
+from .views import (
+    TagsCategoriesView,
+    TagsCategoryTagsView,
+    TagsCategoryView,
+    TagsView,
+    TagView,
+)
 
 urlpatterns = [
     path('', TagsView.as_view()),

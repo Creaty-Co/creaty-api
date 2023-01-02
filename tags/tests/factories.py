@@ -3,7 +3,7 @@ import random
 import factory
 from factory.django import DjangoModelFactory
 
-from tags.models import Tag, Category
+from tags.models import Category, Tag
 
 
 class CategoryFactory(DjangoModelFactory):

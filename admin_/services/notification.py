@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from account.models import User
 from account.models.choices import UserType
 from forms.models import Application
-from forms.models.choices import rFormType, rFormField
+from forms.models.choices import rFormField, rFormType
 
 
 class AdminNotificationService:

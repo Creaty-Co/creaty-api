@@ -1,3 +1,3 @@
-from .general import *
-from .detail import *
 from .applications import *
+from .detail import *
+from .general import *

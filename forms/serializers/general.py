@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from base.utils.functions import choices_to_help_text
-from forms.models import Form, Field
-from forms.models.choices import *
+from forms.models import Field, Form
+from forms.models.choices import FormField, FormType
 
 
 class _FormsFieldsSerializer(serializers.ModelSerializer):

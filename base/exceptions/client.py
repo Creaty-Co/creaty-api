@@ -7,8 +7,8 @@ from rest_framework.exceptions import (
     ParseError,
     PermissionDenied,
     UnsupportedMediaType,
-    ValidationError as RestValidationError,
 )
+from rest_framework.exceptions import ValidationError as RestValidationError
 
 from base.exceptions.base import *
 from base.exceptions.utils import client_error_cast_rest_api_exception

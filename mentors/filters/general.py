@@ -1,5 +1,5 @@
+from base.filters.base import ArrayFilter, BaseFilterSet, forms
 from mentors.models import Mentor
-from base.filters.base import *
 
 
 class MentorsFilterSet(BaseFilterSet):

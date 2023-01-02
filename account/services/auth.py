@@ -3,7 +3,7 @@ from __future__ import annotations
 from django.conf import settings
 from django.contrib.auth import login, logout
 
-from account.models import User, Token
+from account.models import Token, User
 from base.logs import debug
 
 

@@ -2,8 +2,8 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.throttling import UserRateThrottle
 
 from account.authentications.token import TokenAuthentication
-from base.views.base import BaseView
 from account.permissions import IsAuthenticatedPermission
+from base.views.base import BaseView
 
 __all__ = ['BaseAuthView']
 

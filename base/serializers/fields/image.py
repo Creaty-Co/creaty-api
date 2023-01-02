@@ -1,5 +1,5 @@
-from drf_base64.fields import Base64ImageField as _Base64ImageField
 from django_svg_image_form_field import SvgAndImageFormField
+from drf_base64.fields import Base64ImageField as _Base64ImageField
 from rest_framework.fields import SkipField
 
 

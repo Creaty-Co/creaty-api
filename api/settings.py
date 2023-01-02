@@ -1,102 +1,15 @@
-"""
-Environment requirements:
-    Environ:
-        ENV_FILE:
-            :type: str
-            :default: .env
-    
-    Django:
-        *SECRET_KEY:
-            :type: str
-        DEBUG:
-            :type: bool
-            :default: False
-        TEST:
-            :type: bool
-            :default: False
-    
-    Email:
-        *EMAIL_URL:
-            :type: str
-            :pattern: smtp(+ssl)?://.+
-        EMAIL_BACKEND:
-            :type: str
-            :choices:
-                console
-                smtp
-            :default: console
-    
-    Database:
-        *DATABASE_URL:
-            :type: str
-            :pattern: psql://.+
-    
-    Redis:
-        *REDIS_URL:
-            :type: str
-            :pattern: redis://.+
-        CELERY_REDIS_MAX_CONNECTIONS:
-            :type: int
-            :default: 10
-    
-    Logs:
-        LOG_CONF:
-            :type: dict
-            :pattern: logger=handler,...;...
-            :default: {'api': ['api_console'], 'django.server': ['web_console']}
-        LOG_LEVEL: dict
-        LOG_FORMATTERS:
-            :type: dict
-            :pattern: logger=format;...
-            :default: {
-                'api': '%(levelname)-8s| %(name)s %(asctime)s '
-                       '<%(module)s->%(funcName)s(%(lineno)d)>: %(message)s',
-                'web': 'WEB     | %(asctime)s: %(message)s'
-            }
-        LOG_PRETTY:
-            :type: bool
-            :default: True
-        LOG_MAX_LENGTH:
-            :type: int
-            :default: 130
-        ADMINS:
-            :type: dict
-            :pattern: name=email,level,...;...
-            :default: {}
-    
-    Redirects:
-        *EDIRECT_ON_UNSUBSCRIBE:
-            :type: str
-    
-    Celery beat:
-        UPDATE_RATES_INTERVAL:
-            :type: int
-            :default: 60 * 60 * 8
-    
-    Cloudinary:
-        *CLOUDINARY_URL:
-            :type: str
-            :pattern: cloudinary://.+
-    
-    Fixer:
-        *FIXER_ACCESS_KEY:
-            :type: str
-"""
-
 ###
 # imports
 
 import base64
 import importlib
+import os
 from datetime import timedelta
 from functools import partial
 from pathlib import Path
-import os
 
 # noinspection PyPackageRequirements
 import environ
-from celery.schedules import crontab
-from django.template.context_processors import media
 from pybase64 import b64decode, b64encode
 
 from base.logs.configs import LogConfig
@@ -124,7 +37,7 @@ env = environ.Env(
         dict,
         {
             'api': '%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%('
-                   'lineno)d)>: %(message)s',
+            'lineno)d)>: %(message)s',
             'web': 'WEB     | %(asctime)s: %(message)s',
         },
     ),
@@ -405,7 +318,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # silk
 
 USE_SILK = env('USE_SILK')
-SILKY_INTERCEPT_FUNC = lambda r: USE_SILK
+SILKY_INTERCEPT_FUNC = lambda r: USE_SILK  # noqa: E731
 
 SILKY_META = True
 SILKY_ANALYZE_QUERIES = True

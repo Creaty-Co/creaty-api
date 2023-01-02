@@ -1,4 +1,7 @@
-from typing import Any, Iterable, Type, TypeVar
+from __future__ import annotations
+
+from collections.abc import Iterable
+from typing import Any, TypeVar
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 from django.db import models
@@ -28,7 +31,7 @@ def status_by_method(method: str) -> int:
 
 
 def choices_to_help_text(
-    choices: Type[models.Choices] | Iterable[tuple[Any, str]]
+    choices: type[models.Choices] | Iterable[tuple[Any, str]]
 ) -> str:
     transcripts = []
     if isinstance(choices, type) and issubclass(choices, Choices):
@@ -41,11 +44,11 @@ def choices_to_help_text(
     return '\n\n'.join(transcripts)
 
 
-def reverse_choices(choices: Type[_Choices]) -> dict[Any, _Choices]:
+def reverse_choices(choices: type[_Choices]) -> dict[Any, _Choices]:
     return {member.value: member for member in choices}
 
 
-def choices_to_dict(choices: Type[_Choices]) -> dict[Any, _Choices]:
+def choices_to_dict(choices: type[_Choices]) -> dict[Any, _Choices]:
     return {member.name: member for member in choices}
 
 
@@ -59,7 +62,7 @@ def add_query_params(url: str, **query_params: Any) -> str:
 
 def schema_serializer(
     _name: str, **fields: serializers.Field
-) -> Type[serializers.Serializer]:
+) -> type[serializers.Serializer]:
     if not _name.endswith('Serializer'):
         _name += 'Serializer'
     # noinspection PyTypeChecker

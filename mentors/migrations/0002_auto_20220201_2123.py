@@ -2,8 +2,8 @@
 
 from decimal import Decimal
 
-from django.db import migrations
 import djmoney.models.fields
+from django.db import migrations
 
 
 class Migration(migrations.Migration):

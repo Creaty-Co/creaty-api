@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Type
-
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from drf_spectacular.utils import extend_schema
@@ -58,16 +56,16 @@ class BaseView(GenericAPIView):
     ordering = 'id'
     serializer_class = EmptySerializer
     serializer_classes: dict[
-        str, tuple[int, Type[serializers.Serializer]] | Type[serializers.Serializer]
+        str, tuple[int, type[serializers.Serializer]] | type[serializers.Serializer]
     ] = {}
     permission_classes_map: dict[
-        str, list[Type[BasePermission]] | tuple[Type[BasePermission]]
+        str, list[type[BasePermission]] | tuple[type[BasePermission]]
     ] = {}
 
     @classmethod
     def _extract_serializer_class_with_status(
         cls, method_name: str
-    ) -> tuple[int, Type[serializers.Serializer]] | None:
+    ) -> tuple[int, type[serializers.Serializer]] | None:
         serializer_class = cls.serializer_classes.get(method_name)
         if serializer_class and issubclass(serializer_class, serializers.Serializer):
             status = status_by_method(method_name)
@@ -97,7 +95,7 @@ class BaseView(GenericAPIView):
         return permissions or super().get_permissions()
 
     @classmethod
-    def _to_schema(cls, class_: Type[BaseView]) -> None:
+    def _to_schema(cls, class_: type[BaseView]) -> None:
         for method_name in class_.http_method_names:
             try:
                 method = getattr(class_, method_name)

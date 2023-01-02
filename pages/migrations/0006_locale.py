@@ -13,8 +13,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Locale',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('language', models.TextField(choices=[('ru', 'Русский'), ('en', 'Английский')], unique=True)),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'language',
+                    models.TextField(
+                        choices=[('ru', 'Русский'), ('en', 'Английский')], unique=True
+                    ),
+                ),
                 ('json', models.JSONField()),
             ],
             options={

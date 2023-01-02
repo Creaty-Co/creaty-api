@@ -14,12 +14,12 @@ class TagsCategorySerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'id': {},
             'shortcut': wo
-                        | {
-                            'validators': [
-                                UniqueValidator(Tag.objects.all()),
-                                UniqueValidator(Category.objects.all()),
-                            ]
-                        },
+            | {
+                'validators': [
+                    UniqueValidator(Tag.objects.all()),
+                    UniqueValidator(Category.objects.all()),
+                ]
+            },
             'title': wo,
             'icon': {},
         }
