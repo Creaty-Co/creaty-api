@@ -1,0 +1,41 @@
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "⬆️ "
+    pull-request-branch-name:
+      separator: "-"
+    reviewers:
+      - "GentleEnvy"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "⬆️ "
+    pull-request-branch-name:
+      separator: "-"
+    reviewers:
+      - "GentleEnvy"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "⬆️ "
+    pull-request-branch-name:
+      separator: "-"
+    reviewers:
+      - "GentleEnvy"

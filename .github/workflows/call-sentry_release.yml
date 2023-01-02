@@ -1,0 +1,38 @@
+name: "Call: Sentry ralease"
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      version:
+        required: false
+        type: string
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        type: string
+      version:
+        required: false
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3.2.0
+        with:
+          fetch-depth: 0
+      - name: Create Sentry release
+        if: false  # FIXME: убрать, когда будет secrets.SENTRY_AUTH_TOKEN
+        uses: getsentry/action-release@v1.2.1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: creaty
+          SENTRY_PROJECT: creaty
+        with:
+          ignore_empty: true
+          environment: ${{ inputs.environment }}
+          version: ${{ inputs.version }}
