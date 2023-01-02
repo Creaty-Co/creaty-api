@@ -7,7 +7,7 @@ from mentors.models import Mentor
 
 class AdminMentorsView(ListModelMixin, BaseAdminView):
     serializer_classes = {'get': ListAdminMentorsSerializer}
-    queryset = Mentor.objects.all()
+    queryset = Mentor.objects.prefetch_related('page_set')
 
     def get(self, request):
         return self.list(request)
