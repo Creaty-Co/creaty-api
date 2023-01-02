@@ -1,9 +1,9 @@
-name: "Push: master"
+name: "Push: main"
 
 on:
   push:
     branches:    
-      - 'master'
+      - 'main'
 
 jobs:
   ci:
