@@ -1,0 +1,43 @@
+name: "Push: create PR"
+
+on:
+  push:
+    branches:
+      - task-*
+
+jobs:
+  create:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3.2.0
+      - name: Get task number
+        id: get_task_number
+        run: |
+          branch_name=${GITHUB_REF##*/}
+          number=${branch_name/task-/}
+          echo VAL=$number >> $GITHUB_OUTPUT
+      - name: Get author
+        id: get_author
+        run: |
+          author=${{ github.event.commits[0].author.username }}
+          upper=$(echo ${author^^})
+          echo VAL=$author >> $GITHUB_OUTPUT
+          echo UPPER=$upper >> $GITHUB_OUTPUT
+      - name: Get token
+        id: get_token
+        run: |
+          author=${{ steps.get_author.outputs.UPPER }}
+          token=$(echo '${{ toJSON(secrets) }}' | python -c \
+            "import sys, json;print(json.load(sys.stdin).get ('${author}_TOKEN', ''))"
+          )
+          if [[ $token == "" ]]; then exit 0; fi
+          echo VAL=$token >> $GITHUB_OUTPUT
+      - if: ${{ steps.get_token.outputs.VAL }}
+        uses: repo-sync/pull-request@v2.11
+        with:
+          pr_title: ${GITHUB_REF##*/}
+          pr_body: "close #${{ steps.get_task_number.outputs.VAL }}"
+          pr_assignee: ${{ steps.get_author.outputs.VAL }}
+          pr_draft: true
+          pr_allow_empty: true
+          github_token: ${{ steps.get_token.outputs.VAL }}

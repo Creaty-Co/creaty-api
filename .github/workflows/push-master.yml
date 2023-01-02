@@ -1,0 +1,11 @@
+name: "Push: master"
+
+on:
+  push:
+    branches:    
+      - 'master'
+
+jobs:
+  update_prs:
+    uses: ./.github/workflows/call-update_prs.yml
+    secrets: inherit
