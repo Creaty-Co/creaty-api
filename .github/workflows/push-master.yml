@@ -1,0 +1,14 @@
+name: "Push: master"
+
+on:
+  push:
+    branches:    
+      - 'master'
+
+jobs:
+  ci:
+    uses: ./.github/workflows/call-ci.yml
+    secrets: inherit
+  update_prs:
+    uses: ./.github/workflows/call-update_prs.yml
+    secrets: inherit

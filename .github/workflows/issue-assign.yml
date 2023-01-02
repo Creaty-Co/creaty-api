@@ -1,0 +1,14 @@
+name: "Issue: assign"
+
+on:
+  issues:
+    types: [ opened ]
+
+jobs:
+  assign:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: pozil/auto-assign-issue@v1.11.0
+        with:
+            assignees: GentleEnvy
+            abortIfPreviousAssignees: true
