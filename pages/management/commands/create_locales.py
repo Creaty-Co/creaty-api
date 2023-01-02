@@ -20,7 +20,7 @@ class Command(BaseCommand):
                 locale = Locale(language=language)
             elif not is_reset:
                 return
-            with open(self.DEFAULT_JSON_FILES[language], 'r') as default_json:
+            with open(self.DEFAULT_JSON_FILES[language]) as default_json:
                 locale.json = json.load(default_json)
             locale.save()
 

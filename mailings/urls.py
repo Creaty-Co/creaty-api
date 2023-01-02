@@ -1,6 +1,13 @@
 from django.urls import path
 
-from .views import *
+from .views import (
+    MailingSendView,
+    MailingsSubscribersXlsxView,
+    MailingsSubscribeView,
+    MailingsUnsubscribeView,
+    MailingsView,
+    MailingView,
+)
 
 urlpatterns = [
     path('subscribe/', MailingsSubscribeView.as_view()),

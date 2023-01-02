@@ -1,7 +1,7 @@
+from django.dispatch import receiver as _receiver
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import status
 from rest_framework.response import Response
-from django.dispatch import receiver as _receiver
 
 
 def schema_response_204(f):

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import *
+from .views import AccountsMeView, AccountsTokenView
 
 urlpatterns = [
     path('token/', AccountsTokenView.as_view()),

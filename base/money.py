@@ -1,7 +1,7 @@
 from django.conf import settings
 from djmoney.contrib.exchange.models import convert_money
-from djmoney.money import Money as _Money
 from djmoney.models import fields
+from djmoney.money import Money as _Money
 
 
 class Money(_Money):

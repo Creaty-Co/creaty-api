@@ -1,6 +1,6 @@
 from django.http import Http404
 from rest_framework import serializers
-from rest_framework.mixins import UpdateModelMixin, RetrieveModelMixin
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 from rest_framework.response import Response
 
 from admin_.views import BaseAdminView

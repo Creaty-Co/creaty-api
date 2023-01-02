@@ -1,4 +1,4 @@
-from modeltranslation.translator import register, TranslationOptions
+from modeltranslation.translator import TranslationOptions, register
 
 from forms.models import *
 from geo.models import *
