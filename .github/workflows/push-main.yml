@@ -9,3 +9,12 @@ jobs:
   update_prs:
     uses: ./.github/workflows/call-update_prs.yml
     secrets: inherit
+  sentry_release:
+    uses: ./.github/workflows/call-sentry_release.yml
+    with:
+      environment: stage
+    secrets: inherit
+  release_draft:
+    uses: ./.github/workflows/call-release_draft.yml
+    secrets: inherit
+    needs: [ update_prs ]
