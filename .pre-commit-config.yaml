@@ -1,0 +1,52 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-ast
+      - id: debug-statements
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: detect-private-key
+
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.9.0
+    hooks:
+      - id: python-no-eval
+      - id: python-no-log-warn
+      - id: python-check-mock-methods
+      - id: python-use-type-annotations
+      - id: text-unicode-replacement-char
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.3.1
+    hooks:
+      - id: pyupgrade
+
+  - repo: https://github.com/sondrelg/pep585-upgrade
+    rev: v1.0
+    hooks:
+      - id: upgrade-type-hints
+        args: [ --futures=true ]
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.11.4
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.0.0
+    hooks:
+      - id: autoflake
+
+  - repo: https://github.com/psf/black
+    rev: 22.12.0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        fail_fast: true
+        additional_dependencies: [ flake8-print==5.0.0 ]

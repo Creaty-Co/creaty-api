@@ -1,0 +1,6 @@
+[run]
+omit =
+    manage.py
+    api/*
+    */migrations/*
+    base/*
