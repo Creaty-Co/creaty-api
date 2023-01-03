@@ -1,0 +1,25 @@
+name: "Issue: mark not_milestone"
+
+on:
+  issues:
+    types: [ unlabeled, labeled, opened, reopened, milestoned ]
+
+jobs:
+  mark:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Add label not_milestone
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          repo=${{ github.repository }}
+          number=${{ github.event.issue.number }}
+          label=$(gh api repos/$repo/issues/$number/labels \
+            --jq '.[] | select(.name == "task" or .name == "test" or .name == "devops")'
+          )
+          milestone=$(gh api repos/$repo/issues/$number --jq .milestone)
+          if [ -z "$milestone" ] && [ -n "$label" ]; then
+            gh issue edit $number -R $repo --add-label not_milestone
+          else
+            gh issue edit $number -R $repo --remove-label not_milestone
+          fi
