@@ -10,10 +10,15 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3.2.0
+      - name: Get branch name
+        id: get_branch_name
+        run: |
+          branch_name=${GITHUB_REF##*/}
+          echo VAL=$branch_name >> $GITHUB_OUTPUT
       - name: Get task number
         id: get_task_number
         run: |
-          branch_name=${GITHUB_REF##*/}
+          branch_name=${{ steps.get_branch_name.outputs.VAL }}
           number=${branch_name/task-/}
           echo VAL=$number >> $GITHUB_OUTPUT
       - name: Get author
@@ -35,7 +40,7 @@ jobs:
       - if: ${{ steps.get_token.outputs.VAL }}
         uses: repo-sync/pull-request@v2.11
         with:
-          pr_title: ${GITHUB_REF##*/}
+          pr_title: ${{ steps.get_branch_name.outputs.VAL }}
           pr_body: "close #${{ steps.get_task_number.outputs.VAL }}"
           pr_assignee: ${{ steps.get_author.outputs.VAL }}
           pr_draft: true
