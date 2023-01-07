@@ -9,6 +9,9 @@ jobs:
   update_prs:
     uses: ./.github/workflows/call-update_prs.yml
     secrets: inherit
+  build:
+    uses: ./.github/workflows/call-build.yml
+    secrets: inherit
   sentry_release:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
