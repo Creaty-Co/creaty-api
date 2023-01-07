@@ -12,3 +12,6 @@ jobs:
   update_prs:
     uses: ./.github/workflows/call-update_prs.yml
     secrets: inherit
+  build:
+    uses: ./.github/workflows/call-build.yml
+    secrets: inherit
