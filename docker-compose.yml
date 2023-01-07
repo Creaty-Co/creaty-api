@@ -1,81 +1,58 @@
 version: '3.9'
 
 services:
+  db:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: db
+    ports: [ 5432:5432 ]
+    volumes:
+      - db_volume:/var/lib/postgresql/data
   redis:
-    image: redis:6.2.6
-    networks:
-      - redis_network
-    restart: unless-stopped
+    extends:
+      file: docker/docker-compose.base.yml
+      service: redis
   api:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: api
     build:
       context: .
-    command: gunicorn api.wsgi -c gunicorn_conf.py
-    env_file:
-      - .env
-    volumes:
-      - static_volume:/api/static
-      - profile_volume:/api/profile
-    ports:
-      - "8000:8000"
-    depends_on:
-      - redis
-    networks:
-      - redis_network
-      - nginx_network
-    restart: unless-stopped
-  web:
-    build:
-      context: ./web
-    volumes:
-      - web_volume:/usr/src/app/build
-  nginx:
-    image: nginx:1.21.6
-    depends_on:
-      - api
-      - web
-    env_file:
-      - .env
     environment:
-      NGINX_ENVSUBST_TEMPLATE_SUFFIX: ".conf"
-    ports:
-      - "80:80"
-      - "443:443"
+      - ENV_FILE=envs/.dev.env
+    ports: [ 8000:8000 ]
     volumes:
-      - static_volume:/api/static
-      - web_volume:/usr/share/nginx/html
-      - ./nginx.conf.conf:/etc/nginx/templates/nginx.conf.conf:ro
-      - ./certs:/api/certs
-    networks:
-      - nginx_network
-    restart: unless-stopped
+      - profiles_volume:/api/profiles
+      - media_volume:/api/media
+    command: bash -c "
+      python manage.py migrate
+      && python manage.py collectstatic --noinput
+      && daphne -b 0.0.0.0 -p 8000 api.asgi:application"
+    depends_on: [ db, redis ]
   celery:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: celery
     build:
       context: .
-    command: celery -A api worker -c 3 -P gevent -l info
-    env_file:
-      - .env
-    depends_on:
-      - nginx
-    networks:
-      - redis_network
-    restart: unless-stopped
+    environment:
+      - ENV_FILE=envs/.dev.env
+    depends_on: [ api ]
   celery_beat:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: celery_beat
     build:
       context: .
-    command: celery -A api beat -S django -l info
-    env_file:
-      - .env
-    depends_on:
-      - celery
-    networks:
-      - redis_network
-    restart: unless-stopped
+    environment:
+      - ENV_FILE=envs/.dev.env
+    depends_on: [ celery ]
 
 volumes:
-  static_volume:
-  web_volume:
-  profile_volume:
+  db_volume:
+  profiles_volume:
+  media_volume:
 
 networks:
+  db_network:
   redis_network:
-  nginx_network:

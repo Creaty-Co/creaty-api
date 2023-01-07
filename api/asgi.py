@@ -1,16 +1,20 @@
-"""
-ASGI config for creaty project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/3.2/howto/deployment/asgi/
-"""
-
 import os
 
+import django
+from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.settings')
 
-application = get_asgi_application()
+django.setup()
+
+from app.base.middlewares.ws_log import WsLogMiddleware  # noqa:E402
+from app.base.middlewares.ws_token_auth import TokenAuthMiddleware  # noqa:E402
+from app.base.urls import ws_urlpatterns as base_ws_urls  # noqa:E402
+
+application = ProtocolTypeRouter(
+    {
+        'http': get_asgi_application(),
+        'websocket': TokenAuthMiddleware(WsLogMiddleware(URLRouter(base_ws_urls))),
+    }
+)
