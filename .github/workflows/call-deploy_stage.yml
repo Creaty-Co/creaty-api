@@ -19,6 +19,6 @@ jobs:
         echo "${{ secrets.STAGE_ENV }}" > envs/.stage.env
         echo "SENTRY_RELEASE=${{ github.sha }}" >> envs/.stage.env
     - name: Pull stage docker image
-      run: docker-compose -f docker/stage/docker-compose.stage.yml pull api
+      run: sudo docker-compose -f docker/stage/docker-compose.stage.yml pull api
     - name: Deploy stage environment
-      run: docker-compose -f docker/stage/docker-compose.stage.yml up --build -d
+      run: sudo docker-compose -f docker/stage/docker-compose.stage.yml up --build -d
