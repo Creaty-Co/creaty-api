@@ -12,6 +12,10 @@ jobs:
   build:
     uses: ./.github/workflows/call-build.yml
     secrets: inherit
+#  cd:
+#    uses: ./.github/workflows/call-deploy_stage.yml
+#    secrets: inherit
+#    needs: [ build ]
   sentry_release:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
