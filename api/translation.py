@@ -1,10 +1,10 @@
 from modeltranslation.translator import TranslationOptions, register
 
-from forms.models import *
-from geo.models import *
-from mentors.models import *
-from pages.models import *
-from tags.models import *
+from app.forms.models import *
+from app.geo.models import *
+from app.mentors.models import *
+from app.pages.models import *
+from app.tags.models import *
 
 
 @register(Category)

@@ -1,5 +1,4 @@
-###
-# Custom
+# custom
 
 .git/
 .github/
@@ -11,13 +10,10 @@ schema.yaml
 .idea/
 dumps/
 static/
+profiles/
 media/
-logs/logs.log
-envs/
-certs/
-
-# Custom
-###
+logs/
+web/
 
 
 ### python_gitignore template
