@@ -1,0 +1,24 @@
+name: "Call: deploy stage"
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: [ self-hosted ]
+    environment:
+      name: stage
+      url: 'https://test.creaty.club'
+    steps:
+    - uses: actions/checkout@v3.3.0
+      with:
+        clean: false
+    - name: Set stage envs
+      run: |
+        echo "${{ secrets.STAGE_ENV }}" > envs/.stage.env
+        echo "SENTRY_RELEASE=${{ github.sha }}" >> envs/.stage.env
+    - name: Pull stage docker image
+      run: sudo docker-compose -f docker/stage/docker-compose.stage.yml pull api
+    - name: Deploy stage environment
+      run: sudo docker-compose -f docker/stage/docker-compose.stage.yml up --build -d
