@@ -1,0 +1,39 @@
+name: "Call: build"
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: false
+        default: 'latest'
+  workflow_dispatch:
+    inputs:
+      tag:
+        type: string
+        required: false
+        default: 'latest'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3.3.0
+      - name: Login to container registry
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Repository to lower case
+        run: |
+          repository=${{ github.repository }}
+          echo "REPOSITORY=${repository,,}" >> ${GITHUB_ENV}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3.2.0
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ env.REPOSITORY }}/api:${{ inputs.tag }}
+          cache-from: type=registry,ref=ghcr.io/${{ env.REPOSITORY }}/api:${{ inputs.tag }}
+          cache-to: type=inline
