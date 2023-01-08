@@ -425,7 +425,7 @@ MODELTRANSLATION_TRANSLATION_FILES = ['api.translation']
 
 CURRENCIES = tuple(map(str, Currency))
 CURRENCY_CHOICES = Currency.choices
-DEFAULT_CURRENCY = Currency.USD
+DEFAULT_CURRENCY = str(Currency.USD)
 warning(f"{DEFAULT_CURRENCY = }")
 
 EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
