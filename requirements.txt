@@ -12,7 +12,7 @@ django-redis==5.2.0
 django-cacheops==6.1
 django-countries==7.2.1
 django-money==3.0.0
-certifi==2021.10.8  # FIXME: ?
+certifi==2022.12.7
 django-celery-beat==2.4.0
 django-svg-image-form-field==1.0.1
 
