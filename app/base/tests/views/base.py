@@ -4,12 +4,12 @@ from collections.abc import Callable
 from typing import Any
 from urllib.parse import urlencode
 
+from app.account.models import Token, User
+from app.account.tests.factories.token import TokenFactory
+from app.account.tests.factories.users import UserFactory
 from app.base.exceptions import APIWarning
 from app.base.exceptions.base import APIException
 from app.base.tests.base import BaseTest
-from app.users.models import Token, User
-from app.users.tests.factories.token import TokenFactory
-from app.users.tests.factories.users import UserFactory
 
 
 class _MeType(User):
