@@ -1,1 +1,0 @@
-from .detail import *

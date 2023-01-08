@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:14.6
+    env_file: [ ../envs/.base.env ]
+    environment:
+      - POSTGRES_USER=pg
+      - POSTGRES_DB=db
+      - POSTGRES_HOST=127.0.0.1
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    networks: [ db_network ]
+    restart: unless-stopped
+  redis:
+    image: redis:7.0.0
+    env_file: [ ../envs/.base.env ]
+    networks: [ redis_network ]
+    restart: unless-stopped
+  api:
+    env_file: [ ../envs/.base.env ]
+    networks: [ db_network, redis_network ]
+    restart: unless-stopped
+  celery:
+    extends:
+      service: api
+    env_file: [ ../envs/.base.env ]
+    command: celery -A api worker -c 1 -P gevent -l info
+    restart: unless-stopped
+  celery_beat:
+    extends:
+      service: api
+    env_file: [ ../envs/.base.env ]
+    command: celery -A api beat -S django -l info
+    restart: unless-stopped
+  nginx:
+    build:
+      context: ../nginx
+    env_file: [ ../envs/.base.env ]
+    environment:
+      - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.conf
+    networks: [ nginx_network ]
+    restart: unless-stopped
