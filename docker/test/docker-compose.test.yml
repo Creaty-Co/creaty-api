@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  db:
+    extends:
+      file: ../docker-compose.base.yml
+      service: db
+    env_file: [ ../../envs/.test.env ]
+  redis:
+    extends:
+      file: ../docker-compose.base.yml
+      service: redis
+    env_file: [ ../../envs/.test.env ]
+  api:
+    extends:
+      file: ../docker-compose.base.yml
+      service: api
+    build:
+      context: ../..
+    env_file: [ ../../envs/.test.env ]
+    command: bash -c "
+      coverage run manage.py test --noinput
+      && coverage report
+      && coverage xml -o /api/coverages/coverage.xml
+      "
+    volumes: [ ../../coverages:/api/coverages ]
+    depends_on: [ db, redis ]
+    restart: 'no'
+
+networks:
+  db_network:
+  redis_network:
