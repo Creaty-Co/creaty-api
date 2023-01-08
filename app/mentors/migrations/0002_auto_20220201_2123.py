@@ -3,7 +3,10 @@
 from decimal import Decimal
 
 import djmoney.models.fields
+from django.conf import settings
 from django.db import migrations
+
+from app.base.logs import warning
 
 
 class Migration(migrations.Migration):
@@ -11,6 +14,8 @@ class Migration(migrations.Migration):
     dependencies = [
         ('mentors', '0001_initial'),
     ]
+
+    warning(f"{settings.DEFAULT_CURRENCY = }")
 
     operations = [
         migrations.AddField(
