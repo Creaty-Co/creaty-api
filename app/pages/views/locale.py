@@ -19,9 +19,9 @@ class PagesLocaleView(BaseView):
         return Response(self.get_object().json)
 
     @response_204
-    def put(self, request, **_):
+    def put(self):
         locale = self.get_object()
-        locale.json = request.data
+        locale.json = self.get_data()
         locale.save()
 
     def get_object(self) -> Locale:
