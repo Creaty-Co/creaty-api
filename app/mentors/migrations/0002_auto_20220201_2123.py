@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         ('mentors', '0001_initial'),
     ]
 
-    warning(f"{settings.DEFAULT_CURRENCY = }")
+    warning(f"{settings.__dict__ = }")
 
     operations = [
         migrations.AddField(

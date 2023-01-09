@@ -14,7 +14,6 @@ from sentry_sdk.integrations.logging import LoggingIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 
 from app.base.enums.currency import Currency
-from app.base.logs import warning
 from app.base.logs.configs import LogConfig
 
 # env
@@ -426,7 +425,6 @@ MODELTRANSLATION_TRANSLATION_FILES = ['api.translation']
 CURRENCIES = tuple(map(str, Currency))
 CURRENCY_CHOICES = Currency.choices
 DEFAULT_CURRENCY = str(Currency.USD)
-warning(f"{DEFAULT_CURRENCY = }")
 
 EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
 FIXER_ACCESS_KEY = env('FIXER_ACCESS_KEY')
