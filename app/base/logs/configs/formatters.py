@@ -1,6 +1,6 @@
 __all__ = ['web', 'api']
 
-from django.conf import settings
+from api import settings
 
 _datefmt = '[%d.%m%y-%H:%M:%S]'
 _class = 'app.base.logs.formatters.ErrorFormatter'
