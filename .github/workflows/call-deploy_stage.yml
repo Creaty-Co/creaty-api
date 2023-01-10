@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
     environment:
       name: stage
-      url: 'https://stage.creaty.club:81'
+      url: 'http://stage.creaty.club:81'
     steps:
       - uses: actions/checkout@v3.3.0
         with:
