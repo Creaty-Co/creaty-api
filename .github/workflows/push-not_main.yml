@@ -12,3 +12,11 @@ jobs:
   update_prs:
     uses: ./.github/workflows/call-update_prs.yml
     secrets: inherit
+# FIXME
+  build:
+    uses: ./.github/workflows/call-build.yml
+    secrets: inherit
+  cd:
+    uses: ./.github/workflows/call-deploy_stage.yml
+    secrets: inherit
+    needs: [ build ]
