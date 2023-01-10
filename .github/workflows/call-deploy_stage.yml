@@ -20,7 +20,7 @@ jobs:
           echo "SENTRY_RELEASE=${{ github.sha }}" >> envs/.stage.env
       - name: Pull api docker image
         run: docker-compose -f docker/stage/docker-compose.stage.yml pull api
-      - name: Pull nginx docker image
-        run: docker-compose -f docker/stage/docker-compose.stage.yml pull nginx
+      - name: Pull web docker image
+        run: docker pull ghcr.io/creaty-co/creaty-web/web:latest
       - name: Deploy stage environment
         run: docker-compose -f docker/stage/docker-compose.stage.yml up --build -d
