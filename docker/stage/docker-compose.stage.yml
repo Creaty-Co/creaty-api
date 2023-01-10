@@ -52,7 +52,7 @@ services:
     build:
       dockerfile: ../nginx/stage.dockerfile
     env_file: [ ../../envs/.stage.env ]
-    ports: [ 443:443 ]
+    ports: [ 81:81 ]
     volumes:
       - api_media_volume:/etc/nginx/html/api/media
       - api_static_volume:/etc/nginx/html/api/static
