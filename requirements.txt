@@ -48,4 +48,4 @@ pybase64==1.2.1
 parameterized==0.8.1
 factory_boy==3.2.1
 Faker==15.3.4
-coverage==7.0.2
+coverage==7.0.4
