@@ -16,10 +16,11 @@ jobs:
   bw:
     uses: ./.github/workflows/call-bw.yml
     with:
-      secret_name: API_STAGE_ENV
+      secret_name: TEST
     secrets: inherit
   set_env:
     runs-on: self-hosted
     needs: bw
     steps:
-      - run: echo -e ${{ needs.bw.outputs.secret_value }} > .env
+      - run: |
+          echo "${{ needs.bw.outputs.secret_value }}"
