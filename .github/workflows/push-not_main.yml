@@ -21,8 +21,9 @@ jobs:
   echo:
     runs-on: self-hosted
     needs: bw
-    env:
-      STAGE_ENV: ${{ needs.bw.outputs.secret_value }}
     steps:
-      - run: echo "::add-mask::$STAGE_ENV"
+      - name: Mask
+        env:
+          STAGE_ENV: ${{ needs.bw.outputs.secret_value }}
+        run: echo "::add-mask::$STAGE_ENV"
       - run: echo -e "$STAGE_ENV" > .env
