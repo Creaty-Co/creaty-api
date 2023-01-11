@@ -34,7 +34,6 @@ jobs:
         continue-on-error: true
         run: |
           secret_value=$(bw get item ${{ inputs.secret_name }} | jq .notes | tr -d '"')
-          echo "::add-mask::$secret_value" 
           echo "secret_value=$secret_value" >> $GITHUB_OUTPUT
       - name: Logout bw
         run: bw logout
