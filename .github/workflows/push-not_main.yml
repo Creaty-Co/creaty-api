@@ -23,6 +23,5 @@ jobs:
     needs: bw
     steps:
       - run: |
-          secret_value=${{ needs.bw.outputs.secret_value }}
-          echo "::add-mask::$secret_value" 
-          echo -e $secret_value > .env
+          echo "::add-mask::${{ needs.bw.outputs.secret_value }}" 
+          echo -e ${{ needs.bw.outputs.secret_value }} > .env
