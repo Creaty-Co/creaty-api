@@ -11,7 +11,7 @@ on:
         required: true
     outputs:
       secret_value:
-        value: ${{ jobs.extract_secret.outputs.value }}
+        value: ${{ jobs.extract_secret.outputs.secret_value }}
 
 jobs:
   extract_secret:
@@ -31,6 +31,7 @@ jobs:
           echo "BW_SESSION=$BW_SESSION" >> $GITHUB_ENV
       - name: Extract secret value
         id: extract_secret_value
+        continue-on-error: true
         run: |
           secret_value=$(bw get item ${{ inputs.secret_name }} | jq .notes | tr -d '"')
           echo $secret_value
