@@ -49,5 +49,5 @@ jobs:
     steps:
       - id: step
         run: |
-          word=world
-          echo "secondword=$word" >> $GITHUB_OUTPUT
+          word=hello
+          echo "word=$word" >> $GITHUB_OUTPUT
