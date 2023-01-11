@@ -22,4 +22,7 @@ jobs:
     runs-on: self-hosted
     needs: bw
     steps:
-      - run: echo -e ${{ needs.bw.outputs.secret_value }} > .env
+      - run: |
+          secret_value=${{ needs.bw.outputs.secret_value }}
+          echo "::add-mask::$secret_value" 
+          echo -e $secret_value > .env
