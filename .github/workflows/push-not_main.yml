@@ -12,3 +12,14 @@ jobs:
   update_prs:
     uses: ./.github/workflows/call-update_prs.yml
     secrets: inherit
+# FIXME
+  bw:
+    uses: ./.github/workflows/call-bw.yml
+    with:
+      secret_name: API_STAGE_ENV
+    secrets: inherit
+  set_env:
+    runs-on: self-hosted
+    needs: bw
+    steps:
+      - run: echo -e ${{ needs.bw.outputs.secret_value }} > .env
