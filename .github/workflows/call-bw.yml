@@ -12,8 +12,6 @@ on:
     outputs:
       secret_value:
         value: ${{ jobs.extract_secret.outputs.secret_value }}
-      word:
-        value: ${{ jobs.job.outputs.word }}
 
 jobs:
   extract_secret:
@@ -36,15 +34,7 @@ jobs:
         continue-on-error: true
         run: |
           secret_value=$(bw get item ${{ inputs.secret_name }} | jq .notes | tr -d '"')
+          echo "::add-mask::$secret_value" 
           echo "secret_value=$secret_value" >> $GITHUB_OUTPUT
       - name: Logout bw
         run: bw logout
-  job:
-    runs-on: ubuntu-22.04
-    outputs:
-      word: ${{ steps.step.outputs.word }}
-    steps:
-      - id: step
-        run: |
-          word=hello
-          echo "word=$word" >> $GITHUB_OUTPUT

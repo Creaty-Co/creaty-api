@@ -19,8 +19,7 @@ jobs:
       secret_name: TEST
     secrets: inherit
   echo:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: bw
     steps:
-      - run: echo ${{ needs.bw.outputs.word }}
-      - run: echo ${{ needs.bw.outputs.secret_value }}
+      - run: echo -e ${{ needs.bw.outputs.secret_value }} > .env
