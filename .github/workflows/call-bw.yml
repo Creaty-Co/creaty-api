@@ -12,6 +12,8 @@ on:
     outputs:
       secret_value:
         value: ${{ jobs.extract_secret.outputs.secret_value }}
+      secondword:
+        value: ${{ jobs.example_job.outputs.output2 }}
 
 jobs:
   extract_secret:
@@ -39,3 +41,11 @@ jobs:
           echo "secret_value=$secret_value" >> $GITHUB_OUTPUT
       - name: Logout bw
         run: bw logout
+  example_job:
+    name: Generate output
+    runs-on: ubuntu-latest
+    outputs:
+      output2: ${{ steps.step2.outputs.secondword }}
+    steps:
+      - id: step2
+        run: echo "secondword=world" >> $GITHUB_OUTPUT

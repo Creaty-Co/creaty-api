@@ -18,8 +18,17 @@ jobs:
     with:
       secret_name: TEST
     secrets: inherit
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step1.outputs.test }}
+    steps:
+      - id: step1
+        run: echo "test=hello" >> $GITHUB_OUTPUT
   echo:
     runs-on: ubuntu-22.04
-    needs: bw
+    needs: [ bw, job1 ]
     steps:
-      - run: echo "${{ needs.bw.outputs.secret_value }}"
+      - run: echo ${{ needs.job1.outputs.output1 }}
+      - run: echo ${{ needs.bw.outputs.secondword }}
+      - run: echo ${{ needs.bw.outputs.secret_value }}
