@@ -24,6 +24,5 @@ jobs:
     env:
       STAGE_ENV: ${{ needs.bw.outputs.secret_value }}
     steps:
-      - run: |
-          echo "::add-mask::$STAGE_ENV"
-          echo -e "$STAGE_ENV" > .env
+      - run: echo "::add-mask::$STAGE_ENV"
+      - run: echo -e "$STAGE_ENV" > .env
