@@ -10,5 +10,5 @@ jobs:
     steps:
       - uses: pozil/auto-assign-issue@v1.11.0
         with:
-            assignees: GentleEnvy
-            abortIfPreviousAssignees: true
+          assignees: GentleEnvy
+          abortIfPreviousAssignees: true

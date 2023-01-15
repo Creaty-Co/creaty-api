@@ -5,8 +5,14 @@ on:
   workflow_dispatch:
 
 jobs:
+  bw:
+    uses: ./.github/workflows/call-bw.yml
+    with:
+      secret_name: API_STAGE_ENV
+    secrets: inherit
   deploy:
     runs-on: self-hosted
+    needs: bw
     environment:
       name: stage
       url: 'http://stage.creaty.club'
@@ -16,7 +22,10 @@ jobs:
           clean: false
       - name: Set stage envs
         run: |
-          echo "${{ secrets.STAGE_ENV }}" > envs/.stage.env
+          secret=$(echo "${{ needs.bw.outputs.secret_value }}" |
+            openssl enc -aes-256-cbc -d -a -k "${{ secrets.BW_CREDENTIALS }}" -pbkdf2
+          )
+          echo "$secret" > envs/.stage.env
           echo "SENTRY_RELEASE=${{ github.sha }}" >> envs/.stage.env
       - name: Pull api docker image
         run: docker-compose -f docker/stage/docker-compose.stage.yml pull api
