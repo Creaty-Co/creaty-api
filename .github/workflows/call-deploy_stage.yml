@@ -12,7 +12,6 @@ jobs:
     secrets: inherit
   deploy:
     runs-on: self-hosted
-    needs: bw
     environment:
       name: stage
       url: 'http://stage.creaty.club'
@@ -22,11 +21,11 @@ jobs:
           clean: false
       - name: Set stage envs
         run: |
-          secret=$(echo "${{ needs.bw.outputs.secret_value }}" |
-            openssl enc -aes-256-cbc -d -a -k "${{ secrets.BW_CREDENTIALS }}" -pbkdf2
-          )
-          echo "$secret" > envs/.stage.env
+          export BW_SESSION=$(bw login ${{ secrets.BW_CREDENTIALS }} --raw)
+          env=$(bw get item API_STAGE_ENV | jq .notes | tr -d '"')
+          echo "$env" > envs/.stage.env
           echo "SENTRY_RELEASE=${{ github.sha }}" >> envs/.stage.env
+          bw logout
       - name: Pull api docker image
         run: docker-compose -f docker/stage/docker-compose.stage.yml pull api
       - name: Pull web docker image
