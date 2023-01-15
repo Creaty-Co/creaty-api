@@ -35,7 +35,7 @@ jobs:
         run: |
           secret_value=$(bw get item ${{ inputs.secret_name }} | jq .notes | tr -d '"')
           secret_value=$(echo "$secret_value" |
-            openssl enc -aes-256-cbc -a -k "${{ secrets.GITHUB_TOKEN }}" -pbkdf2
+            openssl enc -aes-256-cbc -a -k "${{ secrets.BW_CREDENTIALS }}" -pbkdf2
           )
           echo "secret_value=$secret_value" >> $GITHUB_OUTPUT
       - name: Logout bw
