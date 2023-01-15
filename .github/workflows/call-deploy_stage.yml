@@ -5,11 +5,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  bw:
-    uses: ./.github/workflows/call-bw.yml
-    with:
-      secret_name: API_STAGE_ENV
-    secrets: inherit
   deploy:
     runs-on: self-hosted
     environment:

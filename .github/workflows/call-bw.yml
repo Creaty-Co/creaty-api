@@ -1,0 +1,42 @@
+name: "Call: BW"
+
+on:
+  workflow_call:
+    inputs:
+      secret_name:
+        type: string
+        required: true
+    secrets:
+      BW_CREDENTIALS:
+        required: true
+    outputs:
+      secret_value:
+        value: ${{ jobs.extract_secret.outputs.secret_value }}
+
+jobs:
+  extract_secret:
+    runs-on: ubuntu-22.04
+    outputs:
+      secret_value: ${{ steps.extract_secret_value.outputs.secret_value }}
+    steps:
+      - uses: actions/setup-node@v3.6.0
+        with:
+          node-version: 18.13.0
+      - name: Install bw cli
+        run: npm install -g @bitwarden/cli
+      - name: Login bw
+        run: |
+          BW_SESSION=$(bw login ${{ secrets.BW_CREDENTIALS }} --raw)
+          echo "::add-mask::$BW_SESSION" 
+          echo "BW_SESSION=$BW_SESSION" >> $GITHUB_ENV
+      - name: Extract secret value
+        id: extract_secret_value
+        continue-on-error: true
+        run: |
+          secret_value=$(bw get item ${{ inputs.secret_name }} | jq .notes | tr -d '"')
+          secret_value=$(echo "$secret_value" |
+            openssl enc -aes-256-cbc -a -k "${{ secrets.BW_CREDENTIALS }}" -pbkdf2
+          )
+          echo "secret_value=$secret_value" >> $GITHUB_OUTPUT
+      - name: Logout bw
+        run: bw logout
