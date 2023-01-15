@@ -18,7 +18,7 @@ jobs:
         run: |
           export BW_SESSION=$(bw login ${{ secrets.BW_CREDENTIALS }} --raw)
           env=$(bw get item API_STAGE_ENV | jq .notes | tr -d '"')
-          echo "$env" > envs/.stage.env
+          echo -e "$env" > envs/.stage.env
           echo "SENTRY_RELEASE=${{ github.sha }}" >> envs/.stage.env
           bw logout
       - name: Pull api docker image
