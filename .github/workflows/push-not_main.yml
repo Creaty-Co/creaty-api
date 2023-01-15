@@ -12,18 +12,3 @@ jobs:
   update_prs:
     uses: ./.github/workflows/call-update_prs.yml
     secrets: inherit
-# FIXME
-  bw:
-    uses: ./.github/workflows/call-bw.yml
-    with:
-      secret_name: TEST
-    secrets: inherit
-  echo:
-    runs-on: self-hosted
-    needs: bw
-    steps:
-      - run: |
-          secret=$(echo "${{ needs.bw.outputs.secret_value }}" |
-            openssl enc -aes-256-cbc -d -a -k "${{ secrets.BW_CREDENTIALS }}" -pbkdf2
-          )
-          echo -e "$secret"
