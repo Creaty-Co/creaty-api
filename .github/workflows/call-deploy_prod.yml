@@ -1,0 +1,35 @@
+name: "Call: deploy prod"
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag:
+        type: string
+        required: true
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    environment:
+      name: prod
+      url: 'https://creaty.club'
+    steps:
+      - uses: actions/checkout@v3.3.0
+        with:
+          clean: false
+      - name: Set prod envs
+        run: |
+          export BW_SESSION=$(bw login ${{ secrets.BW_CREDENTIALS }} --raw)
+          env=$(bw get item API_PROD_ENV | jq .notes | tr -d '"')
+          echo -e "$env" > envs/.stage.env
+          echo "SENTRY_RELEASE=${{ inputs.tag }}" >> envs/.prod.env
+          bw logout
+      - name: Deploy prod environment
+        run: |
+          export TAG=${{ inputs.tag }}
+          docker-compose -f docker/prod/docker-compose.prod.yml up --build -d

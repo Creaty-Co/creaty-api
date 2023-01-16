@@ -1,0 +1,26 @@
+name: "Push: tag"
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    uses: ./.github/workflows/call-build.yml
+    secrets: inherit
+    with:
+      tag: ${{ github.ref_name }}
+  cd:
+    uses: ./.github/workflows/call-deploy_prod.yml
+    with:
+      tag: ${{ github.ref_name }}
+    secrets: inherit
+    needs: [ build ]
+  sentry_release:
+    uses: ./.github/workflows/call-sentry_release.yml
+    with:
+      environment: prod
+      version: ${{ github.ref_name }}
+    secrets: inherit
+    needs: [ cd ]
