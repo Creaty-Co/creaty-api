@@ -1,24 +1,23 @@
-import random
-
 import factory
-from factory.django import DjangoModelFactory
 
+from app.base.tests.factories.base import BaseFactory
+from app.base.tests.fakers import Faker
 from app.tags.models import Category, Tag
 
 
-class CategoryFactory(DjangoModelFactory):
+class CategoryFactory(BaseFactory):
     icon = factory.django.ImageField()
-    title = factory.Faker('word')
-    shortcut = factory.Faker('slug')
+    title = Faker('english_word')
+    shortcut = Faker('slug')
 
     class Meta:
         model = Category
 
 
-class TagFactory(DjangoModelFactory):
-    category = factory.LazyAttribute(lambda t: random.choice(Category.objects.all()))
-    title = factory.Faker('word')
-    shortcut = factory.Faker('slug')
+class TagFactory(BaseFactory):
+    category = factory.SubFactory(CategoryFactory)
+    title = Faker('english_word')
+    shortcut = Faker('slug')
 
     class Meta:
         model = Tag
