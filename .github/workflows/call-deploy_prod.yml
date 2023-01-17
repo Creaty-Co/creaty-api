@@ -26,7 +26,7 @@ jobs:
         run: |
           export BW_SESSION=$(bw login ${{ secrets.BW_CREDENTIALS }} --raw)
           env=$(bw get item API_PROD_ENV | jq .notes | tr -d '"')
-          echo -e "$env" > envs/.stage.env
+          echo -e "$env" > envs/.prod.env
           echo "SENTRY_RELEASE=${{ inputs.tag }}" >> envs/.prod.env
           bw logout
       - name: Deploy prod environment
