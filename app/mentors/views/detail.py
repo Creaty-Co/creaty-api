@@ -1,4 +1,5 @@
 from app.admin_.permissions import AdminPermission
+from app.base.utils.common import response_204
 from app.base.views import BaseView
 from app.mentors.models import Mentor
 from app.mentors.serializers.detail import (
@@ -21,5 +22,6 @@ class MentorView(BaseView):
     def patch(self):
         return self.update()
 
+    @response_204
     def delete(self):
-        return self.destroy()
+        self.destroy()
