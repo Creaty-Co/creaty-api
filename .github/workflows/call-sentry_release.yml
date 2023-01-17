@@ -4,19 +4,19 @@ on:
   workflow_call:
     inputs:
       environment:
+        type: string
         required: true
-        type: string
       version:
-        required: false
         type: string
+        required: false
   workflow_dispatch:
     inputs:
       environment:
+        type: string
         required: true
-        type: string
       version:
-        required: false
         type: string
+        required: false
 
 jobs:
   release:
@@ -26,7 +26,6 @@ jobs:
         with:
           fetch-depth: 0
       - name: Create Sentry release
-        if: false  # FIXME: убрать, когда будет secrets.SENTRY_AUTH_TOKEN
         uses: getsentry/action-release@v1.2.1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
