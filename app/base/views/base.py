@@ -74,11 +74,12 @@ class BaseView(GenericAPIView):
     def _decorate_methods(cls) -> None:
         def _force_args(f):
             def wrapped_f(*args, **kwargs):
-                match f.__code__.co_argcount:
-                    case 0:
-                        return f()
-                    case 1:
-                        return f(args[0])
+                if f.__name__ != 'wrapped_f':
+                    match f.__code__.co_argcount:
+                        case 0:
+                            return f()
+                        case 1:
+                            return f(args[0])
                 return f(*args, **kwargs)
 
             for key, value in f.__dict__.items():

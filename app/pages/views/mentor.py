@@ -31,9 +31,9 @@ class PagesMainMentorView(BaseMainPageView):
         return Response(serializer.data)
 
     @response_204
-    def delete(self, request, **kwargs):
+    def delete(self):
         page = self.get_object()
-        mentor = get_object_or_404(Mentor, id=kwargs['mentor_id'])
+        mentor = get_object_or_404(Mentor, id=self.kwargs['mentor_id'])
         try:
             page__mentor = PageMentorSet.objects.get(page=page, mentor=mentor)
         except PageMentorSet.DoesNotExist:
