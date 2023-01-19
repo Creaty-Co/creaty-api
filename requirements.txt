@@ -47,5 +47,5 @@ pybase64==1.2.3
 
 parameterized==0.8.1
 factory_boy==3.2.1
-Faker==16.4.0
+Faker==16.6.0
 coverage==7.0.5
