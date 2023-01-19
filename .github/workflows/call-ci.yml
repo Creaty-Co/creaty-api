@@ -36,10 +36,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3.2.0
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2.1.38
+        uses: github/codeql-action/init@v2.1.39
         with:
           languages: python
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2.1.38
+        uses: github/codeql-action/analyze@v2.1.39
         with:
           category: "/language:python"
