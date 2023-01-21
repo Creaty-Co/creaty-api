@@ -38,7 +38,7 @@ jobs:
           if [[ $token == "" ]]; then exit 0; fi
           echo VAL=$token >> $GITHUB_OUTPUT
       - if: ${{ steps.get_token.outputs.VAL }}
-        uses: repo-sync/pull-request@v2.11
+        uses: repo-sync/pull-request@v2.12
         with:
           pr_title: ${{ steps.get_branch_name.outputs.VAL }}
           pr_body: "close #${{ steps.get_task_number.outputs.VAL }}"
