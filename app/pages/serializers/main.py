@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 
 from app.base.serializers.base import BaseModelSerializer
 from app.mentors.models import Mentor
-from app.mentors.serializers.general import ListMentorsSerializer
+from app.mentors.serializers.general import GETMentorsSerializer
 from app.pages.models import Page, PageMentorSet
 from app.pages.services.page import PageService
 from app.tags.models import Tag
@@ -12,7 +12,7 @@ from app.tags.serializers.general import ListTagsSerializer
 
 class PagesRetrieveMainSerializer(BaseModelSerializer):
     tags = ListTagsSerializer(many=True, source='tag_set')
-    mentors = ListMentorsSerializer(many=True, source='mentor_set')
+    mentors = GETMentorsSerializer(many=True, source='mentor_set')
 
     class Meta:
         model = Page

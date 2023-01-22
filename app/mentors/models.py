@@ -1,6 +1,7 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from djmoney.models.fields import MoneyField
+from uuslug import uuslug
 
 from app.base.models.base import BaseModel
 from app.base.money import Money
@@ -11,7 +12,8 @@ __all__ = ['Mentor', 'Package', 'MentorInfo']
 
 
 class Mentor(BaseModel):
-    info = models.OneToOneField('MentorInfo', on_delete=models.CASCADE)
+    info = models.OneToOneField('MentorInfo', models.CASCADE)
+    slug = models.SlugField(unique=True)
     avatar = models.ImageField(upload_to='avatars')
     company = models.TextField(null=True, blank=True)
     profession = models.TextField(null=True, blank=True)
@@ -19,7 +21,12 @@ class Mentor(BaseModel):
     last_name = models.TextField()
     price: Money = MoneyField(max_digits=10, decimal_places=2)
     tag_set = models.ManyToManyField(Tag)
-    country = models.ForeignKey(Country, on_delete=models.PROTECT)
+    country = models.ForeignKey(Country, models.PROTECT)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = uuslug(f"{self.first_name}_{self.last_name}", self)
+        super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
@@ -44,6 +51,6 @@ class MentorInfo(BaseModel):
     resume = models.TextField()
     what_help = models.TextField()
     experience = models.TextField()
-    portfolio = models.TextField(null=True, blank=True)  # 80
+    portfolio = models.TextField(null=True, blank=True)
     language_set = models.ManyToManyField(Language)
     city = models.TextField()

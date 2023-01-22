@@ -8,27 +8,28 @@ from app.mentors.models import Mentor, MentorInfo, Package
 from app.tags.models import Tag
 
 
-class _MentorsTagsSerializer(BaseModelSerializer):
+class _GETMentorsTagsSerializer(BaseModelSerializer):
     class Meta:
         model = Tag
-        fields = ['id', 'shortcut', 'title']
+        read_only_fields = ['id', 'shortcut', 'title']
 
 
-class _MentorsCountrySerializer(BaseModelSerializer):
+class _GETMentorsCountrySerializer(BaseModelSerializer):
     class Meta:
         model = Country
-        fields = ['id', 'flag_unicode']
+        read_only_fields = ['id', 'flag_unicode']
 
 
-class ListMentorsSerializer(BaseModelSerializer):
-    country = _MentorsCountrySerializer()
-    tags = _MentorsTagsSerializer(many=True, source='tag_set')
+class GETMentorsSerializer(BaseModelSerializer):
+    country = _GETMentorsCountrySerializer()
+    tags = _GETMentorsTagsSerializer(many=True, source='tag_set')
 
     class Meta:
         model = Mentor
         extra_kwargs = {'price_currency': {'help_text': Currency.help_text}}
-        fields = [
+        read_only_fields = [
             'id',
+            'slug',
             'avatar',
             'company',
             'profession',

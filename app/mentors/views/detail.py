@@ -9,10 +9,8 @@ from app.mentors.serializers.detail import (
 
 
 class MentorView(BaseView):
-    serializer_map = {
-        'get': RetrieveMentorSerializer,
-        'patch': UpdateMentorSerializer,
-    }
+    serializer_map = {'get': RetrieveMentorSerializer, 'patch': UpdateMentorSerializer}
+    lookup_field = 'slug'
     permissions_map = {'patch': [AdminPermission], 'delete': [AdminPermission]}
     queryset = Mentor.objects.all()
 
