@@ -29,7 +29,7 @@ class PagesUpdateMainSerializer(BaseModelSerializer):
 
     class Meta:
         model = Page
-        fields = ['id', 'tags', 'mentors']
+        fields = ['tags', 'mentors']
 
     def validate(self, attrs):
         if tags := attrs.get('tag_set'):

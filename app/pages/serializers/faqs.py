@@ -20,5 +20,5 @@ class PagesFaqSerializer(BaseModelSerializer):
     class Meta:
         model = Faq
         wo = {'write_only': True}
-        extra_kwargs = {'id': {}, 'question': wo, 'answer': wo}
+        extra_kwargs = {'question': wo, 'answer': wo}
         fields = list(extra_kwargs.keys())

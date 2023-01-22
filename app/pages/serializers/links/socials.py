@@ -26,5 +26,5 @@ class PagesLinksSocialSerializer(BaseModelSerializer):
     class Meta:
         model = SocialLink
         wo = {'write_only': True}
-        extra_kwargs = {'id': {}, 'icon': {}, 'url': wo}
+        extra_kwargs = {'icon': {}, 'url': wo}
         fields = list(extra_kwargs.keys())
