@@ -35,9 +35,7 @@ class Mentor(BaseModel):
 
 
 class Package(BaseModel):
-    mentor = models.ForeignKey(
-        Mentor, on_delete=models.CASCADE, related_name='packages'
-    )
+    mentor = models.ForeignKey(Mentor, models.CASCADE, related_name='packages')
     lessons_count = models.SmallIntegerField(validators=[MinValueValidator(2)])
     discount = models.SmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(99)]
@@ -49,8 +47,7 @@ class MentorInfo(BaseModel):
         null=True, blank=True, validators=[MinValueValidator(1)]
     )
     resume = models.TextField()
-    what_help = models.TextField()
-    experience = models.TextField()
-    portfolio = models.TextField(null=True, blank=True)
+    what_help = models.TextField(null=True, blank=True)
+    experience = models.TextField(null=True, blank=True)
     language_set = models.ManyToManyField(Language)
     city = models.TextField()

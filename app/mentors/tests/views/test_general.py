@@ -6,6 +6,7 @@ from app.base.tests.fakers import fake
 from app.base.tests.views.base import BaseViewTest
 from app.geo.tests.factories.country import CountryFactory
 from app.geo.tests.factories.language import LanguageFactory
+from app.mentors.models import Mentor
 from app.mentors.tests.factories import MentorFactory
 from app.tags.tests.factories import TagFactory
 
@@ -30,10 +31,8 @@ class MentorsTest(BaseViewTest):
                     'resume': fake.english_text(),
                     'what_help': fake.english_text(),
                     'experience': fake.english_text(),
-                    'portfolio': fake.english_text(),
                     'languages': [language.id],
-                    'city_ru': fake.city(),
-                    'city_en': fake.city(),
+                    'city': fake.city(),
                 },
                 'avatar': (
                     b"data:application/"
@@ -57,3 +56,4 @@ class MentorsTest(BaseViewTest):
                 ],
             },
         )
+        self.assert_model(Mentor, {})
