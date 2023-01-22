@@ -276,7 +276,7 @@ CELERY_IGNORE_RESULT = False
 
 CELERY_BEAT_SCHEDULE = {
     'update_rates': {
-        'task': 'geo.tasks.update_rates',
+        'task': 'app.geo.tasks.update_rates',
         'schedule': timedelta(seconds=env('UPDATE_RATES_INTERVAL')),
     }
 }
