@@ -2,15 +2,12 @@ from app.admin_.permissions import AdminPermission
 from app.base.views import BaseView
 from app.mentors.filters.general import MentorsFilterSet
 from app.mentors.models import Mentor
-from app.mentors.serializers.general import (
-    CreateMentorsSerializer,
-    GETMentorsSerializer,
-)
+from app.mentors.serializers.general import GETMentorsSerializer, POSTMentorsSerializer
 
 
 class MentorsView(BaseView):
     many = True
-    serializer_map = {'get': GETMentorsSerializer, 'post': CreateMentorsSerializer}
+    serializer_map = {'get': GETMentorsSerializer, 'post': POSTMentorsSerializer}
     permissions_map = {'post': [AdminPermission]}
     queryset = Mentor.objects.prefetch_related('tag_set', 'country')
     filterset_class = MentorsFilterSet

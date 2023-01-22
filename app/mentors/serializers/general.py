@@ -42,7 +42,7 @@ class GETMentorsSerializer(BaseModelSerializer):
         ]
 
 
-class _MentorsCreateInfoSerializer(BaseModelSerializer):
+class _POSTMentorsInfoSerializer(BaseModelSerializer):
     languages = serializers.PrimaryKeyRelatedField(
         allow_empty=False,
         many=True,
@@ -53,55 +53,48 @@ class _MentorsCreateInfoSerializer(BaseModelSerializer):
     class Meta:
         model = MentorInfo
         extra_kwargs = {'price_currency': {'help_text': Currency.help_text}}
-        fields = [
+        write_only_fields = [
             'trial_meeting',
             'resume',
             'what_help',
             'experience',
-            'portfolio',
             'languages',
-            'city_ru',
-            'city_en',
+            'city',
         ]
 
 
-class _CreateMentorsPackagesSerializer(BaseModelSerializer):
+class _POSTMentorsPackagesSerializer(BaseModelSerializer):
     class Meta:
         model = Package
-        fields = ['lessons_count', 'discount']
+        write_only_fields = ['lessons_count', 'discount']
 
 
-class CreateMentorsSerializer(BaseModelSerializer):
-    info = _MentorsCreateInfoSerializer(write_only=True)
+class POSTMentorsSerializer(BaseModelSerializer):
+    info = _POSTMentorsInfoSerializer()
     price_currency = serializers.ChoiceField(
-        choices=Currency.choices,
-        help_text=Currency.help_text,
-        write_only=True,
+        choices=Currency.choices, help_text=Currency.help_text
     )
-    packages = _CreateMentorsPackagesSerializer(many=True, write_only=True)
-    avatar = Base64ImageField(write_only=True)
+    packages = _POSTMentorsPackagesSerializer(many=True)
+    avatar = Base64ImageField()
 
     class Meta:
         model = Mentor
-        wo = {'write_only': True}
-        extra_kwargs = {
-            'id': {},
-            'info': {},
-            'avatar': wo,
-            'company': wo,
-            'profession': wo,
-            'first_name': wo,
-            'last_name': wo,
-            'price': wo,
-            'price_currency': {},
-            'tag_set': wo,
-            'country': wo,
-            'packages': {},
-        }
-        fields = list(extra_kwargs.keys())
+        write_only_fields = [
+            'info',
+            'avatar',
+            'company',
+            'profession',
+            'first_name',
+            'last_name',
+            'price',
+            'price_currency',
+            'tag_set',
+            'country',
+            'packages',
+        ]
 
     def create(self, vd):
-        vd['info'] = _MentorsCreateInfoSerializer().create(vd.pop('info'))
+        vd['info'] = _POSTMentorsInfoSerializer().create(vd.pop('info'))
         tag_set = vd.pop('tag_set')
         packages = vd.pop('packages')
         mentor = Mentor.objects.create(**vd)

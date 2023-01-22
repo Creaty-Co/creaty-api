@@ -12,7 +12,6 @@ class MentorInfoFactory(BaseFactory):
     resume = Faker('english_text')
     what_help = Faker('english_text')
     experience = Faker('english_text')
-    portfolio = Faker('english_text')
     city = Faker('city')
 
     class Meta:
@@ -24,6 +23,8 @@ class MentorFactory(BaseFactory):
     avatar = factory.django.ImageField()
     first_name = Faker('first_name')
     last_name = Faker('last_name')
+    company = Faker('company')
+    profession = Faker('english_text')
     price = factory.LazyAttribute(lambda m: random.randint(1, 1000))
     country = factory.SubFactory(CountryFactory)
 

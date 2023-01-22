@@ -27,10 +27,8 @@ class _RetrieveMentorInfoSerializer(BaseModelSerializer):
             'resume',
             'what_help',
             'experience',
-            'portfolio',
             'languages',
-            'city_ru',
-            'city_en',
+            'city',
         ]
 
 
@@ -86,10 +84,8 @@ class _UpdateMentorInfoSerializer(BaseModelSerializer):
             'resume',
             'what_help',
             'experience',
-            'portfolio',
             'languages',
-            'city_ru',
-            'city_en',
+            'city',
         ]
 
 
