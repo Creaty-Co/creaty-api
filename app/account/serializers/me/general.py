@@ -13,4 +13,4 @@ class GET_AccountMeSerializer(BaseModelSerializer):
 class PATCH_AccountMeSerializer(BaseModelSerializer):
     class Meta:
         model = User
-        write_only_fields = ['first_name', 'first_name']
+        write_only_fields = ['first_name', 'last_name']

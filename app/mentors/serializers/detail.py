@@ -121,7 +121,6 @@ class UpdateMentorSerializer(BaseModelSerializer):
         model = Mentor
         wo = {'write_only': True}
         extra_kwargs = {
-            'id': {},
             'info': {},
             'avatar': wo,
             'company': wo,

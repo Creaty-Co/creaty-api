@@ -15,5 +15,5 @@ class PagesLinksDocumentSerializer(BaseModelSerializer):
     class Meta:
         model = DocumentLink
         wo = {'write_only': True}
-        extra_kwargs = {'id': {}, 'url': wo}
+        extra_kwargs = {'url': wo}
         fields = list(extra_kwargs.keys())
