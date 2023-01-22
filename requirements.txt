@@ -15,6 +15,7 @@ django-money==3.0.0
 certifi==2022.12.7
 django-celery-beat==2.4.0
 django-svg-image-form-field==1.0.1
+django-uuslug==2.0.0
 
 djangorestframework==3.14.0
 drf-spectacular==0.25.1

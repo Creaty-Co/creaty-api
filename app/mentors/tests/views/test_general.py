@@ -6,11 +6,16 @@ from app.base.tests.fakers import fake
 from app.base.tests.views.base import BaseViewTest
 from app.geo.tests.factories.country import CountryFactory
 from app.geo.tests.factories.language import LanguageFactory
+from app.mentors.tests.factories import MentorFactory
 from app.tags.tests.factories import TagFactory
 
 
 class MentorsTest(BaseViewTest):
     path = '/mentors/'
+
+    def test_get(self):
+        MentorFactory()
+        self._test('get', {'count': 1})
 
     def test_post(self):
         language = LanguageFactory()
