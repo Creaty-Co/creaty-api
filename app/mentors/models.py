@@ -14,9 +14,9 @@ __all__ = ['Mentor', 'Package', 'MentorInfo']
 class Mentor(BaseModel):
     info = models.OneToOneField('MentorInfo', models.CASCADE)
     slug = models.SlugField(unique=True)
-    avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatars')
     company = models.TextField(null=True, blank=True)
-    profession = models.TextField()
+    profession = models.TextField(null=True, blank=True)
     first_name = models.TextField()
     last_name = models.TextField()
     price: Money = MoneyField(max_digits=10, decimal_places=2)
