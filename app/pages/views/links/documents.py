@@ -1,4 +1,5 @@
 from app.admin_.permissions import AdminPermission
+from app.base.utils.common import response_204
 from app.base.views import BaseView
 from app.pages.models import DocumentLink
 from app.pages.serializers.links.documents import (
@@ -21,5 +22,6 @@ class PagesLinksDocumentView(BaseView):
     permissions_map = {'patch': [AdminPermission]}
     queryset = DocumentLink.objects.all()
 
+    @response_204
     def patch(self):
-        return self.update()
+        self.update()

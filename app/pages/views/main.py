@@ -1,4 +1,5 @@
 from app.admin_.permissions import AdminPermission
+from app.base.utils.common import response_204
 from app.pages.serializers.main import (
     PagesRetrieveMainSerializer,
     PagesUpdateMainSerializer,
@@ -16,5 +17,6 @@ class PagesMainView(BaseMainPageView):
     def get(self):
         return self.retrieve()
 
+    @response_204
     def patch(self):
-        return self.update()
+        self.update()

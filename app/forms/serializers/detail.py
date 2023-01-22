@@ -20,7 +20,7 @@ class FormSerializer(BaseModelSerializer):
     class Meta:
         model = Form
         wo = {'write_only': True}
-        extra_kwargs = {'id': {}, 'description': wo, 'post_send': wo, 'fields': {}}
+        extra_kwargs = {'description': wo, 'post_send': wo, 'fields': {}}
         fields = list(extra_kwargs.keys())
 
     def update(self, form, validated_data):

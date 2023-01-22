@@ -19,8 +19,9 @@ class MentorView(BaseView):
     def get(self):
         return self.retrieve()
 
+    @response_204
     def patch(self):
-        return self.update()
+        self.update()
 
     @response_204
     def delete(self):

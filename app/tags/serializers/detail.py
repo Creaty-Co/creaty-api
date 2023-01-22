@@ -9,7 +9,6 @@ class UpdateTagSerializer(BaseModelSerializer):
         model = Tag
         wo = {'write_only': True}
         extra_kwargs = {
-            'id': {},
             'shortcut': wo
             | {
                 'validators': [
