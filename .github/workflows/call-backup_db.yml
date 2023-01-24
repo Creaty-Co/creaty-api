@@ -1,0 +1,44 @@
+name: "Call: backup db"
+
+on:
+  workflow_call:
+    inputs:
+      subdir:
+        type: string
+        required: true
+      clean_count:
+        type: number
+        required: true
+  workflow_dispatch:
+    inputs:
+      subdir:
+        type: string
+        required: true
+      clean_count:
+        type: number
+        required: true
+
+jobs:
+  backup:
+    runs-on: self-hosted
+    steps:
+      - name: Get path
+        id: get_path
+        run: |
+          path="~/creaty/backups/db/${{ inputs.subdir }}"
+          echo path=$path >> $GITHUB_OUTPUT
+      - name: Create dirs
+        run: |
+          path=${{ steps.get_path.outputs.path }}
+          mkdir -p $path || true
+      - name: Make backup
+        run: |
+          path=${{ steps.get_path.outputs.path }}
+          cd $path
+          docker exec creaty-prod-db-1 pg_dump -U pg db -a -Fc | 
+            lzma -9e --threads=0 > $(date +"%Y-%m-%dT%H:%M:%S")
+      - name: Clean old backups
+        run: |
+          path=${{ steps.get_path.outputs.path }}
+          cd $path
+          ls -t | sed -e '1,${{ inputs.clean_count }}d' | xargs rm -rf
