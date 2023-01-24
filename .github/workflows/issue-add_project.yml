@@ -2,7 +2,7 @@ name: "Issue: add project"
 
 on:
   issues:
-    types: [ opened ]
+    types: [ opened, edited ]
 
 jobs:
   add:
@@ -17,8 +17,8 @@ jobs:
         run: |
           PROJECT_ID=$(gh api graphql -f query='
             query{
-              organization(login: $organisation){
-                projectV2(number: $number) {
+              organization(login: ${{ env.ORGANIZATION }}){
+                projectV2(number: ${{ env.PROJECT_NUMBER }}) {
                   id
                 }
               }
@@ -32,9 +32,13 @@ jobs:
         run: |
           gh api graphql -f query='
             mutation{
-              addProjectV2ItemById(input: {projectId: $project, contentId: $issue}) {
+              addProjectV2ItemById(
+                input: {
+                  projectId: ${{ env.PROJECT_ID }}, contentId: ${{ env.ISSUE_ID}}
+                }
+              ) {
                 item {
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID
+            }'
