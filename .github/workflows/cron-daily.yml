@@ -1,0 +1,13 @@
+name: "Cron: daily"
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  backup:
+    uses: ./.github/workflows/call-backup_db.yml
+    with:
+      subdir: 'daily'
+      clean_count: 7
+    secrets: inherit
