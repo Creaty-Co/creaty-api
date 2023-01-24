@@ -2,7 +2,7 @@ name: "Issue: add project"
 
 on:
   issues:
-    types: [ opened ]
+    types: [ opened, edited ]
 
 jobs:
   add:
@@ -16,21 +16,14 @@ jobs:
           PROJECT_NUMBER: 1
         run: |
           PROJECT_ID=$(gh api graphql -f query='
-            query($org: String!, $number: Int!) {
-              organization(login: $org){
-                projectNext(number: $number) {
+            query{
+              organization(login: $organisation){
+                projectV2(number: $number) {
                   id
-                  fields(first:20) {
-                    nodes {
-                      id
-                      name
-                      settings
-                    }
-                  }
                 }
               }
-            }' -f org=$ORGANIZATION -F number=$PROJECT_NUMBER \
-            --jq .data.organization.projectNext.id
+            }' -f organisation=$ORGANIZATION -F number=$PROJECT_NUMBER \
+            --jq .data.organization.projectV2.id
           )
           echo PROJECT_ID=$PROJECT_ID >> $GITHUB_ENV
       - name: Add issue to project
@@ -38,9 +31,9 @@ jobs:
           ISSUE_ID: ${{ github.event.issue.node_id }}
         run: |
           gh api graphql -f query='
-            mutation($project:ID!, $issue:ID!) {
-              addProjectNextItem(input: {projectId: $project, contentId: $issue}) {
-                projectNextItem {
+            mutation{
+              addProjectV2ItemById(input: {projectId: $project, contentId: $issue}) {
+                item {
                   id
                 }
               }
