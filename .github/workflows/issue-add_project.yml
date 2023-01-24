@@ -17,7 +17,7 @@ jobs:
         run: |
           PROJECT_ID=$(gh api graphql -f query='
             query{
-              organization(login: ${{ env.ORGANIZATION }}){
+              organization(login: "${{ env.ORGANIZATION }}"){
                 projectV2(number: ${{ env.PROJECT_NUMBER }}) {
                   id
                 }
@@ -34,7 +34,7 @@ jobs:
             mutation{
               addProjectV2ItemById(
                 input: {
-                  projectId: ${{ env.PROJECT_ID }}, contentId: ${{ env.ISSUE_ID}}
+                  projectId: "${{ env.PROJECT_ID }}", contentId: "${{ env.ISSUE_ID}}"
                 }
               ) {
                 item {
