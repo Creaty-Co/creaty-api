@@ -14,7 +14,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: [ self-hosted, prod ]
     environment:
       name: prod
       url: 'https://creaty.club'
@@ -32,4 +32,4 @@ jobs:
       - name: Deploy prod environment
         run: |
           export TAG=${{ inputs.tag }}
-          docker-compose -f docker/prod/docker-compose.prod.yml up --build -d
+          docker-compose -f docker/prod/docker-compose.yml up --build -d

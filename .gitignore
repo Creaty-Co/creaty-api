@@ -16,7 +16,7 @@
 !/envs/.base.env
 !/envs/.test.env
 !/envs/*.example.env
-/envs/.env
+/.env
 /nft-marketplace-web
 
 ### python_gitignore template

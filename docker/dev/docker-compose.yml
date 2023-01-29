@@ -1,0 +1,73 @@
+version: '3.9'
+
+services:
+  db:
+    extends:
+      file: ../docker-compose.base.yml
+      service: db
+    env_file: [ ../../envs/.dev.env ]
+    ports: [ 5434:5432 ]
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+  redis:
+    extends:
+      file: ../docker-compose.base.yml
+      service: redis
+  api:
+    extends:
+      file: ../docker-compose.base.yml
+      service: api
+    image: ${API_IMAGE}
+    env_file: [ ../../envs/.dev.env ]
+    volumes:
+      - profiles_volume:/api/profiles
+      - api_media_volume:/api/media
+      - api_static_volume:/api/static
+    command: bash -c "
+      python manage.py migrate
+      && python manage.py collectstatic --noinput
+      && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
+      && gunicorn api.wsgi -c gunicorn/config.py
+      "
+    networks: [ nginx_network ]
+    depends_on: [ db, redis ]
+  celery:
+    extends:
+      file: ../docker-compose.base.yml
+      service: celery
+    image: ${API_IMAGE}
+    env_file: [ ../../envs/.dev.env ]
+    depends_on: [ api ]
+  celery_beat:
+    extends:
+      file: ../docker-compose.base.yml
+      service: celery_beat
+    image: ${API_IMAGE}
+    env_file: [ ../../envs/.dev.env ]
+    depends_on: [ celery ]
+  nginx:
+    extends:
+      file: ../docker-compose.base.yml
+      service: nginx
+    build:
+      dockerfile: ../nginx/dev.dockerfile
+    env_file: [ ../../envs/.dev.env ]
+    volumes:
+      - api_media_volume:/etc/nginx/html/api/media
+      - api_static_volume:/etc/nginx/html/api/static
+    networks: [ proxy_nginx_network ]
+    depends_on: [ api ]
+
+volumes:
+  db_volume:
+  profiles_volume:
+  api_static_volume:
+  api_media_volume:
+
+networks:
+  db_network:
+  redis_network:
+  nginx_network:
+  proxy_nginx_network:
+    name: creaty-stage_nginx_network
+    external: true

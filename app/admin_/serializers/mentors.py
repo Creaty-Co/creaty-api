@@ -8,7 +8,7 @@ from app.pages.models import Page
 class _ListAdminMentorsInfoSerializer(BaseModelSerializer):
     class Meta:
         model = MentorInfo
-        fields = ['trial_meeting', 'city_ru', 'city_en']
+        fields = ['trial_meeting', 'city']
 
 
 class _ListAdminMentorsCountrySerializer(BaseModelSerializer):
