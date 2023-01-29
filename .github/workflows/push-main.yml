@@ -13,13 +13,17 @@ jobs:
     uses: ./.github/workflows/call-build.yml
     secrets: inherit
   cd:
-    uses: ./.github/workflows/call-deploy_dev.yml
+    # uses: ./.github/workflows/call-deploy_dev.yml
+    uses: ./.github/workflows/call-deploy_stage.yml
+    with:
+      tag: 'latest'
+    #
     secrets: inherit
     needs: [ build ]
   sentry_release:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
-      environment: dev
+      environment: stage  # dev
     secrets: inherit
   release_draft:
     uses: ./.github/workflows/call-release_draft.yml

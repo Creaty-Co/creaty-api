@@ -14,10 +14,10 @@ on:
 
 jobs:
   deploy:
-    runs-on: [ self-hosted, stage ]
+    runs-on: self-hosted  # [ self-hosted, stage ]
     environment:
       name: stage
-      url: 'https://stage.creaty.club'
+      url: 'http://stage.creaty.club'  # 'https://stage.creaty.club'
     steps:
       - uses: actions/checkout@v3.3.0
         with:
