@@ -1,9 +1,9 @@
-name: "Push: tag"
+name: "Push: tag v1"
 
 on:
   push:
     tags:
-      - 'v*'
+      - 'v1.*.*'
 
 jobs:
   build:
