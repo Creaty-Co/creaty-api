@@ -1,5 +1,5 @@
-from app.account.models import User
 from app.base.checkers.base import BaseChecker
+from app.users.models import User
 
 
 class AuthenticatedChecker(BaseChecker):

@@ -1,9 +1,9 @@
 from django.core.mail import send_mail
 
-from app.account.enums.users import UserType
-from app.account.models import User
 from app.forms.models import Application
 from app.forms.models.choices import rFormField, rFormType
+from app.users.enums.roles import UserRole
+from app.users.models import User
 
 
 class AdminNotificationService:
@@ -11,7 +11,7 @@ class AdminNotificationService:
     def _get_admins() -> list[str]:
         return list(
             User.objects.filter(
-                type__gte=UserType.ADMIN, email__isnull=False
+                role__gte=UserRole.ADMIN, email__isnull=False
             ).values_list('email', flat=True)
         )
 

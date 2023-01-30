@@ -1,9 +1,9 @@
 import factory
 from django.contrib.auth.hashers import make_password
 
-from app.account.enums.users import UserType
-from app.account.models import User
 from app.base.tests.fakers import Faker
+from app.users.enums.roles import UserRole
+from app.users.models import User
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -12,7 +12,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     raw_password: str
 
-    type = UserType.ADMIN
+    role = UserRole.DEFAULT
     email = Faker('email')
     password = Faker('password')
     first_name = Faker('first_name')

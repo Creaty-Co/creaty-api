@@ -1,5 +1,5 @@
-from app.account.checkers import AuthenticatedChecker
 from app.base.permissions.base import BasePermission
+from app.users.checkers import AuthenticatedChecker
 
 
 class AuthenticatedPermission(BasePermission):

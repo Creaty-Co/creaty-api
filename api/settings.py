@@ -97,9 +97,10 @@ INSTALLED_APPS = [
     'djmoney.contrib.exchange',
     'modeltranslation',
     'django_countries',
+    'rest_framework_simplejwt',
     # own apps
     'app.base',
-    'app.account',
+    'app.users',
     'app.admin_',
     'app.mentors',
     'app.tags',
@@ -119,8 +120,9 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'app.base.authentications.token.TokenAuthentication',
+        # 'app.base.authentications.token.TokenAuthentication',
         'app.base.authentications.session.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'app.base.paginations.page_number.PageNumberPagination',
     'PAGE_SIZE': 10,
@@ -375,7 +377,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = 'users.User'
 SESSION_ON_LOGIN = env('SESSION_ON_LOGIN', bool, DEBUG)
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']

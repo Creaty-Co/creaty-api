@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
-from app.account.models import User
 from app.base.exceptions import APIWarning
 from app.base.serializers.base import BaseModelSerializer
+from app.users.models import User
 
 
 class POST_UsersTokenSerializer(BaseModelSerializer):

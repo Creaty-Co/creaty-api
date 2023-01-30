@@ -1,9 +1,9 @@
 from drf_spectacular.extensions import OpenApiAuthenticationExtension
 from rest_framework.authentication import TokenAuthentication as _TokenAuthentication
 
-from app.account.models import Token
 from app.base.authentications.utils import get_header
 from app.base.exceptions import APIWarning
+from app.users.models import Token
 
 
 class TokenAuthentication(_TokenAuthentication):

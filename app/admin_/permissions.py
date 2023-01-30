@@ -1,5 +1,5 @@
-from app.account.enums.users import UserType
-from app.account.permissions import AuthenticatedPermission
+from app.users.enums.roles import UserRole
+from app.users.permissions import AuthenticatedPermission
 
 
 class AdminPermission(AuthenticatedPermission):
@@ -8,5 +8,5 @@ class AdminPermission(AuthenticatedPermission):
     def _has_permission(self, view):
         if not super()._has_permission(view):
             return False
-        if view.request.user.type >= UserType.ADMIN:
+        if view.request.user.role >= UserRole.ADMIN:
             return True

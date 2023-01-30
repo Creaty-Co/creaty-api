@@ -4,12 +4,11 @@ from collections.abc import Callable
 from typing import Any
 from urllib.parse import urlencode
 
-from app.account.models import Token, User
-from app.account.tests.factories.token import TokenFactory
-from app.account.tests.factories.users import UserFactory
 from app.base.exceptions import APIWarning
 from app.base.exceptions.base import APIException
 from app.base.tests.base import BaseTest
+from app.users.models import Token, User
+from app.users.tests.factories import UserFactory
 
 
 class _MeType(User):
@@ -40,13 +39,11 @@ class BaseViewTest(BaseTest):
         del self.me
         self._me = me_
         self.client.force_login(self.me)
-        self.me.auth_token = TokenFactory(user=self.me)
 
     @me.deleter
     def me(self):
         if self._me is not None:
             self.client.logout()
-            self._me.auth_token.delete()
             self._me.delete()
             self._me = None
 
