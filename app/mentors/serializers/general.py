@@ -75,7 +75,7 @@ class POSTMentorsSerializer(BaseModelSerializer):
         choices=Currency.choices, help_text=Currency.help_text
     )
     packages = _POSTMentorsPackagesSerializer(many=True)
-    avatar = Base64ImageField()
+    avatar = Base64ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Mentor
