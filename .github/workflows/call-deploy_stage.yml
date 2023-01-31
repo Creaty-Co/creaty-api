@@ -29,6 +29,14 @@ jobs:
           echo -e "$env" > envs/.stage.env
           echo "SENTRY_RELEASE=${{ inputs.tag }}" >> envs/.stage.env
           bw logout
+#
+      - name: Pull api docker image
+        run: |
+          export TAG=${{ inputs.tag }}
+          docker-compose -f docker/stage/docker-compose.yml pull api
+      - name: Pull web docker image
+        run: docker pull ghcr.io/creaty-co/creaty-web/web:latest
+#
       - name: Deploy stage environment
         run: |
           export TAG=${{ inputs.tag }}
