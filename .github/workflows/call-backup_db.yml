@@ -20,7 +20,7 @@ on:
 
 jobs:
   backup:
-    runs-on: self-hosted
+    runs-on: [ self-hosted, prod ]
     steps:
       - name: Get path
         id: get_path
