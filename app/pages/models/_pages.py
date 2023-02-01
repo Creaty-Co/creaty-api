@@ -14,21 +14,11 @@ class PageMentorSet(BaseModel):
 
     class Meta:
         db_table = 'page_mentor_set'
-        constraints = [
-            models.UniqueConstraint(
-                fields=('page', 'mentor'), name='page_mentor_set__unique__page__mentor'
-            ),
-            models.UniqueConstraint(
-                fields=('page', 'index'), name='page_mentor_set__unique__page__index'
-            ),
-        ]
 
 
 class Page(BaseModel):
-    tag = models.OneToOneField(
-        'tags.Tag', on_delete=models.CASCADE, blank=True, null=True
-    )
-    category = models.OneToOneField(
+    tag = models.ForeignKey('tags.Tag', on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey(
         'tags.Category', on_delete=models.CASCADE, blank=True, null=True
     )
     mentor_set = models.ManyToManyField('mentors.Mentor', through=PageMentorSet)

@@ -1,6 +1,6 @@
 from app.base.tests.views.base import BaseViewTest
 from app.mentors.tests.factories import MentorFactory
-from app.pages.models import PageMentorSet
+from app.pages.models import Page, PageMentorSet
 from app.pages.tests.factories.page import PageMentorSetFactory
 from app.tags.tests.factories import CategoryFactory
 
@@ -15,7 +15,7 @@ class PagesPersonalMentorTest(BaseViewTest):
 
     def test_patch(self):
         category = CategoryFactory()
-        page = category.page
+        page = Page.objects.get(category=category)
         mentor = MentorFactory()
         self.shortcut = page.category.shortcut
         self.mentor_id = mentor.id
@@ -26,7 +26,7 @@ class PagesPersonalMentorTest(BaseViewTest):
 
     def test_delete(self):
         category = CategoryFactory()
-        page = category.page
+        page = Page.objects.get(category=category)
         page_mentor_set = PageMentorSetFactory(page=page)
         mentor = page_mentor_set.mentor
         self.shortcut = page.category.shortcut
