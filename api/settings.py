@@ -120,7 +120,6 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'app.base.authentications.token.TokenAuthentication',
         'app.base.authentications.session.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],

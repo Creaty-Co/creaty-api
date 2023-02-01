@@ -18,7 +18,7 @@ services:
       service: api
     build:
       context: .
-    ports: [ 8000:8000 ]
+    ports: [ 800:8000 ]
     volumes:
       - profiles_volume:/api/profiles
       - media_volume:/api/media

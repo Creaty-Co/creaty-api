@@ -9,7 +9,7 @@ from rest_framework.response import Response
 # noinspection PyPackageRequirements
 from silk.profiling.profiler import silk_profile
 
-from app.base.authentications.token import TokenAuthentication
+from app.base.exceptions import APIWarning
 from app.base.exceptions.handler import exception_handler
 from app.base.models.base import BaseModel
 from app.base.permissions.base import BasePermission
@@ -86,7 +86,7 @@ class BaseView(GenericAPIView):
                 setattr(wrapped_f, key, value)
             return wrapped_f
 
-        auth_schema = TokenAuthentication.WARNING_401.get_schema()
+        auth_schema = APIWarning("Invalid token", 401, 'invalid_token')
         self = cls()
         for method_name in cls.http_method_names:
             try:
