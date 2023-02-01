@@ -8,7 +8,7 @@ from app.users.models import User
 class AdminNotificationService:
     @staticmethod
     def _get_admins() -> list[str]:
-        return list(User.objects.filter(is_stuff=True).values_list('email', flat=True))
+        return list(User.objects.filter(is_staff=True).values_list('email', flat=True))
 
     def _send_admin_emails(self, subject: str, message: str):
         send_mail(subject, message, None, self._get_admins())

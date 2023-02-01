@@ -1,6 +1,6 @@
 from app.base.tests.fakers import fake
 from app.base.tests.views.base import BaseViewTest
-from app.users.tests.factories.users import UserFactory
+from app.users.tests.factories import UserFactory
 
 
 class UsersTokenTest(BaseViewTest):

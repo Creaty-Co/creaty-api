@@ -7,16 +7,8 @@ from urllib.parse import urlencode
 from app.base.exceptions import APIWarning
 from app.base.exceptions.base import APIException
 from app.base.tests.base import BaseTest
-from app.users.models import Token, User
+from app.users.models import User
 from app.users.tests.factories import UserFactory
-
-
-class _MeType(User):
-    raw_password: str
-    auth_token: Token
-
-    class Meta:
-        abstract = True
 
 
 class BaseViewTest(BaseTest):
@@ -27,7 +19,7 @@ class BaseViewTest(BaseTest):
     _me = None
 
     @property
-    def me(self) -> _MeType | None:
+    def me(self) -> User | None:
         if self._me is None:
             if self.me_data is None:
                 return None
