@@ -14,10 +14,10 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted  # [ self-hosted, stage ]
+    runs-on: [ self-hosted, stage ]
     environment:
       name: stage
-      url: 'http://stage.creaty.club'  # 'https://stage.creaty.club'
+      url: 'https://stage.creaty.club'
     steps:
       - uses: actions/checkout@v3.3.0
         with:
@@ -29,14 +29,11 @@ jobs:
           echo -e "$env" > envs/.stage.env
           echo "SENTRY_RELEASE=${{ inputs.tag }}" >> envs/.stage.env
           bw logout
-#
-      - name: Pull api docker image
+      - name: Pull images
         run: |
           export TAG=${{ inputs.tag }}
-          docker-compose -f docker/stage/docker-compose.yml pull api
-      - name: Pull web docker image
-        run: docker pull ghcr.io/creaty-co/creaty-web/web:latest
-#
+          docker-compose -f docker/dev/docker-compose.yml pull api
+          docker pull ghcr.io/creaty-co/creaty-web/web:${{ inputs.tag }}
       - name: Deploy stage environment
         run: |
           export TAG=${{ inputs.tag }}

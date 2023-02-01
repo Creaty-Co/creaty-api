@@ -29,6 +29,11 @@ jobs:
           echo -e "$env" > envs/.prod.env
           echo "SENTRY_RELEASE=${{ inputs.tag }}" >> envs/.prod.env
           bw logout
+      - name: Pull images
+        run: |
+          export TAG=${{ inputs.tag }}
+          docker-compose -f docker/dev/docker-compose.yml pull api
+          docker pull ghcr.io/creaty-co/creaty-web/web:${{ inputs.tag }}
       - name: Deploy prod environment
         run: |
           export TAG=${{ inputs.tag }}
