@@ -1,4 +1,4 @@
-name: "Push: pre release"
+name: "Release: pre release"
 
 on:
   release:
