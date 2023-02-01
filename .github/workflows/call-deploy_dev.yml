@@ -25,5 +25,5 @@ jobs:
         run: | 
           docker-compose -f docker/dev/docker-compose.yml pull api
           docker pull ghcr.io/creaty-co/creaty-web/web:latest
-      - name: Deploy stage environment
+      - name: Deploy dev environment
         run: docker-compose -f docker/dev/docker-compose.yml up --build -d
