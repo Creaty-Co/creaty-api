@@ -1,12 +1,11 @@
-from app.account.enums.users import UserType
-from app.account.permissions import AuthenticatedPermission
+from app.users.permissions import AuthenticatedPermission
 
 
 class AdminPermission(AuthenticatedPermission):
-    message = 'Вы не являетесь администратором'
+    message = "You aren't an admin"
 
     def _has_permission(self, view):
         if not super()._has_permission(view):
             return False
-        if view.request.user.type >= UserType.ADMIN:
+        if view.request.user.is_staff:
             return True

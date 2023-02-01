@@ -20,7 +20,7 @@ urlpatterns += [
     path('silk/', include('silk.urls', namespace='silk')),
     path('django_admin/', admin.site.urls),
     path('base/', include('app.base.urls')),
-    path('account/', include('app.account.urls')),
+    path('users/', include('app.users.urls')),
     path('admin/', include('app.admin_.urls')),
     path('mentors/', include('app.mentors.urls')),
     path('tags/', include('app.tags.urls')),

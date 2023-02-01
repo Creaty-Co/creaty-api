@@ -55,7 +55,7 @@ services:
     volumes:
       - api_media_volume:/etc/nginx/html/api/media
       - api_static_volume:/etc/nginx/html/api/static
-    networks: [ proxy_nginx_network ]
+    networks: [ proxy_network ]
     depends_on: [ api ]
 
 volumes:
@@ -68,6 +68,6 @@ networks:
   db_network:
   redis_network:
   nginx_network:
-  proxy_nginx_network:
-    name: creaty-stage_nginx_network
+  proxy_network:
+    name: creaty-stage_proxy_network
     external: true
