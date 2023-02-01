@@ -3,22 +3,27 @@ tag-template: 'v$NEXT_MINOR_VERSION'
 
 categories:
   - title: '🚀 Solved tasks'
+    collapse-after: 3
     labels:
       - 'task'
 
   - title: '🔧 Fixed bugs'
+    collapse-after: 2
     labels:
       - 'bug'
 
   - title: '☂️ Added tests'
+    collapse-after: 2
     labels:
       - 'test'
 
   - title: '⬆️ Updated dependencies'
+    collapse-after: 1
     labels:
       - 'dependencies'
 
   - title: '♾️ Upgraded CI/CD'
+    collapse-after: 1
     labels:
       - 'devops'
 
@@ -34,7 +39,3 @@ template: |
   # Changes
   
   $CHANGES
-  
-  # Contributors
-  
-  $CONTRIBUTORS
