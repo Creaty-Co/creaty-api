@@ -1,9 +1,9 @@
 task:
-  - any: [ 'api/**/*', 'app/**/*', 'locale/**/*' ] #'!app/*/tests/**/*' ]
+  - app/**/*
+  #- any: [ 'api/**/*', 'app/**/*', 'locale/**/*' ] #'!app/*/tests/**/*' ]
 
 test:
   - app/*/tests/**/*
-  - app/**/*  # fixme
 
 devops:
   - .github/**/*
