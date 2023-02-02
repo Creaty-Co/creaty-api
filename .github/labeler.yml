@@ -1,12 +1,12 @@
 task:
-  - any: [ 'api/**', 'app/**', 'locale/**', '!app/*/tests/**' ]
+  - any: [ 'api/**/*', 'app/**/*', 'locale/**/*', '!app/*/tests/**/*' ]
 
 test:
-  - app/*/tests/**
+  - app/*/tests/**/*
 
 devops:
-  - .github/**
-  - docker/**
+  - .github/**/*
+  - docker/**/*
   - envs/*
   - nginx/*
   - gunicorn/*
