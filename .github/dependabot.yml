@@ -19,7 +19,7 @@ updates:
     schedule:
       interval: "daily"
     labels:
-      - "dependencies"
+      - "requirements"
     commit-message:
       prefix: "⬆️ "
     pull-request-branch-name:
