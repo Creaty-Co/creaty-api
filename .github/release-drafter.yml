@@ -16,6 +16,7 @@ categories:
     collapse-after: 1
     labels:
       - 'dependencies'
+      - 'requirements'
 
   - title: '♾️ Upgraded CI/CD'
     collapse-after: 1
