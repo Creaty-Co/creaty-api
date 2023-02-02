@@ -2,7 +2,6 @@ task:
   - api/**/*
   - app/**/*
   - locale/**/*
-  # - '!app/*/tests/**/*'
 
 test:
   - app/*/tests/**/*
@@ -17,12 +16,12 @@ devops:
   - .dockerignore
   - .gitignore
   - codecov.yml
+  - .pre-commit-config.yaml
   - pyproject.toml
   - setup.cfg
   - Dockerfile
   - docker-compose.yml
   - manage.py
 
-dependencies:
-  - .pre-commit-config.yaml
+requirements:
   - requirements.txt
