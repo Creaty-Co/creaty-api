@@ -2,21 +2,20 @@ import factory
 from django.contrib.auth.hashers import make_password
 
 from app.base.tests.fakers import Faker
-from app.users.enums.roles import UserRole
 from app.users.models import User
 
 
 class UserFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = User
-
-    raw_password: str
-
-    role = UserRole.DEFAULT
     email = Faker('email')
     password = Faker('password')
     first_name = Faker('first_name')
     last_name = Faker('last_name')
+    is_superuser = True
+
+    raw_password: str
+
+    class Meta:
+        model = User
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):

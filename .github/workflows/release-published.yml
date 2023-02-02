@@ -1,18 +1,18 @@
-name: "Push: tag v2"
+name: "Release: published"
 
 on:
-  push:
-    tags:
-      - 'v2.*.*'
+  release:
+    types: [ published ]
 
 jobs:
   build:
+    if: "!github.event.release.prerelease"
     uses: ./.github/workflows/call-build.yml
     secrets: inherit
     with:
       tag: ${{ github.ref_name }}
   cd:
-    uses: ./.github/workflows/call-deploy_stage.yml
+    uses: ./.github/workflows/call-deploy_prod.yml
     with:
       tag: ${{ github.ref_name }}
     secrets: inherit
@@ -20,7 +20,7 @@ jobs:
   sentry_release:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
-      environment: stage
+      environment: prod
       version: ${{ github.ref_name }}
     secrets: inherit
     needs: [ cd ]

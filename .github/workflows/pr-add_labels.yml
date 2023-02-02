@@ -1,0 +1,13 @@
+name: "PR: add labels"
+
+on:
+  pull_request:
+
+jobs:
+  add:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/labeler@4.1.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          sync-labels: false

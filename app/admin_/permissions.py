@@ -7,5 +7,5 @@ class AdminPermission(AuthenticatedPermission):
     def _has_permission(self, view):
         if not super()._has_permission(view):
             return False
-        if view.request.user.is_stuff:
+        if view.request.user.is_staff:
             return True
