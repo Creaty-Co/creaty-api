@@ -1,5 +1,7 @@
 task:
   - api/**/*
+  - app/**/*
+  - !app/*/tests/**/*
   #- any: [ 'api/**/*', 'app/**/*', 'locale/**/*' ] #'!app/*/tests/**/*' ]
 
 test:
