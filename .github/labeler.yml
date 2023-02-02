@@ -3,7 +3,7 @@ task:
 
 test:
   - app/*/tests/**/*
-  - api/settings.py  # fixme
+  - app/**/*  # fixme
 
 devops:
   - .github/**/*
