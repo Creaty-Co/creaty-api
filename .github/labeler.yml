@@ -2,7 +2,7 @@ task:
   - api/**/*
   - app/**/*
   - locale/**/*
-  - '!app/*/tests/**/*'
+  # - '!app/*/tests/**/*'
 
 test:
   - app/*/tests/**/*
