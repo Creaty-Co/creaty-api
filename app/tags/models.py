@@ -1,9 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
-__all__ = ['Category', 'Tag']
-
 from app.base.models.base import BaseModel
+
+__all__ = ['Category', 'Tag']
 
 
 class Category(BaseModel):
@@ -15,6 +15,9 @@ class Category(BaseModel):
         super().clean()
         if Tag.objects.filter(shortcut=self.shortcut).exists():
             raise ValidationError(f'Тег с shortcut {self.shortcut} уже существует')
+
+    def __str__(self):
+        return self.shortcut
 
 
 class Tag(BaseModel):
@@ -28,3 +31,6 @@ class Tag(BaseModel):
             raise ValidationError(
                 f'Категория с shortcut {self.shortcut} уже существует'
             )
+
+    def __str__(self):
+        return self.shortcut

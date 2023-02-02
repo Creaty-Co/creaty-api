@@ -1,0 +1,25 @@
+task:
+  - any: [ 'api/**', 'app/**', 'locale/**', '!app/*/tests/**' ]
+
+test:
+  - app/*/tests/**
+
+devops:
+  - .github/**
+  - docker/**
+  - envs/*
+  - nginx/*
+  - gunicorn/*
+  - .coveragerc
+  - .dockerignore
+  - .gitignore
+  - codecov.yml
+  - pyproject.toml
+  - setup.cfg
+  - Dockerfile
+  - docker-compose.yml
+  - manage.py
+
+dependencies:
+  - .pre-commit-config.yaml
+  - requirements.txt
