@@ -19,7 +19,7 @@ from app.base.logs.configs import LogConfig
 # env
 
 env = environ.Env(
-    ENV_FILE=(str, None),
+    ENV_FILE=(str, '.env'),
     DEBUG=bool,
     TEST=bool,
     USE_BROWSABLE_API=bool,
