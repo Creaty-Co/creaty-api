@@ -16,7 +16,7 @@ def _cast_rest_api_exception(exception: RestAPIException):
     return APIWarning(
         extract_detail(exception),
         getattr(exception, 'status_code'),
-        '_'.join(map(str, exception.get_codes())),
+        getattr(exception, 'default_code', '_'.join(map(str, exception.get_codes()))),
     )
 
 

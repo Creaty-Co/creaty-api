@@ -9,7 +9,6 @@ from rest_framework.response import Response
 # noinspection PyPackageRequirements
 from silk.profiling.profiler import silk_profile
 
-from app.base.exceptions import APIWarning
 from app.base.exceptions.handler import exception_handler
 from app.base.models.base import BaseModel
 from app.base.permissions.base import BasePermission
@@ -86,7 +85,6 @@ class BaseView(GenericAPIView):
                 setattr(wrapped_f, key, value)
             return wrapped_f
 
-        auth_schema = APIWarning("Invalid token", 401, 'invalid_token')
         self = cls()
         for method_name in cls.http_method_names:
             try:
@@ -102,11 +100,12 @@ class BaseView(GenericAPIView):
                 if get_schema := getattr(serializer_class, 'get_schema'):
                     responses |= get_schema(extracted[0])
 
+            auth = [{}]
             if any(map(lambda p: p.requires_authentication, cls.get_permissions(self))):
-                responses |= {401: auth_schema}
+                auth = [{'Cookie': []}, {'jwtAuth': []}]
 
             method = _force_args(method)
-            method = extend_schema(responses=responses)(method)
+            method = extend_schema(responses=responses, auth=auth)(method)
             setattr(cls, method_name, method)
 
     @classmethod

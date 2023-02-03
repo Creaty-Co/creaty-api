@@ -381,6 +381,10 @@ SESSION_ON_LOGIN = env('SESSION_ON_LOGIN', bool, DEBUG)
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
+SIMPLE_JWT = {
+    'ROTATE_REFRESH_TOKENS': True,
+}
+
 # logs
 
 LOG_ADMINS = {
