@@ -44,7 +44,7 @@ def extend_schema(
     parameters: list[OpenApiParameter] | None = None,
     request: Any = empty,
     responses: Any = empty,
-    auth: list[str] | None = None,
+    auth: list[dict] | None = None,
     description: str | None = None,
     summary: str | None = None,
     deprecated: bool | None = None,
