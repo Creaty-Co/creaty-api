@@ -40,7 +40,11 @@ class BaseView(GenericAPIView):
         cls, method_name: str
     ) -> tuple[int, type[BaseSerializer]] | None:
         serializer_class = cls.serializer_map.get(method_name)
-        if serializer_class and issubclass(serializer_class, BaseSerializer):
+        if (
+            serializer_class
+            and not isinstance(serializer_class, tuple)
+            and issubclass(serializer_class, BaseSerializer)
+        ):
             http_status = status_by_method(method_name)
             return http_status, serializer_class
         return serializer_class

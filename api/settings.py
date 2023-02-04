@@ -369,21 +369,31 @@ REDIRECT_ON_UNSUBSCRIBE = env('REDIRECT_ON_UNSUBSCRIBE')
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {'min_length': 6},
+        'NAME': 'django_advanced_password_validation.advanced_password_validation'
+        '.ContainsDigitsValidator',
     },
+    {
+        'NAME': 'django_advanced_password_validation.advanced_password_validation'
+        '.ContainsUppercaseValidator',
+    },
+    {
+        'NAME': 'django_advanced_password_validation.advanced_password_validation'
+        '.ContainsLowercaseValidator',
+    },
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 AUTH_USER_MODEL = 'users.User'
-SESSION_ON_LOGIN = env('SESSION_ON_LOGIN', bool, DEBUG)
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
 }
+
+VERIFICATION_REGISTER_FAILURE_PATH = '/'
+VERIFICATION_REGISTER_SUCCESSFUL_PATH = '/'
 
 # logs
 

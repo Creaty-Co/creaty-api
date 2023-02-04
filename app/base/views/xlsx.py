@@ -5,20 +5,16 @@ from rest_framework.response import Response
 
 from app.admin_.permissions import AdminPermission
 from app.base.exceptions import ClientError
-from app.base.services.cache import BaseCacheService
+from app.base.services.cache import Cacher
 from app.base.services.xlsx import BaseXlsxConverter
 from app.base.utils.common import add_query_params, response_204
 from app.base.utils.schema import schema_serializer
 from app.base.views.base import BaseView
 
 
-class _XlsxCacheService(BaseCacheService):
-    SCOPE = 'xlsx'
-
-
 class BaseXlsxView(BaseView):
     xlsx_converter: BaseXlsxConverter
-    cache_service: BaseCacheService = _XlsxCacheService()
+    cache_service: Cacher = Cacher('xlsx')
 
     serializer_map = {
         'post': schema_serializer(
