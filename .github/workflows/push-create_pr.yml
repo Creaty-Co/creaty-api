@@ -27,7 +27,7 @@ jobs:
         id: get_task_title
         run: |
           task_number=${{ steps.get_task_number.outputs.VAL }}
-          title=$(gh issue view $task_number --json -jq .title)
+          title=$(gh issue view $task_number --json title --jq .title)
           echo $title
           echo VAL=$title >> $GITHUB_OUTPUT
       - name: Get author
