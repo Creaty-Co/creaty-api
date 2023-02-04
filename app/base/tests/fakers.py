@@ -37,6 +37,9 @@ class SubFaker(_Faker):
         numbers = [str(self.random_digit()) for _ in range(length - letters_count)]
         return ''.join(self.random_elements(letters + numbers, length, True))
 
+    def password(self) -> str:
+        return f"Aa{self.random_string(5)}1"
+
     def image(self, size: tuple[int, int] = (1, 1), extension=None) -> ContentFile:
         if extension is None:
             extension = self.file_extension(category='image')

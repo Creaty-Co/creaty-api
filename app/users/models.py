@@ -9,10 +9,11 @@ from app.users.managers import UserManager
 
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    first_name = models.TextField(blank=True)
-    last_name = models.TextField(blank=True)
+    first_name = models.TextField()
+    last_name = models.TextField()
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+
+    is_active = True
 
     objects = UserManager()
 
