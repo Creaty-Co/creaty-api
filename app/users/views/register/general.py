@@ -5,12 +5,12 @@ from drf_spectacular.utils import OpenApiResponse, extend_schema
 from app.base.utils.common import response_204
 from app.base.views import BaseView
 from app.users.regisration import registerer
-from app.users.serializers.register.general import UsersRegisterSerializer
+from app.users.serializers.register.general import POSTUsersRegisterSerializer
 from app.users.verification import register_verifier
 
 
 class UsersRegisterView(BaseView):
-    serializer_map = {'post': (204, UsersRegisterSerializer)}
+    serializer_map = {'post': (204, POSTUsersRegisterSerializer)}
 
     @extend_schema(
         responses={
@@ -35,7 +35,7 @@ class UsersRegisterView(BaseView):
 
     @response_204
     def post(self):
-        serializer = self.get_valid_serializer(data=self.get_data())
+        serializer = self.get_valid_serializer()
         valid_data = serializer.validated_data
         valid_data['password'] = make_password(valid_data['password'])
         register_verifier.send(valid_data['email'], valid_data)

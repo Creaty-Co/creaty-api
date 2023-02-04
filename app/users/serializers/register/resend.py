@@ -1,4 +1,3 @@
-from django.contrib.auth.password_validation import validate_password
 from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
 
@@ -12,16 +11,19 @@ class _EmailUniqueValidator(UniqueValidator):
         try:
             super().__call__(value, serializer_field)
         except ValidationError:
-            raise POSTUsersRegisterSerializer.WARNINGS[409]
+            raise POSTUsersRegisterResendSerializer.WARNINGS[409]
 
 
-class POSTUsersRegisterSerializer(BaseModelSerializer):
+class POSTUsersRegisterResendSerializer(BaseModelSerializer):
     WARNINGS = {
+        404: APIWarning(
+            "User with such an email hasn't registered",
+            404,
+            'register_resend_email_not_found',
+        ),
         409: APIWarning(
-            "User with this email already exists",
-            409,
-            'register_email_already_exists',
-        )
+            "User has already been verified", 409, 'register_resend_already_verified'
+        ),
     }
 
     class Meta:
@@ -29,8 +31,4 @@ class POSTUsersRegisterSerializer(BaseModelSerializer):
         extra_kwargs = {
             'email': {'validators': [_EmailUniqueValidator(User.objects.all())]}
         }
-        write_only_fields = ['first_name', 'last_name', 'email', 'password']
-
-    def validate(self, attrs):
-        validate_password(attrs['password'], User(**attrs))
-        return attrs
+        write_only_fields = ['email']

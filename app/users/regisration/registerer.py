@@ -1,13 +1,13 @@
 from django.conf import settings
 
 from app.users.models import User
-from app.users.verification.verifiers.base import BaseVerifier
+from app.users.verification import EmailVerifier
 
 
 class Registerer:
     def __init__(
         self,
-        verifier: BaseVerifier,
+        verifier: EmailVerifier,
         failure_path: str = settings.VERIFICATION_REGISTER_FAILURE_PATH,
         successful_path: str = settings.VERIFICATION_REGISTER_SUCCESSFUL_PATH,
         domain: str = settings.WEB_DOMAIN,

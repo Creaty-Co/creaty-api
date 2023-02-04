@@ -7,6 +7,7 @@ from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 
 # noinspection PyPackageRequirements
+from rest_framework.throttling import BaseThrottle
 from silk.profiling.profiler import silk_profile
 
 from app.base.exceptions.handler import exception_handler
@@ -27,6 +28,7 @@ class BaseView(GenericAPIView):
         str, tuple[int, type[BaseSerializer]] | type[BaseSerializer]
     ] = {}
     permissions_map: dict[str, list[type[BasePermission]]] = {}
+    throttle_map: dict[str, tuple[BaseThrottle, list[str]]] = {}
     lookup_field = 'id'
 
     _method = ''
@@ -72,6 +74,20 @@ class BaseView(GenericAPIView):
 
     def get_permissions(self) -> list[BasePermission]:
         return [p() for p in self.get_permission_classes()]
+
+    def get_throttles(self):
+        throttles = super().get_throttles()
+        if throttle_conf := self.throttle_map.get(self.method):
+            throttle_class, throttle_rates = throttle_conf
+            throttles += [
+                type(
+                    '_',
+                    (throttle_class,),
+                    {'rate': rate, 'scope': f"{self.__class__.__name__}_{self.method}"},
+                )()
+                for rate in throttle_rates
+            ]
+        return throttles
 
     @classmethod
     def _decorate_methods(cls) -> None:

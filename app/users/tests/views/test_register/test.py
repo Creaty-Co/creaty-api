@@ -6,7 +6,7 @@ from app.base.tests.fakers import fake
 from app.base.tests.views.base import BaseViewTest
 from app.users.models import User
 from app.users.regisration import registerer
-from app.users.serializers.register.general import UsersRegisterSerializer
+from app.users.serializers.register.general import POSTUsersRegisterSerializer
 from app.users.tests.factories import UserFactory
 from app.users.verification import register_verifier
 
@@ -66,23 +66,25 @@ class UsersRegisterTest(BaseViewTest):
         self.assert_equal(User.objects.count(), 0)
 
     def test_post(self):
+        email = fake.email()
         self._test(
             'post',
             data={
                 'first_name': fake.first_name(),
                 'last_name': fake.last_name(),
-                'email': fake.email(),
+                'email': email,
                 'password': fake.password(),
             },
             status=204,
         )
         self.assert_equal(len(mail.outbox), 1)
+        self.assert_equal(mail.outbox[0].to, [email])
 
-    def test_post_error_409_email_already_exists(self):
+    def test_post_warn_409_email_already_exists(self):
         user = UserFactory()
         self._test(
             'post',
-            UsersRegisterSerializer.WARNINGS[409],
+            POSTUsersRegisterSerializer.WARNINGS[409],
             {
                 'first_name': fake.first_name(),
                 'last_name': fake.last_name(),
