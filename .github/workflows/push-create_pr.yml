@@ -8,6 +8,8 @@ on:
 jobs:
   create:
     runs-on: ubuntu-22.04
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v3.2.0
       - name: Get branch name
