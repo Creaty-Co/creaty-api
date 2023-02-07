@@ -6,7 +6,6 @@ import app.users.managers
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
