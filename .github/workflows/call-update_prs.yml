@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: chinthakagodawita/autoupdate-action@v1.6.0
+        if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GENTLEENVY_TOKEN }}
           MERGE_MSG: "auto-update"
