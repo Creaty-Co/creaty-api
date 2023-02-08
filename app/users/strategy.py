@@ -12,8 +12,18 @@ class SocialStrategy(DjangoStrategy):
         if url == settings.SOCIAL_AUTH_LOGIN_REDIRECT_URL:
             token = RefreshToken.for_user(self.request.user)
             response = HttpResponseRedirect(url)
-            response.set_cookie(key='refresh', value=str(token), httponly=True)
-            response.set_cookie(key='access', value=token.access_token, httponly=True)
+            response.set_cookie(
+                key='refresh',
+                value=str(token),
+                domain=settings.WEB_DOMAIN,
+                httponly=True,
+            )
+            response.set_cookie(
+                key='access',
+                value=token.access_token,
+                domain=settings.WEB_DOMAIN,
+                httponly=True,
+            )
             return response
         return super().redirect(url)
 
