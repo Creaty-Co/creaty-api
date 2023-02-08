@@ -27,7 +27,6 @@ env = environ.Env(
     CELERY_REDIS_MAX_CONNECTIONS=int,
     CELERY_BROKER_POOL_LIMIT=int,
     CELERY_TASK_EAGER=bool,
-    SESSION_ON_LOGIN=bool,
     USE_SILK=bool,
     SILKY_ANALYZE_QUERIES=bool,
     SILKY_PYTHON_PROFILER=bool,
@@ -88,6 +87,7 @@ INSTALLED_APPS = [
     'django_pickling',
     'cacheops',
     'silk',
+    'social_django',
     'cloudinary',
     'cloudinary_storage',
     'drf_spectacular',
@@ -180,6 +180,7 @@ ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 INTERNAL_IPS = ['127.0.0.1']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_HTTPONLY = True
 
 # cache
 
@@ -386,7 +387,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'users.User'
 
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
@@ -394,6 +398,31 @@ SIMPLE_JWT = {
 
 VERIFICATION_REGISTER_FAILURE_PATH = '/'
 VERIFICATION_REGISTER_SUCCESSFUL_PATH = '/'
+
+# social_auth
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_APP_ID')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('GOOGLE_APP_SECRET')
+SOCIAL_AUTH_GOOGLE_SCOPE = ['email']
+SOCIAL_AUTH_GOOGLE_PROFILE_EXTRA_PARAMS = {'fields': 'id, name, email'}
+
+SOCIAL_AUTH_STRATEGY = 'app.users.strategy.SocialStrategy'
+SOCIAL_AUTH_USER_FIELDS = ['email', 'first_name', 'last_name']
+SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['first_name', 'last_name']
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = f"https://{WEB_DOMAIN}"
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'app.users.pipelines.user_details',
+)
 
 # logs
 
