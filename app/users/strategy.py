@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
@@ -11,19 +13,18 @@ class SocialStrategy(DjangoStrategy):
     def redirect(self, url):
         if url == settings.SOCIAL_AUTH_LOGIN_REDIRECT_URL:
             token = RefreshToken.for_user(self.request.user)
+            root_domain = '.'.join(settings.WEB_DOMAIN.split('.')[-2:])
             response = HttpResponseRedirect(url)
-            response.set_cookie(
-                key='refresh',
-                value=str(token),
-                domain=settings.WEB_DOMAIN,
-                httponly=True,
-            )
-            response.set_cookie(
-                key='access',
-                value=token.access_token,
-                domain=settings.WEB_DOMAIN,
-                httponly=True,
-            )
+            for key, value in ('refresh', str(token)), ('access', token.access_token):
+                response.set_cookie(
+                    key=key,
+                    value=value,
+                    max_age=timedelta(hours=1),
+                    domain=root_domain,
+                    secure=True,
+                    # httponly=True,
+                    samesite='Lax',
+                )
             return response
         return super().redirect(url)
 
