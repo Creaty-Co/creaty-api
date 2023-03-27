@@ -30,7 +30,7 @@ channels-redis==4.0.0
 asgiref==3.6.0
 orjson==3.8.6
 psycopg2-binary==2.9.5
-redis==4.5.1
+redis==4.5.3
 Pillow==9.4.0
 whitenoise==6.3.0
 celery==5.2.7
