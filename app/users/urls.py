@@ -3,6 +3,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views import (
     UsersMeView,
+    UsersPasswordResetView,
     UsersRegisterResendView,
     UsersRegisterSocialGoogleCompleteView,
     UsersRegisterSocialGoogleView,
@@ -19,6 +20,7 @@ urlpatterns = [
         name='google_complete',
     ),
     path('me/', UsersMeView.as_view()),
+    path('password/reset/', UsersPasswordResetView.as_view(name='password_reset')),
     path('token/', TokenObtainPairView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view()),
 ]

@@ -13,16 +13,14 @@ class SocialStrategy(DjangoStrategy):
     def redirect(self, url):
         if url == settings.SOCIAL_AUTH_LOGIN_REDIRECT_URL:
             token = RefreshToken.for_user(self.request.user)
-            root_domain = '.'.join(settings.WEB_DOMAIN.split('.')[-2:])
             response = HttpResponseRedirect(url)
             for key, value in ('refresh', str(token)), ('access', token.access_token):
                 response.set_cookie(
                     key=key,
                     value=value,
                     max_age=timedelta(hours=1),
-                    domain=root_domain,
+                    domain=settings.ROOT_DOMAIN,
                     secure=True,
-                    # httponly=True,
                     samesite='Lax',
                 )
             return response
