@@ -1,8 +1,8 @@
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 
 from app.admin_.permissions import AdminPermission
 from app.base.views import BaseView
-from app.tags.models import Category
+from app.tags.models import Category, Tag
 from app.tags.serializers.categories.general import (
     CreateTagsCategoriesSerializer,
     ListTagsCategoriesSerializer,
@@ -16,7 +16,12 @@ class TagsCategoriesView(BaseView):
         'post': CreateTagsCategoriesSerializer,
     }
     permissions_map = {'post': [AdminPermission]}
-    queryset = Category.objects.prefetch_related('tag_set')
+    queryset = Category.objects.prefetch_related(
+        Prefetch(
+            'tag_set',
+            queryset=Tag.objects.annotate(Count('mentor')).exclude(mentor__count=0),
+        ),
+    )
 
     def get(self):
         return self.list()
