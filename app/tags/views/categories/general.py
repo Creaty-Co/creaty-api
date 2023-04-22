@@ -16,7 +16,7 @@ class TagsCategoriesView(BaseView):
         'post': CreateTagsCategoriesSerializer,
     }
     permissions_map = {'post': [AdminPermission]}
-    queryset = Category.objects.prefetch_related('tag_set')
+    queryset = Category.objects.prefetch_related('tags')
 
     def get(self):
         return self.list()
