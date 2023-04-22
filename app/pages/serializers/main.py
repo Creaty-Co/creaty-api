@@ -21,7 +21,7 @@ class PagesRetrieveMainSerializer(BaseModelSerializer):
 
 class PagesUpdateMainSerializer(BaseModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Tag.objects.all(), source='tag_set', write_only=True
+        many=True, queryset=Tag.objects.all(), write_only=True
     )
     mentors = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Mentor.objects.all(), source='mentor_set', write_only=True
@@ -32,7 +32,7 @@ class PagesUpdateMainSerializer(BaseModelSerializer):
         fields = ['tags', 'mentors']
 
     def validate(self, attrs):
-        if tags := attrs.get('tag_set'):
+        if tags := attrs.get('tags'):
             max_tags = PageService.MAX_TAGS_COUNT
             if len(tags) > max_tags:
                 raise ValidationError(
@@ -47,7 +47,7 @@ class PagesUpdateMainSerializer(BaseModelSerializer):
         return attrs
 
     def update(self, instance, validated_data):
-        tags = validated_data.pop('tag_set', None)
+        tags = validated_data.pop('tags', None)
         mentors = validated_data.pop('mentor_set', None)
         main_page = super().update(instance, validated_data)
         if tags is not None:
