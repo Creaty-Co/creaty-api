@@ -3,16 +3,20 @@ from django.db.models import Count
 from app.admin_.permissions import AdminPermission
 from app.base.views import BaseView
 from app.tags.models import Tag
-from app.tags.serializers.general import ListTagsSerializer
+from app.tags.serializers.general import ListTagsSerializer, POSTTagsSerializer
 
 
 class TagsView(BaseView):
     many = True
-    serializer_map = {'get': ListTagsSerializer}
+    permissions_map = {'post': [AdminPermission]}
+    serializer_map = {'get': ListTagsSerializer, 'post': POSTTagsSerializer}
     queryset = Tag.objects.all()
 
     def get(self):
         return self.list()
+
+    def post(self):
+        return self.create()
 
     def get_queryset(self):
         queryset = super().get_queryset()
