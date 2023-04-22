@@ -3,8 +3,6 @@ from django.db import models
 
 from app.base.models.base import BaseModel
 
-__all__ = ['Category', 'Tag']
-
 
 class Category(BaseModel):
     shortcut = models.TextField(unique=True)
@@ -21,9 +19,11 @@ class Category(BaseModel):
 
 
 class Tag(BaseModel):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     shortcut = models.TextField(unique=True)
     title = models.TextField()
+    categories = models.ManyToManyField(
+        Category, through='CategoryTag', related_name='tags'
+    )
 
     def clean(self):
         super().clean()
@@ -34,3 +34,11 @@ class Tag(BaseModel):
 
     def __str__(self):
         return self.shortcut
+
+
+class CategoryTag(BaseModel):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('category', 'tag')

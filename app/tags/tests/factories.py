@@ -15,7 +15,6 @@ class CategoryFactory(BaseFactory):
 
 
 class TagFactory(BaseFactory):
-    category = factory.SubFactory(CategoryFactory)
     title = Faker('english_word')
     shortcut = Faker('slug')
 
