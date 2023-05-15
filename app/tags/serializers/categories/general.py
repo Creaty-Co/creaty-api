@@ -7,7 +7,7 @@ from app.tags.serializers.general import ListTagsSerializer
 
 
 class ListTagsCategoriesSerializer(BaseModelSerializer):
-    tags = ListTagsSerializer(many=True, source='tag_set')
+    tags = ListTagsSerializer(many=True)
 
     class Meta:
         model = Category

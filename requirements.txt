@@ -1,15 +1,15 @@
-Django==4.1.6
+Django==4.1.7
 django-cors-headers==3.13.0
 django-environ==0.9.0
 django-filter==22.1
-django-cleanup==6.0.0
+django-cleanup==7.0.0
 django-templated-mail==1.1.1
 django-cloudinary-storage==0.3.0
 django-celery-email==3.0.0
 django-modeltranslation==0.18.9
 django-pickling==1.0
 django-redis==5.2.0
-django-cacheops==6.1
+django-cacheops==6.2
 django-countries==7.5.1
 django-money==3.0.0
 certifi==2022.12.7
@@ -28,7 +28,7 @@ djangochannelsrestframework==1.1.0
 channels==4.0.0
 channels-redis==4.0.0
 asgiref==3.6.0
-orjson==3.8.5
+orjson==3.8.6
 psycopg2-binary==2.9.5
 redis==4.5.1
 Pillow==9.4.0
@@ -36,8 +36,8 @@ whitenoise==6.3.0
 celery==5.2.7
 gevent==22.10.2
 argon2-cffi==21.3.0
-pydantic[email]==1.10.4
-sentry-sdk==1.15.0
+pydantic[email]==1.10.5
+sentry-sdk==1.16.0
 py-moneyed==2.0
 django-silk==5.0.3
 daphne==4.0.0
@@ -51,5 +51,5 @@ pybase64==1.2.3
 
 parameterized==0.8.1
 factory_boy==3.2.1
-Faker==16.7.0
-coverage==7.1.0
+Faker==17.3.0
+coverage==7.2.0
