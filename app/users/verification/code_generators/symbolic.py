@@ -4,7 +4,7 @@ from app.users.verification.code_generators.base import BaseCodeGenerator
 
 
 class SymbolicCodeGenerator(BaseCodeGenerator):
-    def __init__(self, length: int = 10):
+    def __init__(self, length: int):
         self.length = length
 
     def generate(self) -> int:

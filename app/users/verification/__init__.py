@@ -1,7 +1,11 @@
 from typing import Final
 
+from django.conf import settings
+from django.urls import reverse
+
 from app.base.services.cache import Cacher
 from app.users.verification.code_generators.numeric import NumericCodeGenerator
+from app.users.verification.code_generators.symbolic import SymbolicCodeGenerator
 from app.users.verification.verifiers.email import EmailVerifier
 
 register_verifier: Final = EmailVerifier(
@@ -12,8 +16,9 @@ register_verifier: Final = EmailVerifier(
 )
 
 password_reset_verifier: Final = EmailVerifier(
-    'password_reset',
+    'reset_password',
     'email/password_reset.html',
     Cacher('password_reset', timeout=60 * 60),
     NumericCodeGenerator(100000, 999999),
+    domain=settings.WEB_DOMAIN,
 )

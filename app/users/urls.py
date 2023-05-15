@@ -11,7 +11,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path('register/', UsersRegisterView.as_view(), name='register'),
+    path('register/', UsersRegisterView.as_view()),
     path('register/resend/', UsersRegisterResendView.as_view()),
     path('register/social/google/', UsersRegisterSocialGoogleView.as_view()),
     path(
@@ -20,7 +20,7 @@ urlpatterns = [
         name='google_complete',
     ),
     path('me/', UsersMeView.as_view()),
-    path('password/reset/', UsersPasswordResetView.as_view(name='password_reset')),
+    path('password/reset/', UsersPasswordResetView.as_view()),
     path('token/', TokenObtainPairView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view()),
 ]
