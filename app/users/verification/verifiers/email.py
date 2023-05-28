@@ -2,7 +2,6 @@ import urllib.parse
 from typing import Any
 
 from django.conf import settings
-from django.urls import reverse
 from templated_mail.mail import BaseEmailMessage
 
 from app.base.services.cache import Cacher
@@ -15,22 +14,21 @@ class EmailVerifier:
 
     def __init__(
         self,
-        view_name: str,
+        path: str,
         template_name: str,
         cache: Cacher,
         code_generator: BaseCodeGenerator,
         domain: str = settings.API_DOMAIN,
     ):
-        self.view_name = view_name
+        self.path = f"/{path.strip('/')}/"
         self.template_name = template_name
         self.cache = cache
         self.code_generator = code_generator
         self.domain = domain
 
     def _generate_link(self, email: str, code) -> str:
-        path = f"/{reverse(self.view_name).strip('/')}/"
         query_string = urllib.parse.urlencode({'email': email, 'code': code})
-        return f"https://{self.domain}{path}?{query_string}"
+        return f"https://{self.domain}{self.path}?{query_string}"
 
     def _create_email_message(self, code, link: str) -> BaseEmailMessage:
         email_message = BaseEmailMessage(template_name=self.template_name)
