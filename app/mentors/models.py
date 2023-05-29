@@ -22,6 +22,7 @@ class Mentor(BaseModel):
     price: Money = MoneyField(max_digits=10, decimal_places=2)
     tag_set = models.ManyToManyField(Tag)
     country = models.ForeignKey(Country, models.PROTECT)
+    is_draft = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
