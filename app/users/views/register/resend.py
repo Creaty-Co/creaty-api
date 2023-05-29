@@ -8,7 +8,7 @@ from app.users.verification import register_verifier
 
 class UsersRegisterResendView(BaseView):
     serializer_map = {'post': POSTUsersRegisterResendSerializer}
-    throttle_map = {'post': [(AnonRateThrottle, ['1/m', '5/h'])]}
+    throttle_map = {'post': [(AnonRateThrottle, ['30/s', '10/d'])]}
 
     @response_204
     def post(self):
