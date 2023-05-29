@@ -17,3 +17,9 @@ class MentorsView(BaseView):
 
     def post(self):
         return self.create()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if AdminPermission().has_permission(self.request, self):
+            return queryset
+        return queryset.filter(is_draft=False)

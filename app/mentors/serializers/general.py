@@ -39,6 +39,7 @@ class GETMentorsSerializer(BaseModelSerializer):
             'price_currency',
             'country',
             'tags',
+            'is_draft',
         ]
 
 
@@ -91,6 +92,7 @@ class POSTMentorsSerializer(BaseModelSerializer):
             'tag_set',
             'country',
             'packages',
+            'is_draft',
         ]
 
     def create(self, vd):
