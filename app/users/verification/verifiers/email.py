@@ -9,9 +9,6 @@ from app.users.verification.code_generators.base import BaseCodeGenerator
 
 
 class EmailVerifier:
-    class ResendEmailNotFoundException(Exception):
-        pass
-
     def __init__(
         self,
         path: str,
@@ -40,17 +37,6 @@ class EmailVerifier:
         self.cache.set((code, payload), email)
         link = self._generate_link(email, code)
         email_message = self._create_email_message(code, link)
-        email_message.send([email])
-
-    def resend(self, email: str) -> None:
-        try:
-            _, payload = self.cache.get(email)
-        except TypeError as exc:
-            raise self.ResendEmailNotFoundException from exc
-        new_code = self.code_generator.generate()
-        self.cache.set((new_code, payload), email)
-        link = self._generate_link(email, new_code)
-        email_message = self._create_email_message(new_code, link)
         email_message.send([email])
 
     def check(self, email: str, code) -> tuple[bool, Any]:
