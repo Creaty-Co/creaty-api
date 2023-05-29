@@ -13,7 +13,7 @@ class PageService:
     def main(self) -> Page:
         main_page, is_created = Page.objects.get_or_create(tag=None, category=None)
         if is_created:
-            mentor_qs = Mentor.objects.order_by('?').nocache()
+            mentor_qs = Mentor.objects.filter(is_draft=False).order_by('?').nocache()
             tags_qs = Tag.objects.order_by('?').nocache()
             for index, mentor in enumerate(mentor_qs[: self.MENTORS_COUNT]):
                 PageMentorSet.objects.create(page=main_page, mentor=mentor, index=index)
@@ -30,7 +30,7 @@ class PageService:
         return page
 
     def _fill_random(self, page: Page) -> None:
-        raw_mentor_qs = Mentor.objects.order_by('?').nocache()
+        raw_mentor_qs = Mentor.objects.filter(is_draft=False).order_by('?').nocache()
         tags_qs = (
             Tag.objects.annotate(Count('mentor'))
             .exclude(mentor__count=0)
