@@ -26,7 +26,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Create Sentry release
-        uses: getsentry/action-release@v1.3.0
+        uses: getsentry/action-release@v1.4.1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: creaty-co
