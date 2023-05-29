@@ -28,7 +28,7 @@ class BaseView(GenericAPIView):
         str, tuple[int, type[BaseSerializer]] | type[BaseSerializer]
     ] = {}
     permissions_map: dict[str, list[type[BasePermission]]] = {}
-    throttle_map: dict[str, tuple[BaseThrottle, list[str]]] = {}
+    throttle_map: dict[str, list[tuple[BaseThrottle, list[str]]]] = {}
     lookup_field = 'id'
 
     _method = ''
@@ -77,16 +77,19 @@ class BaseView(GenericAPIView):
 
     def get_throttles(self):
         throttles = super().get_throttles()
-        if throttle_conf := self.throttle_map.get(self.method):
-            throttle_class, throttle_rates = throttle_conf
-            throttles += [
-                type(
-                    '_',
-                    (throttle_class,),
-                    {'rate': rate, 'scope': f"{self.__class__.__name__}_{self.method}"},
-                )()
-                for rate in throttle_rates
-            ]
+        if throttle_confs := self.throttle_map.get(self.method):
+            for throttle_class, throttle_rates in throttle_confs:
+                throttles += [
+                    type(
+                        '_',
+                        (throttle_class,),
+                        {
+                            'rate': rate,
+                            'scope': f"{self.__class__.__name__}_{self.method}",
+                        },
+                    )()
+                    for rate in throttle_rates
+                ]
         return throttles
 
     @classmethod
@@ -157,7 +160,7 @@ class BaseView(GenericAPIView):
         return Response(serializer.data)
 
     def create(self):
-        serializer = self.get_valid_serializer(data=self.get_data())
+        serializer = self.get_valid_serializer()
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -168,9 +171,7 @@ class BaseView(GenericAPIView):
 
     def update(self):
         instance = self.get_object()
-        serializer = self.get_valid_serializer(
-            instance, data=self.get_data(), partial=True
-        )
+        serializer = self.get_valid_serializer(instance, partial=True)
         serializer.save()
 
     def destroy(self):
