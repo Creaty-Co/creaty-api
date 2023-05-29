@@ -14,6 +14,10 @@ class UsersRegisterResendView(BaseView):
     @response_204
     def post(self):
         serializer = self.get_valid_serializer()
-        if not User.objects.filter(email=serializer.validated_data['email']).exists():
-            raise serializer.WARNINGS[404]
+        try:
+            user = User.objects.get(email=serializer.validated_data['email'])
+        except User.DoesNotExist as exc:
+            raise serializer.WARNINGS[404] from exc
+        if user.is_verified:
+            raise serializer.WARNINGS[409]
         register_verifier.send(serializer.validated_data['email'])
