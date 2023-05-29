@@ -24,3 +24,9 @@ class MentorView(BaseView):
     @response_204
     def delete(self):
         self.destroy()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if AdminPermission().has_permission(self.request, self):
+            return queryset
+        return queryset.filter(is_draft=False)
