@@ -1,6 +1,5 @@
-import random
-
 from django.core import mail
+from django.utils.crypto import get_random_string
 
 from app.base.tests.fakers import fake
 from app.base.tests.views.base import BaseViewTest
@@ -17,68 +16,46 @@ class UsersRegisterTest(BaseViewTest):
     me_data = None
 
     def test_get(self):
-        code = random.randint(100_000, 999_999)
-        email = fake.email()
-        payload = {
-            'first_name': fake.first_name(),
-            'last_name': fake.last_name(),
-            'email': email,
-            'password': fake.password(),
-        }
-        register_verifier.cache.set((code, payload), email)  # noqa:test
-        response = self.get(path=f"{self.path}?email={email}&code={code}")
+        user = UserFactory(is_verified=False, has_discount=False)
+        code = get_random_string(10)
+        register_verifier.cache.set((code, None), user.email)
+        response = self.get(path=f"{self.path}?email={user.email}&code={code}")
         self.assert_response(response, 302)
         self.assert_equal(response.url, registerer.successful_url)
-        self.assert_model(User, {'email': email})
+        self.assert_model(User, {'is_verified': True, 'has_discount': True})
 
     def test_get_failure_email_not_found(self):
-        code = random.randint(100_000, 999_999)
-        payload = {
-            'first_name': fake.first_name(),
-            'last_name': fake.last_name(),
-            'email': fake.email(),
-            'password': fake.password(),
-        }
-        register_verifier.cache.set(  # noqa:test
-            (random.randint(100_000, 999_999), payload), fake.email()
-        )
+        code = get_random_string(10)
         response = self.get(path=f"{self.path}?email={fake.email()}&code={code}")
         self.assert_response(response, 302)
         self.assert_equal(response.url, registerer.failure_url)
-        self.assert_equal(User.objects.count(), 0)
 
     def test_get_failure_invalid_code(self):
-        email = fake.email()
-        payload = {
-            'first_name': fake.first_name(),
-            'last_name': fake.last_name(),
-            'email': email,
-            'password': fake.password(),
-        }
-        register_verifier.cache.set(  # noqa:test
-            (random.randint(100_000, 999_999), payload), email
-        )
-        response = self.get(
-            path=f"{self.path}?email={email}&code={random.randint(100_000, 999_999)}"
-        )
+        user = UserFactory(is_verified=False, has_discount=False)
+        code = get_random_string(10)
+        response = self.get(path=f"{self.path}?email={user.email}&code={code}")
         self.assert_response(response, 302)
         self.assert_equal(response.url, registerer.failure_url)
-        self.assert_equal(User.objects.count(), 0)
+        self.assert_model(User, {'is_verified': False, 'has_discount': False})
 
     def test_post(self):
         email = fake.email()
         self._test(
             'post',
-            data={
+            {
+                'access': lambda a: isinstance(a, str),
+                'refresh': lambda r: isinstance(r, str),
+            },
+            {
                 'first_name': fake.first_name(),
-                'last_name': fake.last_name(),
                 'email': email,
                 'password': fake.password(),
             },
-            status=204,
+            201,
         )
         self.assert_equal(len(mail.outbox), 1)
         self.assert_equal(mail.outbox[0].to, [email])
+        self.assert_model(User, {'is_verified': False, 'has_discount': False})
 
     def test_post_warn_409_email_already_exists(self):
         user = UserFactory()
@@ -87,7 +64,6 @@ class UsersRegisterTest(BaseViewTest):
             POSTUsersRegisterSerializer.WARNINGS[409],
             {
                 'first_name': fake.first_name(),
-                'last_name': fake.last_name(),
                 'email': user.email,
                 'password': fake.password(),
             },
