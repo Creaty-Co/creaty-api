@@ -27,6 +27,7 @@ class MentorFactory(BaseFactory):
     profession = Faker('english_text')
     price = factory.LazyAttribute(lambda m: random.randint(1, 1000))
     country = factory.SubFactory(CountryFactory)
+    is_draft = False
 
     class Meta:
         model = Mentor

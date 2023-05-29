@@ -65,6 +65,7 @@ class RetrieveMentorSerializer(BaseModelSerializer):
             'tags',
             'packages',
             'info',
+            'is_draft',
         ]
 
 
@@ -92,7 +93,7 @@ class _UpdateMentorInfoSerializer(BaseModelSerializer):
 class _UpdateMentorPackagesSerializer(BaseModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # FIXME
+        # TODO: ?
         self.parent = None
         self.partial = False
 
@@ -102,34 +103,29 @@ class _UpdateMentorPackagesSerializer(BaseModelSerializer):
 
 
 class UpdateMentorSerializer(BaseModelSerializer):
-    info = _UpdateMentorInfoSerializer(write_only=True)
+    info = _UpdateMentorInfoSerializer()
     price_currency = serializers.ChoiceField(
         choices=Currency.choices,
         help_text=Currency.help_text,
-        write_only=True,
     )
-    packages = _UpdateMentorPackagesSerializer(
-        many=True, write_only=True, partial=False
-    )
-    avatar = Base64ImageField(write_only=True)
+    packages = _UpdateMentorPackagesSerializer(many=True, partial=False)
+    avatar = Base64ImageField()
 
     class Meta:
         model = Mentor
-        wo = {'write_only': True}
-        extra_kwargs = {
-            'info': {},
-            'avatar': wo,
-            'company': wo,
-            'profession': wo,
-            'first_name': wo,
-            'last_name': wo,
-            'price': wo,
-            'price_currency': {},
-            'tag_set': wo,
-            'country': wo,
-            'packages': {},
-        }
-        fields = list(extra_kwargs.keys())
+        write_only_fields = [
+            'info',
+            'avatar',
+            'company',
+            'profession',
+            'first_name',
+            'last_name',
+            'price',
+            'tag_set',
+            'country',
+            'packages',
+            'is_draft',
+        ]
 
     def update(self, mentor, vd):
         if vd.get('info'):
