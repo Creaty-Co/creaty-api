@@ -9,9 +9,6 @@ from app.users.verification.code_generators.base import BaseCodeGenerator
 
 
 class EmailVerifier:
-    class ResendEmailNotFoundException(Exception):
-        pass
-
     def __init__(
         self,
         path: str,
