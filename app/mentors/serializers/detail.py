@@ -21,7 +21,6 @@ class _RetrieveMentorInfoSerializer(BaseModelSerializer):
 
     class Meta:
         model = MentorInfo
-        extra_kwargs = {'price_currency': {'help_text': Currency.help_text}}
         fields = [
             'trial_meeting',
             'resume',
@@ -52,6 +51,7 @@ class RetrieveMentorSerializer(BaseModelSerializer):
 
     class Meta:
         model = Mentor
+        extra_kwargs = {'price_currency': {'help_text': Currency.help_text}}
         fields = [
             'id',
             'avatar',
@@ -79,7 +79,6 @@ class _UpdateMentorInfoSerializer(BaseModelSerializer):
 
     class Meta:
         model = MentorInfo
-        extra_kwargs = {'price_currency': {'help_text': Currency.help_text}}
         fields = [
             'trial_meeting',
             'resume',
@@ -113,6 +112,7 @@ class UpdateMentorSerializer(BaseModelSerializer):
 
     class Meta:
         model = Mentor
+        extra_kwargs = {'price_currency': {'help_text': Currency.help_text}}
         write_only_fields = [
             'info',
             'avatar',
@@ -121,6 +121,7 @@ class UpdateMentorSerializer(BaseModelSerializer):
             'first_name',
             'last_name',
             'price',
+            'price_currency',
             'tag_set',
             'country',
             'packages',
