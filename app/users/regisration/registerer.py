@@ -26,9 +26,9 @@ class Registerer:
     def successful_url(self) -> str:
         return f"https://{self.domain}/{self.successful_path.strip('/')}"
 
-    def register(self, email: str, code) -> bool:
-        is_verified = self.verifier.check(email, code)[0]
-        if is_verified:
+    def register(self, code) -> bool:
+        email = self.verifier.check(code)[0]
+        if email:
             user = self.user_manager.get(email=email)
             user.has_discount = True
             user.is_verified = True
