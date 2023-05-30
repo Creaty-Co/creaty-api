@@ -1,5 +1,5 @@
 Django==4.2.1
-django-cors-headers==3.14.0
+django-cors-headers==4.0.0
 django-environ==0.9.0
 django-filter==22.1
 django-cleanup==7.0.0
@@ -13,7 +13,7 @@ django-cacheops==6.2
 django-countries==7.5.1
 django-money==3.0.0
 certifi==2022.12.7
-django-celery-beat==2.4.0
+django-celery-beat==2.5.0
 django-svg-image-form-field==1.0.1
 django-uuslug==2.0.0
 django-advanced-password-validation==1.1.1
@@ -27,9 +27,9 @@ djangochannelsrestframework==1.1.0
 
 channels==4.0.0
 channels-redis==4.0.0
-asgiref==3.6.0
+asgiref==3.7.2
 orjson==3.8.10
-psycopg2-binary==2.9.5
+psycopg2-binary==2.9.6
 redis==4.5.4
 Pillow==9.4.0
 whitenoise==6.4.0
@@ -49,7 +49,7 @@ tablib[xlsx]==3.3.0
 python-dateutil==2.8.2
 pybase64==1.2.3
 
-parameterized==0.8.1
+parameterized==0.9.0
 factory_boy==3.2.1
 Faker==18.4.0
 coverage==7.2.1
