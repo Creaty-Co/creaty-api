@@ -21,7 +21,7 @@ social-auth-app-django==5.0.0
 
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
-drf-spectacular==0.25.1
+drf-spectacular==0.26.2
 drf_base64==2.0
 djangochannelsrestframework==1.1.0
 
