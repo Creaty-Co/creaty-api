@@ -1,6 +1,5 @@
-from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from rest_framework.generics import get_object_or_404
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from app.base.exceptions import APIWarning
 from app.base.serializers.base import BaseModelSerializer
@@ -8,12 +7,21 @@ from app.users.models import User
 
 
 class POSTUsersPasswordResetSerializer(BaseModelSerializer):
+    WARNINGS = {
+        404: APIWarning(
+            "User with such an email hasn't registered",
+            404,
+            'password_reset_email_not_found',
+        ),
+    }
+
     class Meta:
         model = User
         write_only_fields = ['email']
 
     def validate(self, attrs):
-        get_object_or_404(User, **attrs)
+        if not User.objects.filter(email=attrs['email']).exists():
+            raise self.WARNINGS[404]
         return attrs
 
 
@@ -26,13 +34,18 @@ class PUTUsersPasswordResetSerializer(BaseModelSerializer):
         )
     }
 
-    code = serializers.IntegerField()
+    code = serializers.CharField()
+    access = serializers.CharField()
+    refresh = serializers.CharField()
 
     class Meta:
         model = User
         extra_kwargs = {'new_password': {'source': 'password'}}
-        write_only_fields = ['email', 'code', 'new_password']
+        write_only_fields = ['code', 'new_password']
+        read_only_fields = ['access', 'refresh']
 
-    def validate(self, attrs):
-        validate_password(attrs['password'], User(email=attrs['email']))
-        return attrs
+    def to_representation(self, instance):
+        token: RefreshToken = RefreshToken.for_user(instance)
+        instance.access = str(token.access_token)
+        instance.refresh = str(token)
+        return super().to_representation(instance)

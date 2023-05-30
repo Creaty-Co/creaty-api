@@ -18,22 +18,23 @@ class UsersRegisterTest(BaseViewTest):
     def test_get(self):
         user = UserFactory(is_verified=False, has_discount=False)
         code = get_random_string(10)
-        register_verifier.cache.set((code, None), user.email)
-        response = self.get(path=f"{self.path}?email={user.email}&code={code}")
+        register_verifier.cache.set((user.email, None), code)
+        register_verifier.cache.set(code, user.email)
+        response = self.get(path=f"{self.path}{code}/")
         self.assert_response(response, 302)
         self.assert_equal(response.url, registerer.successful_url)
         self.assert_model(User, {'is_verified': True, 'has_discount': True})
 
     def test_get_failure_email_not_found(self):
         code = get_random_string(10)
-        response = self.get(path=f"{self.path}?email={fake.email()}&code={code}")
+        response = self.get(path=f"{self.path}{code}/")
         self.assert_response(response, 302)
         self.assert_equal(response.url, registerer.failure_url)
 
     def test_get_failure_invalid_code(self):
-        user = UserFactory(is_verified=False, has_discount=False)
+        UserFactory(is_verified=False, has_discount=False)
         code = get_random_string(10)
-        response = self.get(path=f"{self.path}?email={user.email}&code={code}")
+        response = self.get(path=f"{self.path}{code}/")
         self.assert_response(response, 302)
         self.assert_equal(response.url, registerer.failure_url)
         self.assert_model(User, {'is_verified': False, 'has_discount': False})
