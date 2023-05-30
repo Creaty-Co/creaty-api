@@ -14,6 +14,7 @@ class PagesPersonalMentorTest(BaseViewTest):
         return f"/pages/personal/{self.shortcut}/mentors/{self.mentor_id}/"
 
     def test_patch(self):
+        self.become_staff()
         category = CategoryFactory()
         page = Page.objects.get(category=category)
         mentor = MentorFactory()
@@ -25,6 +26,7 @@ class PagesPersonalMentorTest(BaseViewTest):
         )
 
     def test_delete(self):
+        self.become_staff()
         category = CategoryFactory()
         page = Page.objects.get(category=category)
         page_mentor_set = PageMentorSetFactory(page=page)

@@ -19,6 +19,7 @@ class MentorsTest(BaseViewTest):
         self._test('get', {'count': 1})
 
     def test_post(self):
+        self.become_staff()
         language = LanguageFactory()
         country = CountryFactory()
         tag = TagFactory()

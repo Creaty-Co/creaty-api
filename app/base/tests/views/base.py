@@ -41,6 +41,10 @@ class BaseViewTest(BaseTest):
             self._me.delete()
             self._me = None
 
+    def become_staff(self) -> None:
+        self.me.is_staff = True
+        self.me.save()
+
     def setUp(self):
         cache.clear()
         _ = self.me

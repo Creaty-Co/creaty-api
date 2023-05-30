@@ -12,7 +12,6 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = Faker('last_name')
     has_discount = True
     is_verified = True
-    is_superuser = True
 
     raw_password: str
 
