@@ -29,7 +29,7 @@ channels==4.0.0
 channels-redis==4.0.0
 asgiref==3.7.2
 orjson==3.8.10
-psycopg2-binary==2.9.5
+psycopg2-binary==2.9.6
 redis==4.5.4
 Pillow==9.4.0
 whitenoise==6.4.0
