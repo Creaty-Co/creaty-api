@@ -12,6 +12,7 @@ class PagesMainMentorTest(BaseViewTest):
         return f"/pages/main/mentors/{self.mentor_id}/"
 
     def test_patch(self):
+        self.become_staff()
         page = PageFactory()
         mentor = MentorFactory()
         self.mentor_id = mentor.id
@@ -21,6 +22,7 @@ class PagesMainMentorTest(BaseViewTest):
         )
 
     def test_delete(self):
+        self.become_staff()
         page_mentor_set = PageMentorSetFactory()
         mentor = page_mentor_set.mentor
         self.mentor_id = mentor.id

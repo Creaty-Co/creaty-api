@@ -8,6 +8,7 @@ class TagsTest(BaseViewTest):
     path = '/tags/'
 
     def test_post(self):
+        self.become_staff()
         category = CategoryFactory()
         self._test(
             'post',

@@ -16,6 +16,7 @@ class MentorTest(BaseViewTest):
         self._test('get')
 
     def test_delete(self):
+        self.become_staff()
         mentor = MentorFactory()
         self.slug = mentor.slug
         self._test('delete')
