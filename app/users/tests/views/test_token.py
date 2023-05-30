@@ -24,7 +24,7 @@ class UsersTokenTest(BaseViewTest):
             'post',
             data={
                 'email': fake.email(),
-                'password': fake.random_string(),
+                'password': fake.password(),
             },
             status=401,
         )
@@ -35,7 +35,7 @@ class UsersTokenTest(BaseViewTest):
             'post',
             data={
                 'email': user.email,
-                'password': fake.random_string(),
+                'password': fake.password(),
             },
             status=401,
         )

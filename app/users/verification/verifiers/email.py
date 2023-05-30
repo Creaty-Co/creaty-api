@@ -1,4 +1,3 @@
-import urllib.parse
 from typing import Any
 
 from django.conf import settings
@@ -17,15 +16,14 @@ class EmailVerifier:
         code_generator: BaseCodeGenerator,
         domain: str = settings.API_DOMAIN,
     ):
-        self.path = f"/{path.strip('/')}/"
+        self.path = path.strip('/')
         self.template_name = template_name
         self.cache = cache
         self.code_generator = code_generator
         self.domain = domain
 
-    def _generate_link(self, email: str, code) -> str:
-        query_string = urllib.parse.urlencode({'email': email, 'code': code})
-        return f"https://{self.domain}{self.path}?{query_string}"
+    def _generate_link(self, code) -> str:
+        return f"https://{self.domain}/{self.path}/{code}"
 
     def _create_email_message(self, code, link: str) -> BaseEmailMessage:
         email_message = BaseEmailMessage(template_name=self.template_name)
@@ -33,18 +31,20 @@ class EmailVerifier:
         return email_message
 
     def send(self, email: str, payload=None) -> None:
+        if old_code := self.cache.get(email):
+            self.cache.delete(old_code)
         code = self.code_generator.generate()
-        self.cache.set((code, payload), email)
-        link = self._generate_link(email, code)
+        self.cache.set((email, payload), code)
+        self.cache.set(code, email)
+        link = self._generate_link(code)
         email_message = self._create_email_message(code, link)
         email_message.send([email])
 
-    def check(self, email: str, code) -> tuple[bool, Any]:
-        value = self.cache.get(email)
+    def check(self, code) -> tuple[str | None, Any]:
+        value = self.cache.get(code)
         if value is None:
-            return False, None
-        cached_code, payload = value
-        if self.code_generator.is_equal(cached_code, code):
-            self.cache.delete(email)
-            return True, payload
-        return False, None
+            return None, None
+        email, payload = value
+        self.cache.delete(code)
+        self.cache.delete(email)
+        return email, payload
