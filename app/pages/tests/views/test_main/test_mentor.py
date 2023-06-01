@@ -16,7 +16,7 @@ class PagesMainMentorTest(BaseViewTest):
         page = PageFactory()
         mentor = MentorFactory()
         self.mentor_id = mentor.id
-        self._test('patch')
+        self._test('patch', status=200)
         self.assert_model(
             PageMentorSet, {'page': page.id, 'mentor': mentor.id, 'index': 0}
         )
