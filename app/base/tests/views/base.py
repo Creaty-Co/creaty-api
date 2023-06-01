@@ -9,6 +9,7 @@ from django.core.cache import cache
 from app.base.exceptions import APIWarning
 from app.base.exceptions.base import APIException
 from app.base.tests.base import BaseTest
+from app.base.utils.common import status_by_method
 from app.users.models import User
 from app.users.tests.factories import UserFactory
 
@@ -80,12 +81,14 @@ class BaseViewTest(BaseTest):
         format=None,
     ):
         response = getattr(self, method)(path, data, format)
-        if response.content:
-            status = status or {'post': 201, 'delete': 204}.get(method, 200)
-        else:
-            status = status or 204
+        if not status:
+            if isinstance(exp_data, APIException):
+                status = exp_data.status
+            elif response.content:
+                status = status_by_method(method)
+            else:
+                status = 204
         if isinstance(exp_data, APIException):
-            status = status or exp_data.status
             exp_exception = {'error': {'type': exp_data.TYPE_NAME}}
             if isinstance(exp_data, APIWarning):
                 exp_exception['error']['code'] = exp_data.code
