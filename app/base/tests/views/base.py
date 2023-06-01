@@ -83,9 +83,9 @@ class BaseViewTest(BaseTest):
         if response.content:
             status = status or {'post': 201, 'delete': 204}.get(method, 200)
         else:
-            status = 204
+            status = status or 204
         if isinstance(exp_data, APIException):
-            status = exp_data.status
+            status = status or exp_data.status
             exp_exception = {'error': {'type': exp_data.TYPE_NAME}}
             if isinstance(exp_data, APIWarning):
                 exp_exception['error']['code'] = exp_data.code
