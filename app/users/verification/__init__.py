@@ -16,7 +16,7 @@ register_verifier: Final = EmailVerifier(
 password_reset_verifier: Final = EmailVerifier(
     'reset-password',
     'email/password_reset.html',
-    Cacher('password_reset', timeout=60 * 60),
+    Cacher('password_reset', timeout=60 * 30),
     SymbolicCodeGenerator(10),
     domain=settings.WEB_DOMAIN,
 )
