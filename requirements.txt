@@ -45,7 +45,7 @@ Twisted[http2]==22.10.0
 gunicorn==20.1.0
 requests==2.31.0
 toml==0.10.2
-tablib[xlsx]==3.3.0
+tablib[xlsx]==3.4.0
 python-dateutil==2.8.2
 pybase64==1.2.3
 
