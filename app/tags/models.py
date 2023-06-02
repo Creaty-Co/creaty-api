@@ -15,7 +15,7 @@ class Category(BaseModel):
             raise ValidationError(f'Тег с shortcut {self.shortcut} уже существует')
 
     def __str__(self):
-        return self.shortcut
+        return f"{self.shortcut} — {self.title}"
 
 
 class Tag(BaseModel):
@@ -33,7 +33,7 @@ class Tag(BaseModel):
             )
 
     def __str__(self):
-        return self.shortcut
+        return f"{self.shortcut} — {self.title}"
 
 
 class CategoryTag(BaseModel):
@@ -42,3 +42,6 @@ class CategoryTag(BaseModel):
 
     class Meta:
         unique_together = ('category', 'tag')
+
+    def __str__(self):
+        return f"{self.category.shortcut}<->{self.tag.shortcut}"

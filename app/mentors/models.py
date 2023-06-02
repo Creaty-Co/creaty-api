@@ -34,6 +34,9 @@ class Mentor(BaseModel):
         if self.info:
             self.info.delete()
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Package(BaseModel):
     mentor = models.ForeignKey(Mentor, models.CASCADE, related_name='packages')
@@ -41,6 +44,9 @@ class Package(BaseModel):
     discount = models.SmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(99)]
     )
+
+    def __str__(self):
+        return f"{self.mentor}: {self.lessons_count} -> {self.discount}%"
 
 
 class MentorInfo(BaseModel):
