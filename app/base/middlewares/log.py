@@ -15,7 +15,8 @@ from urllib.parse import unquote
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
 
-from app.base.logs import debug, info
+from api.settings import DEBUG
+from app.base.logs import debug, info, logger
 
 __all__ = ['LogMiddleware']
 
@@ -27,37 +28,40 @@ def _get_content_type(request_or_response):
 
 
 # noinspection PyBroadException
-def _cut_back(value, max_length=200):
+def _cut_back(value, max_str_length=200, max_sized_length=5):
     if isinstance(value, dict):
         value = _cut_back_dict(value)
-    if isinstance(value, Sized):
+    if isinstance(value, (str, bytes, bytearray)):
         length = len(value)
-        if length > max_length:
+        if length > max_str_length:
             type_name = type(value).__name__
-            try:
-                return (
-                    f"{value[:max_length // 2]}<<<{length - max_length} more "
-                    f"{type_name}>>> {value[-max_length // 2:]}"
-                )
-            except Exception:
-                return f"<<<{type_name} of length {length}>>>"
-        return value
-    if len(str(value)) > max_length:
+            return (
+                f"{value[:max_str_length // 2]}<<<{length - max_str_length} more "
+                f"{type_name}>>> {value[-max_str_length // 2:]}"
+            )
+    elif isinstance(value, Sized):
+        length = len(value)
+        type_name = type(value).__name__
+        return f"<<<{type_name} of length {length}>>>"
+    if len(str(value)) > max_str_length:
         return _cut_back(str(value))
     return value
 
 
-def _cut_back_dict(json_data, max_length=200):
-    json_data = json.loads(json.dumps(json_data))
-    for k, v in json_data.items():
+def _cut_back_dict(data, max_length=200, max_depth=5, current_depth=0):
+    if not isinstance(data, dict) or current_depth > max_depth:
+        return _cut_back(data, max_length)
+    cut_data = {}
+    for k, v in data.items():
         if isinstance(v, dict):
-            v = _cut_back_dict(v, max_length)
-        elif not isinstance(v, (str, bytes, bytearray)) and isinstance(v, Iterable):
-            v = [_cut_back(e, max_length) for e in v]
+            cut_data[k] = _cut_back_dict(v, max_length, max_depth, current_depth + 1)
+        elif isinstance(v, (str, bytes, bytearray)):
+            cut_data[k] = _cut_back(v, max_length)
+        elif isinstance(v, Iterable) and not isinstance(v, (str, bytes, bytearray)):
+            cut_data[k] = [_cut_back(e, max_length) for e in v]
         else:
-            v = _cut_back(v, max_length)
-        json_data[k] = v
-    return json_data
+            cut_data[k] = _cut_back(v, max_length)
+    return cut_data
 
 
 # noinspection PyMethodMayBeStatic, PyBroadException
@@ -124,8 +128,9 @@ class LogMiddleware(MiddlewareMixin):
         return response
 
     def log(self, request, response):
-        log_data = self.extract_log_info(request=request, response=response)
         if request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
+            log_data = self.extract_log_info(request=request, response=response)
             info(log_data)
-        else:
+        elif logger.isEnabledFor(DEBUG):
+            log_data = self.extract_log_info(request=request, response=response)
             debug(log_data)
