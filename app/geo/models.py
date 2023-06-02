@@ -10,8 +10,14 @@ class Country(BaseModel):
     flag_unicode = models.CharField(max_length=11, unique=True)
     name = models.TextField()
 
+    def __str__(self):
+        return self.name
+
 
 class Language(BaseModel):
     code = models.CharField(max_length=7, unique=True)
     name = models.TextField()
     name_native = models.TextField()
+
+    def __str__(self):
+        return self.name
