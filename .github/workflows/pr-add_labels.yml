@@ -3,8 +3,6 @@ name: "PR: add labels"
 on:
   pull_request:
 
-permissions: write
-
 jobs:
   add:
     runs-on: ubuntu-22.04

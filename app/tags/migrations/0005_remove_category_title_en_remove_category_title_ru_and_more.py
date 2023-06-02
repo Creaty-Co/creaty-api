@@ -5,10 +5,10 @@ def copy_en_to_title_fields(apps, schema_editor):
     Category = apps.get_model('tags', 'Category')
     Tag = apps.get_model('tags', 'Tag')
     for obj in Category.objects.all():
-        obj.title = obj.title_en
+        obj.title = obj.title_en or obj.title
         obj.save(update_fields=['title'])
     for obj in Tag.objects.all():
-        obj.title = obj.title_en
+        obj.title = obj.title_en or obj.title
         obj.save(update_fields=['title'])
 
 
