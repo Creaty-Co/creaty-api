@@ -71,6 +71,8 @@ TEST = env('TEST')
 USE_BROWSABLE_API = env('USE_BROWSABLE_API')
 
 INSTALLED_APPS = [
+    'admin_interface',  # must be before django.contrib.admin
+    'colorfield',  # must be before django.contrib.admin
     # django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -96,7 +98,6 @@ INSTALLED_APPS = [
     'djcelery_email',
     'djmoney',
     'djmoney.contrib.exchange',
-    'modeltranslation',
     'django_countries',
     'rest_framework_simplejwt',
     # own apps
@@ -464,8 +465,6 @@ LOGGING = LogConfig(_loggers).to_dict()
 USE_I18N = True
 
 LANGUAGES = [('ru', 'Русский'), ('en', 'Английский')]
-
-MODELTRANSLATION_TRANSLATION_FILES = ['api.translation']
 
 # money
 
