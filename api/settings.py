@@ -203,8 +203,7 @@ CACHEOPS_DEFAULTS = {
     'ops': ['get', 'fetch', 'exists', 'count'],
 }
 CACHEOPS = {
-    'authtoken.*': {'timeout': 60 * 60 * 8},
-    'account.*': {'timeout': 60 * 60 * 2},
+    'users.*': {'timeout': 60 * 60 * 24},
     'admin_.*': {},
     'geo.*': {'local_get': True},
     'tags.*': {'timeout': 60 * 60 * 4},
