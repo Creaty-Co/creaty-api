@@ -45,14 +45,14 @@ class MentorAdminForm(forms.ModelForm):
 @admin.register(Mentor)
 class MentorAdmin(admin.ModelAdmin):
     form = MentorAdminForm
-    list_display_links = ['id', 'first_name']
-    list_display = ['id', 'first_name', 'last_name']
-    search_fields = ['first_name', 'last_name', 'profession', 'company']
+    list_display = ['__str__', 'is_draft']
+    list_display_links = ['__str__']
+    exclude = ['info']
+    search_fields = ['first_name', 'last_name']
     inlines = [PackageInline]
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-
         data = form.cleaned_data
         MentorInfo.objects.update_or_create(
             mentor=obj,
