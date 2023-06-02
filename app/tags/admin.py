@@ -1,15 +1,18 @@
 from django.contrib import admin
 
-from app.tags.models import Category, Tag
+from .models import Category, CategoryTag, Tag
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'shortcut')
+    pass
 
 
+@admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('id', 'shortcut')
+    filter_horizontal = ('categories',)
 
 
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Tag, TagAdmin)
+@admin.register(CategoryTag)
+class CategoryTagAdmin(admin.ModelAdmin):
+    pass
