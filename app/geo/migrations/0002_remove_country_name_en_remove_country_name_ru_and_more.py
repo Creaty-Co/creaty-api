@@ -7,10 +7,10 @@ def copy_en_to_name(apps, schema_editor):
     Country = apps.get_model('geo', 'Country')
     Language = apps.get_model('geo', 'Language')
     for obj in Country.objects.all():
-        obj.name = obj.name_en
+        obj.name = obj.name_en or obj.name
         obj.save(update_fields=['name'])
     for obj in Language.objects.all():
-        obj.name = obj.name_en
+        obj.name = obj.name_en or obj.name
         obj.save(update_fields=['name'])
 
 
