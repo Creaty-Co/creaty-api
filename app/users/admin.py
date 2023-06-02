@@ -21,4 +21,10 @@ class UserAdminForm(forms.ModelForm):
 class UserAdmin(admin.ModelAdmin):
     form = UserAdminForm
     list_display = ['email', 'first_name', 'last_name']
+    exclude = ['last_login', 'password']
     filter_horizontal = ['groups', 'user_permissions']
+
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return []
+        return ['is_staff', 'is_superuser', 'groups', 'user_permissions']
