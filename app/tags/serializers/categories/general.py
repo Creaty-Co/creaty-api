@@ -29,8 +29,7 @@ class CreateTagsCategoriesSerializer(BaseModelSerializer):
                     UniqueValidator(Category.objects.all()),
                 ]
             },
-            'title_ru': wo,
-            'title_en': wo,
+            'title': wo,
             'icon': {},
         }
         fields = list(extra_kwargs.keys())
