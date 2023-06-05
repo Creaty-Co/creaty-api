@@ -3,6 +3,10 @@ name: "PR: add labels"
 on:
   pull_request:
 
+permissions:
+    contents: read
+    pull-requests: write
+
 jobs:
   add:
     runs-on: ubuntu-22.04
