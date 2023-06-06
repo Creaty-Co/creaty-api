@@ -5,7 +5,7 @@ import factory
 from app.base.tests.factories.base import BaseFactory
 from app.base.tests.fakers import Faker
 from app.geo.tests.factories.country import CountryFactory
-from app.mentors.models import Mentor, MentorInfo
+from app.mentors.models import Mentor, MentorInfo, Package
 
 
 class MentorInfoFactory(BaseFactory):
@@ -37,3 +37,6 @@ class PackageFactory(BaseFactory):
     mentor = factory.SubFactory(MentorFactory)
     lessons_count = factory.LazyAttribute(lambda m: random.randint(2, 10))
     discount = factory.LazyAttribute(lambda m: random.randint(2, 99))
+
+    class Meta:
+        model = Package
