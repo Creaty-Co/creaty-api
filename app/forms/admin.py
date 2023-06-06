@@ -7,8 +7,9 @@ from app.forms.models import Application
 
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = (
+    list_display = [
         'form',
+        'form_type',
         'path',
         'name',
         'email',
@@ -17,13 +18,15 @@ class ApplicationAdmin(admin.ModelAdmin):
         'whats_app',
         'viber',
         'about',
-        'url_display',
-    )
+        'url',
+    ]
+    list_filter = ['form__type']
     formfield_overrides = {
         models.TextField: {'widget': forms.TextInput(attrs={'size': '20'})}
     }
 
-    def url_display(self, obj):
+    def url(self, obj):
         return obj.url
 
-    url_display.short_description = 'URL'
+    def form_type(self, obj):
+        return obj.form.type
