@@ -159,9 +159,9 @@ class BaseView(GenericAPIView):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    def create(self):
+    def create(self, **kwargs):
         serializer = self.get_valid_serializer()
-        serializer.save()
+        serializer.save(**kwargs)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self):
