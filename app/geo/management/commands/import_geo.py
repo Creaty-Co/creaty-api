@@ -14,8 +14,8 @@ def _get_name(code):
 
 
 class Command(BaseCommand):
-    FLAG_UNICODES_FILEPATH = 'geo/management/commands/data/flag_unicodes.json'
-    LANGUAGES_FILEPATH = 'geo/management/commands/data/languages.json'
+    FLAG_UNICODES_FILEPATH = 'app/geo/management/commands/data/flag_unicodes.json'
+    LANGUAGES_FILEPATH = 'app/geo/management/commands/data/languages.json'
 
     def handle(self, *args, **options):
         self.import_countries()
