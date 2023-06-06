@@ -21,5 +21,5 @@ class FormApplicationsSerializer(BaseModelSerializer):
 
     def validate_path(self, path: str):
         if not path.startswith('/'):
-            raise ClientError('path should start with /')
+            raise ClientError("`path` should starts with /")
         return path

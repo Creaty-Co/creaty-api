@@ -11,7 +11,4 @@ class FormApplicationsView(BaseView):
 
     @response_204
     def post(self):
-        self.create()
-
-    def perform_create(self, serializer):
-        serializer.save(form=get_object_or_404(Form, id=self.kwargs['form_id']))
+        self.create(form=get_object_or_404(Form, id=self.kwargs['form_id']))
