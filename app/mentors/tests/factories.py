@@ -31,3 +31,9 @@ class MentorFactory(BaseFactory):
 
     class Meta:
         model = Mentor
+
+
+class PackageFactory(BaseFactory):
+    mentor = factory.SubFactory(MentorFactory)
+    lessons_count = factory.LazyAttribute(lambda m: random.randint(2, 10))
+    discount = factory.LazyAttribute(lambda m: random.randint(2, 99))
