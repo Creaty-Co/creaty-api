@@ -5,6 +5,9 @@ from app.users.verification import EmailVerifier
 
 
 class Registerer:
+    class InvalidCodeError(Exception):
+        pass
+
     def __init__(
         self,
         verifier: EmailVerifier,
@@ -26,12 +29,12 @@ class Registerer:
     def successful_url(self) -> str:
         return f"https://{self.domain}/{self.successful_path.strip('/')}"
 
-    def register(self, code) -> bool:
+    def register(self, code) -> User:
         email = self.verifier.check(code)[0]
         if email:
             user = self.user_manager.get(email=email)
             user.has_discount = True
             user.is_verified = True
             user.save()
-            return True
-        return False
+            return user
+        raise self.InvalidCodeError

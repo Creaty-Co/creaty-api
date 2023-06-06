@@ -5,39 +5,17 @@ from app.base.tests.fakers import fake
 from app.base.tests.views.base import BaseViewTest
 from app.users.models import User
 from app.users.regisration import registerer
-from app.users.serializers.register.general import POSTUsersRegisterSerializer
+from app.users.serializers.register.general import (
+    POSTUsersRegisterSerializer,
+    PUTUsersRegisterSerializer,
+)
 from app.users.tests.factories import UserFactory
-from app.users.verification import register_verifier
 
 
 class UsersRegisterTest(BaseViewTest):
     path = '/users/register/'
 
     me_data = None
-
-    def test_get(self):
-        user = UserFactory(is_verified=False, has_discount=False)
-        code = get_random_string(10)
-        register_verifier.cache.set((user.email, None), code)
-        register_verifier.cache.set(code, user.email)
-        response = self.get(path=f"{self.path}{code}/")
-        self.assert_response(response, 302)
-        self.assert_equal(response.url, registerer.successful_url)
-        self.assert_model(User, {'is_verified': True, 'has_discount': True})
-
-    def test_get_failure_email_not_found(self):
-        code = get_random_string(10)
-        response = self.get(path=f"{self.path}{code}/")
-        self.assert_response(response, 302)
-        self.assert_equal(response.url, registerer.failure_url)
-
-    def test_get_failure_invalid_code(self):
-        UserFactory(is_verified=False, has_discount=False)
-        code = get_random_string(10)
-        response = self.get(path=f"{self.path}{code}/")
-        self.assert_response(response, 302)
-        self.assert_equal(response.url, registerer.failure_url)
-        self.assert_model(User, {'is_verified': False, 'has_discount': False})
 
     def test_post(self):
         email = fake.email()
@@ -69,3 +47,29 @@ class UsersRegisterTest(BaseViewTest):
                 'password': fake.password(),
             },
         )
+
+    def test_put(self):
+        user = UserFactory(is_verified=False, has_discount=False)
+        code = get_random_string(10)
+        registerer.verifier.cache.set((user.email, None), code)
+        registerer.verifier.cache.set(code, user.email)
+        self._test(
+            'put',
+            {
+                'access': lambda a: isinstance(a, str),
+                'refresh': lambda r: isinstance(r, str),
+            },
+            {'code': code},
+            status=200,
+        )
+        self.assert_model(User, {'is_verified': True, 'has_discount': True})
+
+    def test_put_warn_408(self):
+        UserFactory(is_verified=False, has_discount=False)
+        code = get_random_string(10)
+        self._test(
+            'put',
+            PUTUsersRegisterSerializer.WARNINGS[408],
+            {'code': code},
+        )
+        self.assert_model(User, {'is_verified': False, 'has_discount': False})
