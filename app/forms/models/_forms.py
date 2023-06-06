@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 from app.base.models.base import BaseModel
 from app.forms.models.choices import FormField, FormType
@@ -32,6 +33,7 @@ class Application(BaseModel):
     whats_app = models.TextField(blank=True)
     viber = models.TextField(blank=True)
     about = models.TextField(blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     @property
     def url(self) -> str:
