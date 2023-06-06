@@ -1,12 +1,10 @@
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
-from rest_framework_simplejwt.tokens import RefreshToken
 
 from app.base.exceptions import APIWarning
-from app.base.serializers.base import BaseModelSerializer
+from app.base.serializers.base import BaseModelSerializer, BaseSerializer
 from app.users.models import User
 
 
@@ -38,15 +36,25 @@ class POSTUsersRegisterSerializer(BaseModelSerializer):
         read_only_fields = ['access', 'refresh']
 
     def validate(self, attrs):
-        validate_password(attrs['password'], User(**attrs))
+        # MAYBE: validate_password(attrs['password'], User(**attrs))
+        #   1) validate_password raise django's ValidationError -> critical error
+        #   2) Is password validation needed on the server side ?
         return attrs
 
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
         return super().create(validated_data)
 
-    def to_representation(self, instance):
-        token: RefreshToken = RefreshToken.for_user(instance)
-        instance.access = str(token.access_token)
-        instance.refresh = str(token)
-        return super().to_representation(instance)
+
+class PUTUsersRegisterSerializer(BaseSerializer):
+    WARNINGS = {
+        408: APIWarning(
+            "Register code has been expired",
+            408,
+            'register_code_timed_out',
+        )
+    }
+
+    code = serializers.CharField(write_only=True)
+    access = serializers.CharField(read_only=True)
+    refresh = serializers.CharField(read_only=True)

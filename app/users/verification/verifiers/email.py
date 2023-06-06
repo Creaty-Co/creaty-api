@@ -14,7 +14,7 @@ class EmailVerifier:
         template_name: str,
         cache: Cacher,
         code_generator: BaseCodeGenerator,
-        domain: str = settings.API_DOMAIN,
+        domain: str = settings.WEB_DOMAIN,
     ):
         self.path = path.strip('/')
         self.template_name = template_name
