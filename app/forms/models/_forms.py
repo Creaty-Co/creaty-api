@@ -13,6 +13,9 @@ class Form(BaseModel):
     description = models.TextField(blank=True)
     post_send = models.TextField()
 
+    def __str__(self):
+        return self.type
+
 
 class Field(BaseModel):
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
@@ -38,3 +41,6 @@ class Application(BaseModel):
     @property
     def url(self) -> str:
         return f'https://{settings.WEB_DOMAIN}{self.path}'
+
+    def __str__(self):
+        return f"{self.form}: {self.path}"
