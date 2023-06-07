@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from rest_framework.throttling import AnonRateThrottle
 
 from app.base.utils.common import response_204
 from app.base.views import BaseView
@@ -15,6 +16,7 @@ class UsersPasswordResetView(BaseView):
         'post': (204, POSTUsersPasswordResetSerializer),
         'put': (200, PUTUsersPasswordResetSerializer),
     }
+    throttle_map = {'post': [(AnonRateThrottle, ['2/m', '10/d'])]}
 
     @response_204
     def post(self):
