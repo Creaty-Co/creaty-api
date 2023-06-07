@@ -64,7 +64,9 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_filter = ['form__type', UserRegisteredFilter, UserVerifiedFilter]
     ordering = ['-created_at']
     formfield_overrides = {
-        models.TextField: {'widget': forms.TextInput(attrs={'size': '20'})}
+        models.TextField: {
+            'widget': forms.TextInput(attrs={'style': 'height: 15px; width: 200px'})
+        }
     }
 
     def get_fields(self, request, obj=None):
@@ -80,6 +82,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             'whats_app',
             'viber',
             'about',
+            'link',
             'created_at',
         ]
 

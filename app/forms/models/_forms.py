@@ -36,6 +36,7 @@ class Application(BaseModel):
     whats_app = models.TextField(blank=True)
     viber = models.TextField(blank=True)
     about = models.TextField(blank=True)
+    link = models.URLField(blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     @property
