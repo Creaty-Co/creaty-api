@@ -1,8 +1,9 @@
 from django import forms
+from django.conf import settings
 from django.contrib import admin
-from django.core.validators import MinValueValidator
+from django.utils.html import format_html
 
-from .models import Mentor, MentorInfo, Package
+from .models import Mentor, Package
 
 
 class PackageInline(admin.TabularInline):
@@ -11,14 +12,6 @@ class PackageInline(admin.TabularInline):
 
 
 class MentorAdminForm(forms.ModelForm):
-    trial_meeting = forms.IntegerField(
-        required=False, validators=[MinValueValidator(1)]
-    )
-    resume = forms.CharField(widget=forms.Textarea)
-    what_help = forms.CharField(required=False, widget=forms.Textarea)
-    experience = forms.CharField(required=False, widget=forms.Textarea)
-    city = forms.CharField(required=False)
-
     class Meta:
         model = Mentor
         fields = '__all__'
@@ -29,38 +22,68 @@ class MentorAdminForm(forms.ModelForm):
                 attrs={'style': 'height: 15px; width: 200px'}
             ),
             'last_name': forms.TextInput(attrs={'style': 'height: 15px; width: 200px'}),
+            'city': forms.TextInput(attrs={'style': 'height: 15px; width: 200px'}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance.pk:
-            mentor_info = self.instance.info
-            self.fields['trial_meeting'].initial = mentor_info.trial_meeting
-            self.fields['resume'].initial = mentor_info.resume
-            self.fields['what_help'].initial = mentor_info.what_help
-            self.fields['experience'].initial = mentor_info.experience
-            self.fields['city'].initial = mentor_info.city
+        self.fields['what_help'].label = "How can I help"
 
 
 @admin.register(Mentor)
 class MentorAdmin(admin.ModelAdmin):
     form = MentorAdminForm
-    list_display = ['__str__', 'is_draft']
+    list_display = ['__str__', 'url', 'is_draft']
     list_display_links = ['__str__']
-    exclude = ['info']
+    list_editable = ['is_draft']
+    fieldsets = (
+        (
+            "Profile Information",
+            {
+                'fields': (
+                    'is_draft',
+                    'slug',
+                    'link',
+                    'display_avatar',
+                    'avatar',
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'country',
+                    'city',
+                )
+            },
+        ),
+        (
+            "Professional Details",
+            {
+                'fields': (
+                    'languages',
+                    'tags',
+                    'resume',
+                    'experience',
+                    'what_help',
+                    'price',
+                    'trial_meeting',
+                )
+            },
+        ),
+    )
+    filter_horizontal = ['tags', 'languages']
+    readonly_fields = ['display_avatar', 'url']
     search_fields = ['first_name', 'last_name']
     inlines = [PackageInline]
 
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-        data = form.cleaned_data
-        MentorInfo.objects.update_or_create(
-            mentor=obj,
-            defaults={
-                'trial_meeting': data.get('trial_meeting'),
-                'resume': data.get('resume'),
-                'what_help': data.get('what_help'),
-                'experience': data.get('experience'),
-                'city': data.get('city'),
-            },
-        )
+    def display_avatar(self, obj):
+        return format_html('<img src="{}" width="500"/>', obj.avatar.url)
+
+    display_avatar.short_description = 'Avatar image'
+
+    def url(self, obj):
+        url = f"https://{settings.WEB_DOMAIN}/user/{obj.slug}"
+        return format_html('<a href="{}">{}</a>', url, url)
+
+    def get_inline_instances(self, request, obj=None):
+        if not obj:
+            return list()
+        return super().get_inline_instances(request, obj)

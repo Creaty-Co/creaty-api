@@ -25,6 +25,7 @@ class FormField(TextChoices):
     WHATS_APP = 'whats_app', 'WhatsApp'
     VIBER = 'viber', 'Viber'
     ABOUT = 'about', 'О вопросе'
+    LINK = 'link', 'Ссылка на профиль'
 
 
 FormField: Type[str] | Type[Choices]

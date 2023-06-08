@@ -20,12 +20,13 @@ class Command(BaseCommand):
             'post_send': _default_post_send,
             'field_set': _default_field_set
             + [
+                {'type': FormField.LINK, 'placeholder': 'Link on the profile '},
                 {
                     'type': FormField.ABOUT,
                     'placeholder': (
                         'Tell us briefly about yourself!\nYou can share ' 'it later :)'
                     ),
-                }
+                },
             ],
         },
         FormType.CHOOSE_MENTOR: {

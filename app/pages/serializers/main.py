@@ -51,7 +51,7 @@ class PagesUpdateMainSerializer(BaseModelSerializer):
         mentors = validated_data.pop('mentor_set', None)
         main_page = super().update(instance, validated_data)
         if tags is not None:
-            main_page.tag_set.set(tags)
+            main_page.tags.set(tags)
         if mentors is not None:
             PageMentorSet.objects.filter(page=main_page).delete()
             for index, mentor in enumerate(mentors):
