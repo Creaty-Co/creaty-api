@@ -1,32 +1,93 @@
 from django import forms
 from django.contrib import admin
 from django.db import models
+from django.utils.html import format_html
 
 from app.forms.models import Application
+from app.users.models import User
+
+
+class UserRegisteredFilter(admin.SimpleListFilter):
+    title = 'User registered'
+    parameter_name = 'user_registered'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('yes', 'Yes'),
+            ('no', 'No'),
+        )
+
+    def queryset(self, request, queryset):
+        match self.value():
+            case 'yes':
+                return queryset.filter(
+                    email__in=User.objects.all().values_list('email', flat=True)
+                )
+            case 'no':
+                return queryset.exclude(
+                    email__in=User.objects.all().values_list('email', flat=True)
+                )
+        return queryset
+
+
+class UserVerifiedFilter(admin.SimpleListFilter):
+    title = 'User verified'
+    parameter_name = 'user_verified'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('yes', 'Yes'),
+            ('no', 'No'),
+        )
+
+    def queryset(self, request, queryset):
+        is_verified = (
+            True if self.value() == 'yes' else False if self.value() == 'no' else None
+        )
+        if is_verified is None:
+            return queryset
+        return queryset.filter(
+            email__in=User.objects.filter(is_verified=is_verified).values_list(
+                'email', flat=True
+            )
+        )
 
 
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = [
-        'form',
         'form_type',
-        'path',
         'name',
         'email',
-        'telegram',
-        'facebook',
-        'whats_app',
-        'viber',
-        'about',
-        'url',
+        'URL',
     ]
-    list_filter = ['form__type']
+    list_filter = ['form__type', UserRegisteredFilter, UserVerifiedFilter]
+    ordering = ['-created_at']
     formfield_overrides = {
-        models.TextField: {'widget': forms.TextInput(attrs={'size': '20'})}
+        models.TextField: {
+            'widget': forms.TextInput(attrs={'style': 'height: 15px; width: 200px'})
+        }
     }
 
-    def url(self, obj):
-        return obj.url
+    def get_fields(self, request, obj=None):
+        if request.user.has_perm('forms.change_application'):
+            return super().get_fields(request, obj)
+        return [
+            'form_type',
+            'URL',
+            'name',
+            'email',
+            'telegram',
+            'facebook',
+            'whats_app',
+            'viber',
+            'about',
+            'link',
+            'created_at',
+        ]
+
+    def URL(self, obj):
+        return format_html('<a href="{}">{}</a>', obj.url, obj.url)
 
     def form_type(self, obj):
-        return obj.form.type
+        return obj.form.type.label

@@ -8,8 +8,8 @@ from app.pages.models import Locale
 
 class Command(BaseCommand):
     DEFAULT_JSON_FILES = {
-        'ru': 'pages/management/commands/default_ru.json',
-        'en': 'pages/management/commands/default_en.json',
+        'ru': 'app/pages/management/commands/default_ru.json',
+        'en': 'app/pages/management/commands/default_en.json',
     }
 
     def handle(self, *args, **options):
