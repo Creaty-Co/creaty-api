@@ -17,6 +17,7 @@ class Mentor(BaseModel):
     languages = models.ManyToManyField(Language, related_name='mentors')
     country = models.ForeignKey(Country, models.PROTECT, related_name='mentors')
     avatar = models.ImageField(upload_to='avatars', null=True, blank=True)
+    email = models.EmailField(blank=True, default='')
     company = models.TextField(blank=True, default='')
     profession = models.TextField()
     first_name = models.TextField()

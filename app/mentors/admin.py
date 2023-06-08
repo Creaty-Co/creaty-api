@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.contrib import admin
 from django.utils.html import format_html
 
@@ -21,39 +22,54 @@ class MentorAdminForm(forms.ModelForm):
                 attrs={'style': 'height: 15px; width: 200px'}
             ),
             'last_name': forms.TextInput(attrs={'style': 'height: 15px; width: 200px'}),
+            'city': forms.TextInput(attrs={'style': 'height: 15px; width: 200px'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['what_help'].label = "How can I help"
 
 
 @admin.register(Mentor)
 class MentorAdmin(admin.ModelAdmin):
     form = MentorAdminForm
-    list_display = ['__str__', 'is_draft']
+    list_display = ['__str__', 'URL', 'is_draft']
     list_display_links = ['__str__']
+    list_editable = ['is_draft']
     fields = [
+        'url',
         'is_draft',
         'slug',
+        'link',
         'display_avatar',
         'avatar',
         'resume',
         'first_name',
         'last_name',
+        'email',
         'country',
         'city',
+        'languages',
         'tags',
         'experience',
+        'profession',
         'what_help',
         'price',
         'trial_meeting',
     ]
     filter_horizontal = ['tags']
-    readonly_fields = ['display_avatar']
+    readonly_fields = ['display_avatar', 'url']
     search_fields = ['first_name', 'last_name']
     inlines = [PackageInline]
 
     def display_avatar(self, obj):
-        return format_html('<img src="{}" width="50" height="50" />', obj.avatar.url)
+        return format_html('<img src="{}" width="500"/>', obj.avatar.url)
 
     display_avatar.short_description = 'Avatar image'
+
+    def url(self, obj):
+        url = f"https://{settings.WEB_DOMAIN}/user/{obj.slug}"
+        return format_html('<a href="{}">{}</a>', url, url)
 
     def get_inline_instances(self, request, obj=None):
         if not obj:
