@@ -182,7 +182,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CACHES = {
     'default': {
-        **env.cache('REDIS_URL'),
+        **env.cache('REDIS_URL', backend='django_redis.cache.RedisCache'),
         'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
     }
 }
