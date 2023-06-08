@@ -13,6 +13,9 @@ class Form(BaseModel):
     description = models.TextField(blank=True)
     post_send = models.TextField()
 
+    def __str__(self):
+        return self.type
+
 
 class Field(BaseModel):
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
@@ -33,8 +36,12 @@ class Application(BaseModel):
     whats_app = models.TextField(blank=True)
     viber = models.TextField(blank=True)
     about = models.TextField(blank=True)
+    link = models.URLField(blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     @property
     def url(self) -> str:
         return f'https://{settings.WEB_DOMAIN}{self.path}'
+
+    def __str__(self):
+        return f"{self.form}: {self.path}"

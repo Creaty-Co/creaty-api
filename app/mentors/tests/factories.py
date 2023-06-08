@@ -5,21 +5,10 @@ import factory
 from app.base.tests.factories.base import BaseFactory
 from app.base.tests.fakers import Faker
 from app.geo.tests.factories.country import CountryFactory
-from app.mentors.models import Mentor, MentorInfo, Package
-
-
-class MentorInfoFactory(BaseFactory):
-    resume = Faker('english_text')
-    what_help = Faker('english_text')
-    experience = Faker('english_text')
-    city = Faker('city')
-
-    class Meta:
-        model = MentorInfo
+from app.mentors.models import Mentor, Package
 
 
 class MentorFactory(BaseFactory):
-    info = factory.SubFactory(MentorInfoFactory)
     avatar = factory.django.ImageField()
     first_name = Faker('first_name')
     last_name = Faker('last_name')
@@ -27,6 +16,10 @@ class MentorFactory(BaseFactory):
     profession = Faker('english_text')
     price = factory.LazyAttribute(lambda m: random.randint(1, 1000))
     country = factory.SubFactory(CountryFactory)
+    resume = Faker('english_text')
+    what_help = Faker('english_text')
+    experience = Faker('english_text')
+    city = Faker('city')
     is_draft = False
 
     class Meta:
