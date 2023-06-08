@@ -41,7 +41,7 @@ class CategoryAdmin(admin.ModelAdmin):
         return format_html('<img src="{}" width="100"/>', obj.icon.url)
 
     def mentors(self, obj):
-        mentors = Mentor.objects.filter(tags__categories=obj)
+        mentors = Mentor.objects.filter(tags__categories=obj).distinct()
         if mentors.exists():
             return '\n'.join([f"🔹 {mentor}" for mentor in mentors])
         return "No mentors"
