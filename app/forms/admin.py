@@ -4,6 +4,7 @@ from django.db import models
 from django.utils.html import format_html
 
 from app.forms.models import Application
+from app.forms.models.choices import FormType
 from app.users.models import User
 
 
@@ -90,4 +91,4 @@ class ApplicationAdmin(admin.ModelAdmin):
         return format_html('<a href="{}">{}</a>', obj.url, obj.url)
 
     def form_type(self, obj):
-        return obj.form.type.label
+        return FormType(obj.form.type).label

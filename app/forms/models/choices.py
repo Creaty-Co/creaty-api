@@ -6,11 +6,11 @@ from app.base.utils.functions import reverse_choices
 
 
 class FormType(TextChoices):
-    BECOME_MENTOR = 'become_mentor', 'Станьте ментором'
-    CHOOSE_MENTOR = 'choose_mentor', 'Получить помощь в подборе ментора'
-    TEST_MEETING = 'test_meeting', 'Беспатная тестовая встреча'
-    STILL_QUESTIONS = 'still_questions', 'Ещё остались вопросы'
-    SIGNUP_MENTOR = 'signup_mentor', 'Записаться к ментору'
+    BECOME_MENTOR = 'become_mentor', 'Become a mentor'
+    CHOOSE_MENTOR = 'choose_mentor', 'Get help choosing a mentor'
+    TEST_MEETING = 'test_meeting', 'Free test meeting'
+    STILL_QUESTIONS = 'still_questions', 'Still have questions'
+    SIGNUP_MENTOR = 'signup_mentor', 'Sign up for a mentor'
 
 
 FormType: Type[str] | Type[Choices]
@@ -18,14 +18,14 @@ rFormType = reverse_choices(FormType)
 
 
 class FormField(TextChoices):
-    NAME = 'name', 'Имя'
+    NAME = 'name', 'Name'
     EMAIL = 'email', 'Email'
     TELEGRAM = 'telegram', 'Telegram'
-    FACEBOOK = 'facebook', 'Facebook messanger'
+    FACEBOOK = 'facebook', 'Facebook messenger'
     WHATS_APP = 'whats_app', 'WhatsApp'
     VIBER = 'viber', 'Viber'
-    ABOUT = 'about', 'О вопросе'
-    LINK = 'link', 'Ссылка на профиль'
+    ABOUT = 'about', 'About the issue'
+    LINK = 'link', 'Profile link'
 
 
 FormField: Type[str] | Type[Choices]
