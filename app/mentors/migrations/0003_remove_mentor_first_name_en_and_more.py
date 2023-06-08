@@ -1,7 +1,7 @@
 from django.db import migrations
 
 
-def copy_en_to_mentor_and_mentorinfo_fields(apps, schema_editor):
+def copy_en_to_mentor_and_mentorinfo_fields(apps, _):
     Mentor = apps.get_model('mentors', 'Mentor')
     MentorInfo = apps.get_model('mentors', 'MentorInfo')
     for obj in Mentor.objects.all():
