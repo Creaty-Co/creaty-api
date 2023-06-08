@@ -38,9 +38,9 @@ class PageService:
             .nocache()
         )
         if page.tag is None:
-            mentor_qs = raw_mentor_qs.filter(tag_set__categories=page.category)
+            mentor_qs = raw_mentor_qs.filter(tags__categories=page.category)
         else:
-            mentor_qs = raw_mentor_qs.filter(tag_set=page.tag)
+            mentor_qs = raw_mentor_qs.filter(tags=page.tag)
             tags_qs = tags_qs.exclude(id=page.tag.id)
         mentors = set(mentor_qs)
         if len(mentors) < self.MENTORS_COUNT:

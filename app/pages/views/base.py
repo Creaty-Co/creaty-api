@@ -22,9 +22,7 @@ class BaseMainPageView(BaseView):
             tag_set_prefetch_qs = tag_set_prefetch_qs.annotate(Count('mentor')).exclude(
                 mentor__count=0
             )
-        return queryset.prefetch_related(
-            Prefetch('tag_set', queryset=tag_set_prefetch_qs)
-        )
+        return queryset.prefetch_related(Prefetch('tags', queryset=tag_set_prefetch_qs))
 
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
