@@ -19,10 +19,12 @@ class BaseMainPageView(BaseView):
         queryset = super().get_queryset()
         tag_set_prefetch_qs = Tag.objects.order_by('?').nocache()
         if AdminPermission().has_permission(self.request, self):
-            tag_set_prefetch_qs = tag_set_prefetch_qs.annotate(Count('mentor')).exclude(
-                mentor__count=0
-            )
-        return queryset.prefetch_related(Prefetch('tags', queryset=tag_set_prefetch_qs))
+            tag_set_prefetch_qs = tag_set_prefetch_qs.annotate(
+                Count('mentors')
+            ).exclude(mentors__count=0)
+        return queryset.prefetch_related(
+            Prefetch('tag_set', queryset=tag_set_prefetch_qs)
+        )
 
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())

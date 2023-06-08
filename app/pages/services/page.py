@@ -32,8 +32,8 @@ class PageService:
     def _fill_random(self, page: Page) -> None:
         raw_mentor_qs = Mentor.objects.filter(is_draft=False).order_by('?').nocache()
         tags_qs = (
-            Tag.objects.annotate(Count('mentor'))
-            .exclude(mentor__count=0)
+            Tag.objects.annotate(Count('mentors'))
+            .exclude(mentors__count=0)
             .order_by('?')
             .nocache()
         )
