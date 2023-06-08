@@ -51,7 +51,7 @@ class UserChangeForm(forms.ModelForm):
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ['id', 'email', 'first_name', 'last_name']
+    list_display = ['email', 'first_name', 'last_name']
     list_filter = []
     fieldsets = [
         (None, {'fields': ['email', 'is_verified', 'has_discount']}),

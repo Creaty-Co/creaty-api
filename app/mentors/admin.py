@@ -33,31 +33,43 @@ class MentorAdminForm(forms.ModelForm):
 @admin.register(Mentor)
 class MentorAdmin(admin.ModelAdmin):
     form = MentorAdminForm
-    list_display = ['__str__', 'URL', 'is_draft']
+    list_display = ['__str__', 'url', 'is_draft']
     list_display_links = ['__str__']
     list_editable = ['is_draft']
-    fields = [
-        'url',
-        'is_draft',
-        'slug',
-        'link',
-        'display_avatar',
-        'avatar',
-        'resume',
-        'first_name',
-        'last_name',
-        'email',
-        'country',
-        'city',
-        'languages',
-        'tags',
-        'experience',
-        'profession',
-        'what_help',
-        'price',
-        'trial_meeting',
-    ]
-    filter_horizontal = ['tags']
+    fieldsets = (
+        (
+            "Profile Information",
+            {
+                'fields': (
+                    'is_draft',
+                    'slug',
+                    'link',
+                    'display_avatar',
+                    'avatar',
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'country',
+                    'city',
+                )
+            },
+        ),
+        (
+            "Professional Details",
+            {
+                'fields': (
+                    'languages',
+                    'tags',
+                    'resume',
+                    'experience',
+                    'what_help',
+                    'price',
+                    'trial_meeting',
+                )
+            },
+        ),
+    )
+    filter_horizontal = ['tags', 'languages']
     readonly_fields = ['display_avatar', 'url']
     search_fields = ['first_name', 'last_name']
     inlines = [PackageInline]
