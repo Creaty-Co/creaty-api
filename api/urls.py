@@ -18,10 +18,9 @@ if settings.USE_BROWSABLE_API:
 
 urlpatterns += [
     path('silk/', include('silk.urls', namespace='silk')),
-    path('django_admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('base/', include('app.base.urls')),
     path('users/', include('app.users.urls')),
-    path('admin/', include('app.admin_.urls')),
     path('mentors/', include('app.mentors.urls')),
     path('tags/', include('app.tags.urls')),
     path('forms/', include('app.forms.urls')),

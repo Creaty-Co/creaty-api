@@ -14,8 +14,8 @@ def _get_name(code):
 
 
 class Command(BaseCommand):
-    FLAG_UNICODES_FILEPATH = 'geo/management/commands/data/flag_unicodes.json'
-    LANGUAGES_FILEPATH = 'geo/management/commands/data/languages.json'
+    FLAG_UNICODES_FILEPATH = 'app/geo/management/commands/data/flag_unicodes.json'
+    LANGUAGES_FILEPATH = 'app/geo/management/commands/data/languages.json'
 
     def handle(self, *args, **options):
         self.import_countries()
@@ -35,10 +35,10 @@ class Command(BaseCommand):
     def import_languages(self):
         language_codes = json.load(open(self.LANGUAGES_FILEPATH))
         languages = {language.code: language for language in Language.objects.all()}
-        translation.activate('en')
         for code in language_codes:
             code = code.lower()
             language = languages.setdefault(code, Language(code=code))
+            translation.activate('en')
             language.name = _get_name(code)
             translation.activate(code)
             language.name_native = _get_name(code)

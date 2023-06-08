@@ -28,6 +28,6 @@ class TagsCategoriesView(BaseView):
         queryset = super().get_queryset()
         if AdminPermission().has_permission(self.request, self):
             return queryset
-        return queryset.annotate(Count('tags'), Count('tags__mentor')).exclude(
-            tags__count=0, tags__mentor__count=0
+        return queryset.annotate(Count('tags'), Count('tags__mentors')).exclude(
+            tags__count=0, tags__mentors__count=0
         )
