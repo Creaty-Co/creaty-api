@@ -50,4 +50,4 @@ class Package(BaseModel):
     )
 
     def __str__(self):
-        return f"{self.mentor}: {self.lessons_count} -> {self.discount}%"
+        return f"{self.mentor}: {self.lessons_count} → {self.discount}%"
