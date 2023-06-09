@@ -21,6 +21,7 @@ class TagInline(admin.TabularInline):
     verbose_name = "Tags"
     model = CategoryTag
     extra = 1
+    max_num = 10
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -61,12 +62,14 @@ class CategoryInline(admin.TabularInline):
     verbose_name = "Categories"
     model = CategoryTag
     extra = 1
+    max_num = 10
 
 
 class MentorInline(admin.TabularInline):
     verbose_name = "Mentors"
     model = Mentor.tags.through
     extra = 1
+    max_num = 10
 
 
 class TagAdmin(admin.ModelAdmin):
