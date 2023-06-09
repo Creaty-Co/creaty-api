@@ -1,6 +1,6 @@
 from app.base.tests.views.base import BaseViewTest
 from app.mentors.tests.factories import MentorFactory
-from app.pages.models import Page, PageMentorSet
+from app.pages.models import Page, PageMentors
 from app.pages.tests.factories.page import PageMentorsFactory
 from app.tags.tests.factories import CategoryFactory
 
@@ -22,7 +22,7 @@ class PagesPersonalMentorTest(BaseViewTest):
         self.mentor_id = mentor.id
         self._test('patch', status=200)
         self.assert_model(
-            PageMentorSet, {'page': page.id, 'mentor': mentor.id, 'index': 0}
+            PageMentors, {'page': page.id, 'mentor': mentor.id, 'index': 0}
         )
 
     def test_delete(self):
@@ -34,4 +34,4 @@ class PagesPersonalMentorTest(BaseViewTest):
         self.shortcut = page.category.shortcut
         self.mentor_id = mentor.id
         self._test('delete')
-        self.assert_equal(PageMentorSet.objects.count(), 0)
+        self.assert_equal(PageMentors.objects.count(), 0)

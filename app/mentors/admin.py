@@ -3,11 +3,17 @@ from django.conf import settings
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Mentor, Package
+from app.mentors.models import Mentor, Package
+from app.pages.models import PageMentors
 
 
 class PackageInline(admin.TabularInline):
     model = Package
+    extra = 1
+
+
+class PageInline(admin.TabularInline):
+    model = PageMentors
     extra = 1
 
 
@@ -72,7 +78,7 @@ class MentorAdmin(admin.ModelAdmin):
     filter_horizontal = ['tags', 'languages']
     readonly_fields = ['display_avatar', 'url']
     search_fields = ['first_name', 'last_name']
-    inlines = [PackageInline]
+    inlines = [PackageInline, PageInline]
 
     def display_avatar(self, obj):
         return format_html('<img src="{}" width="500"/>', obj.avatar.url)
