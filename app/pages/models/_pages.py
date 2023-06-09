@@ -14,6 +14,15 @@ class PageMentors(BaseModel):
 
     class Meta:
         db_table = 'page_mentors'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['page', 'mentor'], name='unique_page_mentor'
+            ),
+            models.UniqueConstraint(fields=['page', 'index'], name='unique_page_index'),
+        ]
+
+    def __str__(self):
+        return f"{self.page} ↔ {self.mentor} ({self.index})"
 
 
 class Page(BaseModel):
@@ -37,4 +46,4 @@ class Page(BaseModel):
             raise ValidationError(f"There can be no more tags {max_tags}")
 
     def __str__(self):
-        return f"Page: {self.tag or self.category}"
+        return f"Page: {self.tag or self.category or 'main'}"
