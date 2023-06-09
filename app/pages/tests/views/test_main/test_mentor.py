@@ -1,7 +1,7 @@
 from app.base.tests.views.base import BaseViewTest
 from app.mentors.tests.factories import MentorFactory
-from app.pages.models import PageMentorSet
-from app.pages.tests.factories.page import PageFactory, PageMentorSetFactory
+from app.pages.models import PageMentors
+from app.pages.tests.factories.page import PageFactory, PageMentorsFactory
 
 
 class PagesMainMentorTest(BaseViewTest):
@@ -18,13 +18,13 @@ class PagesMainMentorTest(BaseViewTest):
         self.mentor_id = mentor.id
         self._test('patch', status=200)
         self.assert_model(
-            PageMentorSet, {'page': page.id, 'mentor': mentor.id, 'index': 0}
+            PageMentors, {'page': page.id, 'mentor': mentor.id, 'index': 0}
         )
 
     def test_delete(self):
         self.become_staff()
-        page_mentor_set = PageMentorSetFactory()
-        mentor = page_mentor_set.mentor
+        page_mentors = PageMentorsFactory()
+        mentor = page_mentors.mentor
         self.mentor_id = mentor.id
         self._test('delete')
-        self.assert_equal(PageMentorSet.objects.count(), 0)
+        self.assert_equal(PageMentors.objects.count(), 0)
