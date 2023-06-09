@@ -1,7 +1,7 @@
 from django.db import migrations
 
 
-def copy_en_to_faq_fields(apps, schema_editor):
+def copy_en_to_faq_fields(apps, _):
     Faq = apps.get_model('pages', 'Faq')
     for obj in Faq.objects.all():
         obj.answer = obj.answer_en
