@@ -11,7 +11,7 @@ jobs:
       name: dev
       url: 'https://dev.creaty.club'
     steps:
-      - uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.3
         with:
           clean: false
       - name: Set dev envs
