@@ -1,7 +1,7 @@
 from django.db import migrations
 
 
-def copy_en_to_title_fields(apps, schema_editor):
+def copy_en_to_title_fields(apps, _):
     Category = apps.get_model('tags', 'Category')
     Tag = apps.get_model('tags', 'Tag')
     for obj in Category.objects.all():

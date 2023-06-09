@@ -1,7 +1,7 @@
 from app.base.tests.views.base import BaseViewTest
 from app.mentors.tests.factories import MentorFactory
 from app.pages.models import Page, PageMentorSet
-from app.pages.tests.factories.page import PageMentorSetFactory
+from app.pages.tests.factories.page import PageMentorsFactory
 from app.tags.tests.factories import CategoryFactory
 
 
@@ -29,8 +29,8 @@ class PagesPersonalMentorTest(BaseViewTest):
         self.become_staff()
         category = CategoryFactory()
         page = Page.objects.get(category=category)
-        page_mentor_set = PageMentorSetFactory(page=page)
-        mentor = page_mentor_set.mentor
+        page_mentors = PageMentorsFactory(page=page)
+        mentor = page_mentors.mentor
         self.shortcut = page.category.shortcut
         self.mentor_id = mentor.id
         self._test('delete')
