@@ -4,15 +4,15 @@ from rest_framework.exceptions import ValidationError
 from app.base.serializers.base import BaseModelSerializer
 from app.mentors.models import Mentor
 from app.mentors.serializers.general import GETMentorsSerializer
-from app.pages.models import Page, PageMentorSet
+from app.pages.models import Page, PageMentors
 from app.pages.services.page import PageService
 from app.tags.models import Tag
 from app.tags.serializers.general import ListTagsSerializer
 
 
 class PagesRetrieveMainSerializer(BaseModelSerializer):
-    tags = ListTagsSerializer(many=True, source='tag_set')
-    mentors = GETMentorsSerializer(many=True, source='mentor_set')
+    tags = ListTagsSerializer(many=True)
+    mentors = GETMentorsSerializer(many=True)
 
     class Meta:
         model = Page
@@ -24,7 +24,7 @@ class PagesUpdateMainSerializer(BaseModelSerializer):
         many=True, queryset=Tag.objects.all(), write_only=True
     )
     mentors = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Mentor.objects.all(), source='mentor_set', write_only=True
+        many=True, queryset=Mentor.objects.all(), write_only=True
     )
 
     class Meta:
@@ -38,7 +38,7 @@ class PagesUpdateMainSerializer(BaseModelSerializer):
                 raise ValidationError(
                     f'Тегов на странице не может быть больше {max_tags}'
                 )
-        if mentors := attrs.get('mentor_set'):
+        if mentors := attrs.get('mentors'):
             max_mentors = PageService.MENTORS_COUNT
             if len(mentors) > max_mentors:
                 raise ValidationError(
@@ -48,12 +48,12 @@ class PagesUpdateMainSerializer(BaseModelSerializer):
 
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags', None)
-        mentors = validated_data.pop('mentor_set', None)
+        mentors = validated_data.pop('mentors', None)
         main_page = super().update(instance, validated_data)
         if tags is not None:
             main_page.tags.set(tags)
         if mentors is not None:
-            PageMentorSet.objects.filter(page=main_page).delete()
+            PageMentors.objects.filter(page=main_page).delete()
             for index, mentor in enumerate(mentors):
-                PageMentorSet.objects.create(page=main_page, index=index, mentor=mentor)
+                PageMentors.objects.create(page=main_page, index=index, mentor=mentor)
         return main_page

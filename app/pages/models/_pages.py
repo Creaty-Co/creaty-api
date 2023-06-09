@@ -4,32 +4,37 @@ from django.db import models
 
 from app.base.models.base import BaseModel
 
-__all__ = ['PageMentorSet', 'Page']
+__all__ = ['PageMentors', 'Page']
 
 
-class PageMentorSet(BaseModel):
-    page = models.ForeignKey('pages.Page', on_delete=models.CASCADE)
-    mentor = models.ForeignKey('mentors.Mentor', on_delete=models.CASCADE)
+class PageMentors(BaseModel):
+    page = models.ForeignKey('Page', models.CASCADE, 'page_mentors')
+    mentor = models.ForeignKey('mentors.Mentor', models.CASCADE, 'page_mentors')
     index = models.PositiveSmallIntegerField(validators=[MaxValueValidator(19)])
 
     class Meta:
-        db_table = 'page_mentor_set'
+        db_table = 'page_mentors'
 
 
 class Page(BaseModel):
-    tag = models.ForeignKey('tags.Tag', on_delete=models.CASCADE, blank=True, null=True)
+    tag = models.ForeignKey('tags.Tag', models.CASCADE, 'pages', blank=True, null=True)
     category = models.ForeignKey(
-        'tags.Category', on_delete=models.CASCADE, blank=True, null=True
+        'tags.Category', models.CASCADE, 'pages', blank=True, null=True
     )
-    mentor_set = models.ManyToManyField('mentors.Mentor', through=PageMentorSet)
-    tag_set = models.ManyToManyField('tags.Tag', related_name='page_set_by_tag_set')
+    mentors = models.ManyToManyField('mentors.Mentor', 'pages', through=PageMentors)
+    tags = models.ManyToManyField('tags.Tag', 'pages_by_tags')
 
     def clean(self):
         super().clean()
         if self.tag is not None and self.category is not None:
-            raise ValidationError(f'У Page({self.id}) заданы tag и category')
+            raise ValidationError(
+                "This page has a tag and a category set at the same time"
+            )
         from app.pages.services.page import PageService
 
         max_tags = PageService.MAX_TAGS_COUNT
-        if self.id is not None and self.tag_set.count() > max_tags:
-            raise ValidationError(f'Тегов не может быть больше {max_tags}')
+        if self.id is not None and self.tags.count() > max_tags:
+            raise ValidationError(f"There can be no more tags {max_tags}")
+
+    def __str__(self):
+        return f"Page: {self.tag or self.category}"
