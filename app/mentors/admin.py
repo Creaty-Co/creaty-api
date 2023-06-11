@@ -88,7 +88,7 @@ class MentorAdmin(admin.ModelAdmin):
     display_avatar.short_description = 'Avatar image'
 
     def url(self, obj):
-        url = f"https://{settings.WEB_DOMAIN}/user/{obj.slug}"
+        url = f"https://{settings.WEB_DOMAIN}/mentor/{obj.slug}"
         return format_html('<a href="{}">{}</a>', url, url)
 
     def get_inline_instances(self, request, obj=None):
