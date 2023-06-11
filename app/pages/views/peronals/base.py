@@ -14,7 +14,10 @@ class BasePersonalPageView(BaseView):
         'tag',
         'category',
         Prefetch(
-            'mentors', queryset=MentorsView.queryset.order_by('page_mentors__index')
+            'mentors',
+            queryset=MentorsView.queryset.filter(is_draft=False).order_by(
+                'page_mentors__index'
+            ),
         ),
     )
 
