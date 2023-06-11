@@ -43,6 +43,7 @@ class MentorAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'url', 'is_draft']
     list_display_links = ['__str__']
     list_editable = ['is_draft']
+    list_filter = ['is_draft']
     fieldsets = (
         (
             "Profile Information",
