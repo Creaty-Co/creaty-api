@@ -11,7 +11,10 @@ from app.tags.models import Tag
 class BaseMainPageView(BaseView):
     queryset = Page.objects.prefetch_related(
         Prefetch(
-            'mentors', queryset=MentorsView.queryset.order_by('page_mentors__index')
+            'mentors',
+            queryset=MentorsView.queryset.filter(is_draft=False).order_by(
+                'page_mentors__index'
+            ),
         )
     )
 
