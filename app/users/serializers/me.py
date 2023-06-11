@@ -5,13 +5,14 @@ from app.users.models import User
 class GETUsersMeSerializer(BaseModelSerializer):
     class Meta:
         model = User
-        fields = [
+        read_only_fields = [
             'id',
             'email',
             'first_name',
             'last_name',
             'has_discount',
             'is_verified',
+            'is_staff',
         ]
 
 
