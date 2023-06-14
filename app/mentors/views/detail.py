@@ -7,6 +7,8 @@ class MentorView(BaseView):
     serializer_map = {'get': RetrieveMentorSerializer}
     lookup_field = 'slug'
     queryset = Mentor.objects.filter(is_draft=False)
+    queryset = Mentor.objects.all()
+
 
     def get(self):
         return self.retrieve()
