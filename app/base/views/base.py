@@ -28,7 +28,7 @@ class BaseView(GenericAPIView):
         str, tuple[int, type[BaseSerializer]] | type[BaseSerializer]
     ] = {}
     permissions_map: dict[str, list[type[BasePermission]]] = {}
-    throttle_map: dict[str, list[tuple[BaseThrottle, list[str]]]] = {}
+    throttle_map: dict[str, list[tuple[type[BaseThrottle], list[str]]]] = {}
     lookup_field = 'id'
 
     _method = ''
