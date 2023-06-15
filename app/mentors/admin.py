@@ -1,5 +1,4 @@
 from django import forms
-from django.conf import settings
 from django.contrib import admin
 from django.utils.html import format_html
 
@@ -88,8 +87,7 @@ class MentorAdmin(admin.ModelAdmin):
     display_avatar.short_description = 'Avatar image'
 
     def url(self, obj):
-        url = f"https://{settings.WEB_DOMAIN}/mentor/{obj.slug}"
-        return format_html('<a href="{}">{}</a>', url, url)
+        return format_html('<a href="{}">{}</a>', obj.url, obj.url)
 
     def get_inline_instances(self, request, obj=None):
         if not obj:

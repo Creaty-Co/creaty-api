@@ -9,14 +9,11 @@ from app.users.models import User
 
 
 class UserRegisteredFilter(admin.SimpleListFilter):
-    title = 'User registered'
+    title = "User registered"
     parameter_name = 'user_registered'
 
     def lookups(self, request, model_admin):
-        return (
-            ('yes', 'Yes'),
-            ('no', 'No'),
-        )
+        return (('yes', "Yes"), ('no', "No"))
 
     def queryset(self, request, queryset):
         match self.value():
@@ -32,14 +29,11 @@ class UserRegisteredFilter(admin.SimpleListFilter):
 
 
 class UserVerifiedFilter(admin.SimpleListFilter):
-    title = 'User verified'
+    title = "User verified"
     parameter_name = 'user_verified'
 
     def lookups(self, request, model_admin):
-        return (
-            ('yes', 'Yes'),
-            ('no', 'No'),
-        )
+        return (('yes', "Yes"), ('no', "No"))
 
     def queryset(self, request, queryset):
         is_verified = (
@@ -78,10 +72,6 @@ class ApplicationAdmin(admin.ModelAdmin):
             'URL',
             'name',
             'email',
-            'telegram',
-            'facebook',
-            'whats_app',
-            'viber',
             'about',
             'link',
             'created_at',
