@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from djmoney.models.fields import MoneyField
@@ -32,6 +33,10 @@ class Mentor(BaseModel):
     experience = models.TextField(blank=True, default='')
     city = models.TextField(blank=True, default='')
     link = models.URLField(blank=True, default='')
+
+    @property
+    def url(self) -> str:
+        return f"https://{settings.WEB_DOMAIN}/mentor/{self.slug}"
 
     def save(self, *args, **kwargs):
         if not self.slug:
