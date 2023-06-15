@@ -20,10 +20,6 @@ rFormType = reverse_choices(FormType)
 class FormField(TextChoices):
     NAME = 'name', 'Name'
     EMAIL = 'email', 'Email'
-    TELEGRAM = 'telegram', 'Telegram'
-    FACEBOOK = 'facebook', 'Facebook messenger'
-    WHATS_APP = 'whats_app', 'WhatsApp'
-    VIBER = 'viber', 'Viber'
     ABOUT = 'about', 'About the issue'
     LINK = 'link', 'Profile link'
 

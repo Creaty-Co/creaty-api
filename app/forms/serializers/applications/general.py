@@ -6,17 +6,7 @@ from app.forms.models import Application
 class FormApplicationsSerializer(BaseModelSerializer):
     class Meta:
         model = Application
-        write_only_fields = [
-            'path',
-            'name',
-            'email',
-            'telegram',
-            'facebook',
-            'whats_app',
-            'viber',
-            'about',
-            'link',
-        ]
+        write_only_fields = ['path', 'name', 'email', 'about', 'link']
 
     def validate_path(self, path: str):
         if not path.startswith('/'):
