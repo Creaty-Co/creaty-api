@@ -9,7 +9,6 @@ from app.users.verification import register_verifier
 
 class UsersRegisterResendView(BaseView):
     serializer_map = {'post': POSTUsersRegisterResendSerializer}
-    throttle_map = {'post': [(AnonRateThrottle, ['1/m', '10/d'])]}
 
     @response_204
     def post(self):
@@ -20,4 +19,7 @@ class UsersRegisterResendView(BaseView):
             raise serializer.WARNINGS[404] from exc
         if user.is_verified:
             raise serializer.WARNINGS[409]
+        self.throttle_classes = []
+        self.throttle_map = {'post': [(AnonRateThrottle, ['1/m', '10/d'])]}
+        self.check_throttles(self.request)
         register_verifier.send(serializer.validated_data['email'])
