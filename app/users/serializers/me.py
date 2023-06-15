@@ -13,6 +13,7 @@ class GETUsersMeSerializer(BaseModelSerializer):
             'has_discount',
             'is_verified',
             'is_staff',
+            'is_mentor',
         ]
 
 

@@ -55,19 +55,6 @@ class Command(BaseCommand):
             'post_send': _default_post_send,
             'field_set': _default_field_set,
         },
-        FormType.SIGNUP_MENTOR: {
-            'post_send': _default_post_send,
-            'field_set': _default_field_set
-            + [
-                {
-                    'type': FormField.ABOUT,
-                    'placeholder': (
-                        'What does a mentor need help with?\nWe can '
-                        'discuss it later :)'
-                    ),
-                }
-            ],
-        },
     }
 
     def handle(self, *args, **options):
