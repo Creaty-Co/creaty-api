@@ -1,13 +1,20 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import QuerySet
 
 from app.base.models.base import BaseModel
+from app.pages.models import Page
 
 
 class Category(BaseModel):
+    pages: QuerySet
     shortcut = models.TextField(unique=True)
     title = models.TextField()
     icon = models.ImageField(upload_to='tags/category/icon')
+
+    @property
+    def page(self) -> Page:
+        return self.pages.first()
 
     def clean(self):
         super().clean()
@@ -19,11 +26,16 @@ class Category(BaseModel):
 
 
 class Tag(BaseModel):
+    pages: QuerySet
     shortcut = models.TextField(unique=True)
     title = models.TextField()
     categories = models.ManyToManyField(
         Category, through='CategoryTag', related_name='tags'
     )
+
+    @property
+    def page(self) -> Page | None:
+        return self.pages.first()
 
     def clean(self):
         super().clean()

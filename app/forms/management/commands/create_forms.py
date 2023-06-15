@@ -7,10 +7,6 @@ _default_post_send = 'We will contact you soon to discuss the details!'
 _default_field_set = [
     {'type': FormField.NAME, 'placeholder': 'Name'},
     {'type': FormField.EMAIL, 'placeholder': 'Email'},
-    {'type': FormField.TELEGRAM, 'placeholder': 'Number or nickname in '},
-    {'type': FormField.FACEBOOK, 'placeholder': 'Number or nickname in '},
-    {'type': FormField.WHATS_APP, 'placeholder': 'Number or nickname in '},
-    {'type': FormField.VIBER, 'placeholder': 'Number or nickname in '},
 ]
 
 

@@ -1,10 +1,12 @@
 from django.db import models
+from django.utils import timezone
 
 
 class AbstractBooking(models.Model):
     name = models.TextField()
     email = models.EmailField()
     description = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         abstract = True
