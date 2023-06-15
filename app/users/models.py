@@ -24,6 +24,12 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = EMAIL_FIELD
     REQUIRED_FIELDS = []
 
+    @property
+    def is_mentor(self) -> bool:
+        from app.mentors.models import Mentor
+
+        return Mentor.objects.filter(email=self.email).exists()
+
     def clean(self):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
