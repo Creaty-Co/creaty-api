@@ -10,7 +10,6 @@ class FormType(TextChoices):
     CHOOSE_MENTOR = 'choose_mentor', 'Get help choosing a mentor'
     TEST_MEETING = 'test_meeting', 'Free test meeting'
     STILL_QUESTIONS = 'still_questions', 'Still have questions'
-    SIGNUP_MENTOR = 'signup_mentor', 'Sign up for a mentor'
 
 
 FormType: Type[str] | Type[Choices]
@@ -20,10 +19,6 @@ rFormType = reverse_choices(FormType)
 class FormField(TextChoices):
     NAME = 'name', 'Name'
     EMAIL = 'email', 'Email'
-    TELEGRAM = 'telegram', 'Telegram'
-    FACEBOOK = 'facebook', 'Facebook messenger'
-    WHATS_APP = 'whats_app', 'WhatsApp'
-    VIBER = 'viber', 'Viber'
     ABOUT = 'about', 'About the issue'
     LINK = 'link', 'Profile link'
 

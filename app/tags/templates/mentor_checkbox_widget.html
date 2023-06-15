@@ -1,0 +1,85 @@
+{% for group, options, index in widget.optgroups %}
+  {% for option in options %}
+    <div>
+      <label for="{{ option.attrs.id }}"
+             style="
+                 font-size: 110%; font-weight: bold;
+                 {% if option.value.is_draft %}font-style: italic;{% endif %}
+                 "
+      >
+        <a href="{% url 'admin:mentors_mentor_change' option.value.id %}">
+          {{ option.label }} {% if option.value.is_draft %} (draft){% endif %}
+        </a>
+      </label>
+      <input class="mentor_checkbox" type="checkbox" name="{{ widget.name }}"
+             value="{{ option.value }}" id="{{ option.value.id }}"
+             style="transform: scale(1.6);"
+          {% if option.selected %} checked{% endif %}
+      >
+      <input class="mentor_number" type="number" name="page_index_{{ option.value.id }}"
+             style="transform: scale(0.9);" value="{{ option.page_index }}"
+      >
+    </div>
+  {% endfor %}
+{% endfor %}
+
+<script>
+    window.addEventListener('load', function () {
+        // Получаем все checkbox элементы с классом "indexed-checkbox"
+        var checkboxes = document.querySelectorAll('input.mentor_checkbox[type="checkbox"]');
+
+        // Функция для получения минимального неиспользуемого значения
+        function getMinUnusedValue() {
+            var numberInputs = document.querySelectorAll('input.mentor_number[type="number"]');
+            var usedValues = new Set();
+            numberInputs.forEach(function (input) {
+                if (input.style.display !== 'none') {
+                    usedValues.add(parseInt(input.value));
+                }
+            });
+
+            var minUnusedValue = 0;
+            while (usedValues.has(minUnusedValue)) {
+                minUnusedValue++;
+            }
+
+            return minUnusedValue;
+        }
+
+        // Для каждого checkbox
+        checkboxes.forEach(function (checkbox) {
+            // Добавляем обработчик событий при изменении состояния checkbox
+            checkbox.addEventListener('change', function () {
+                // Получаем id checkbox
+                var checkboxId = checkbox.getAttribute('id');
+
+                // Находим соответствующий числовой input
+                var numberInput = document.querySelector('input[name="page_index_' + checkboxId + '"]');
+
+                // Проверяем, выбран ли checkbox
+                if (checkbox.checked) {
+                    // Если выбран, показываем числовой input
+                    numberInput.style.display = 'inline';
+
+                    // Если текущее значение числового input равно -1, устанавливаем его в минимальное неиспользуемое значение
+                    if (numberInput.value === "-1") {
+                        numberInput.value = getMinUnusedValue().toString();
+                    }
+                } else {
+                    // Если не выбран, скрываем числовой input
+                    numberInput.style.display = 'none';
+                    numberInput.value = "-1";
+                }
+            });
+
+            // Инициализация начального состояния input
+            var numberInput = document.querySelector('input[name="page_index_' + checkbox.getAttribute('id') + '"]');
+            numberInput.style.display = checkbox.checked ? 'inline' : 'none';
+
+            // Если чекбокс выбран и текущее значение числового input равно -1, устанавливаем его в минимальное неиспользуемое значение
+            if (checkbox.checked && numberInput.value === "-1") {
+                numberInput.value = getMinUnusedValue().toString();
+            }
+        });
+    });
+</script>
