@@ -1,3 +1,5 @@
+from abc import ABC
+
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -70,6 +72,17 @@ class _BaseAdminForm(forms.ModelForm):
         return instance
 
 
+class _BaseHasMentorFilter(admin.SimpleListFilter, ABC):
+    title = "Mentor Association"
+    parameter_name = 'mentor_association'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('associated', "Mentor Associated"),
+            ('not_associated', "Mentor Not Associated"),
+        )
+
+
 class CategoryAdminForm(_BaseAdminForm):
     class Meta:
         model = Category
@@ -84,7 +97,14 @@ class TagInline(admin.TabularInline):
     verbose_name = "Tags"
     model = CategoryTag
     extra = 1
-    max_num = 10
+
+
+class CategoryHasMentorFilter(_BaseHasMentorFilter):
+    def queryset(self, request, queryset):
+        if self.value() == 'associated':
+            return queryset.filter(tags__mentors__isnull=False).distinct()
+        elif self.value() == 'not_associated':
+            return queryset.filter(tags__mentors__isnull=True)
 
 
 @admin.register(Category)
@@ -128,7 +148,6 @@ class CategoryInline(admin.TabularInline):
     verbose_name = "Categories"
     model = CategoryTag
     extra = 1
-    max_num = 10
 
 
 class TagAdminForm(_BaseAdminForm):
@@ -141,13 +160,28 @@ class TagAdminForm(_BaseAdminForm):
         }
 
 
+class TagHasMentorFilter(_BaseHasMentorFilter):
+    def queryset(self, request, queryset):
+        if self.value() == 'associated':
+            return queryset.filter(mentors__isnull=False).distinct()
+        elif self.value() == 'not_associated':
+            return queryset.filter(mentors__isnull=True)
+
+
+class MentorInline(admin.TabularInline):
+    verbose_name = "Mentors"
+    model = Mentor.tags.through
+    extra = 1
+
+
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     form = TagAdminForm
     list_display = ['title', 'shortcut', 'link']
     fields = ['title', 'shortcut', 'link', 'mentors_on_page']
     readonly_fields = ['link', 'page']
-    inlines = [CategoryInline]
+    inlines = [CategoryInline, MentorInline]
+    list_filter = [TagHasMentorFilter]
 
     def link(self, obj):
         url = f"https://{settings.WEB_DOMAIN}/mentors/{obj.shortcut}"
