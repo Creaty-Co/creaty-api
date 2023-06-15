@@ -1,14 +1,22 @@
+<div class="column-container">
 {% for group, options, index in widget.optgroups %}
   {% for option in options %}
     <div>
       <label for="{{ option.attrs.id }}"
              style="
+                 width: 100%;
                  font-size: 110%; font-weight: bold;
                  {% if option.value.is_draft %}font-style: italic;{% endif %}
                  "
       >
-        <a href="{% url 'admin:mentors_mentor_change' option.value.id %}">
+        <a href="{{ option.value.url }}" target="_blank">
           {{ option.label }} {% if option.value.is_draft %} (draft){% endif %}
+        </a>
+        >
+        <a href="{% url 'admin:mentors_mentor_change' option.value.id %}"
+           target="_blank"
+        >
+          :Edit:
         </a>
       </label>
       <input class="mentor_checkbox" type="checkbox" name="{{ widget.name }}"
@@ -22,6 +30,7 @@
     </div>
   {% endfor %}
 {% endfor %}
+</div>
 
 <script>
     window.addEventListener('load', function () {

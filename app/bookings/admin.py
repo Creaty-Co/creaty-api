@@ -1,13 +1,27 @@
 from django.contrib import admin
 from django.forms import TextInput
+from django.utils import timezone
 from django.utils.html import format_html
 
 from .models import HourlyBooking, PackageBooking, TrialBooking
 
 
+class CreatedAtFilter(admin.SimpleListFilter):
+    title = "Created at"
+    parameter_name = 'last_24_hours'
+
+    def lookups(self, request, model_admin):
+        return (('last_24_hours', "Last 24 hours"),)
+
+    def queryset(self, request, queryset):
+        if self.value() == 'last_24_hours':
+            last_24_hours = timezone.now() - timezone.timedelta(hours=24)
+            return queryset.filter(created_at__gte=last_24_hours)
+
+
 class _BaseBookingAdmin(admin.ModelAdmin):
     search_fields = ['name', 'email']
-    list_filter = ['mentor']
+    list_filter = ['mentor', CreatedAtFilter]
     readonly_fields = ['mentor_url']
 
     def mentor_url(self, obj):

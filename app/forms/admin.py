@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.db import models
+from django.utils import timezone
 from django.utils.html import format_html
 
 from app.forms.models import Application
@@ -48,6 +49,19 @@ class UserVerifiedFilter(admin.SimpleListFilter):
         )
 
 
+class CreatedAtFilter(admin.SimpleListFilter):
+    title = "Created at"
+    parameter_name = 'last_24_hours'
+
+    def lookups(self, request, model_admin):
+        return (('last_24_hours', "Last 24 hours"),)
+
+    def queryset(self, request, queryset):
+        if self.value() == 'last_24_hours':
+            last_24_hours = timezone.now() - timezone.timedelta(hours=24)
+            return queryset.filter(created_at__gte=last_24_hours)
+
+
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = [
@@ -56,7 +70,12 @@ class ApplicationAdmin(admin.ModelAdmin):
         'email',
         'URL',
     ]
-    list_filter = ['form__type', UserRegisteredFilter, UserVerifiedFilter]
+    list_filter = [
+        'form__type',
+        CreatedAtFilter,
+        UserRegisteredFilter,
+        UserVerifiedFilter,
+    ]
     ordering = ['-created_at']
     formfield_overrides = {
         models.TextField: {
