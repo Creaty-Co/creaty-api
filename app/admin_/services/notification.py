@@ -1,11 +1,14 @@
 from django.core.mail import send_mail
 
 from app.forms.models import Application
-from app.forms.models.choices import rFormField, rFormType
+from app.forms.models.choices import rFormType
 from app.users.models import User
 
 
 class AdminNotificationService:
+    def __init__(self):
+        self.fields = ['path', 'name', 'email', 'about', 'link', 'created_at']
+
     @staticmethod
     def _get_admins() -> list[str]:
         return list(User.objects.filter(is_staff=True).values_list('email', flat=True))
@@ -15,8 +18,7 @@ class AdminNotificationService:
 
     def on_application(self, application: Application):
         str_fields = '\n'.join(
-            f"{rFormField[field].label}: {getattr(application, field)}"
-            for field in [f.type for f in application.form.field_set.all()]
+            f"{field}: {getattr(application, field)}" for field in self.fields
         )
         self._send_admin_emails(
             "Пришла заявка",
