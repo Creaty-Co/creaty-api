@@ -7,10 +7,6 @@ _default_post_send = 'We will contact you soon to discuss the details!'
 _default_field_set = [
     {'type': FormField.NAME, 'placeholder': 'Name'},
     {'type': FormField.EMAIL, 'placeholder': 'Email'},
-    {'type': FormField.TELEGRAM, 'placeholder': 'Number or nickname in '},
-    {'type': FormField.FACEBOOK, 'placeholder': 'Number or nickname in '},
-    {'type': FormField.WHATS_APP, 'placeholder': 'Number or nickname in '},
-    {'type': FormField.VIBER, 'placeholder': 'Number or nickname in '},
 ]
 
 
@@ -58,19 +54,6 @@ class Command(BaseCommand):
         FormType.STILL_QUESTIONS: {
             'post_send': _default_post_send,
             'field_set': _default_field_set,
-        },
-        FormType.SIGNUP_MENTOR: {
-            'post_send': _default_post_send,
-            'field_set': _default_field_set
-            + [
-                {
-                    'type': FormField.ABOUT,
-                    'placeholder': (
-                        'What does a mentor need help with?\nWe can '
-                        'discuss it later :)'
-                    ),
-                }
-            ],
         },
     }
 

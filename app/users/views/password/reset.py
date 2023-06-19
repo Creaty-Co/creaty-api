@@ -16,11 +16,13 @@ class UsersPasswordResetView(BaseView):
         'post': (204, POSTUsersPasswordResetSerializer),
         'put': (200, PUTUsersPasswordResetSerializer),
     }
-    throttle_map = {'post': [(AnonRateThrottle, ['2/m', '10/d'])]}
 
     @response_204
     def post(self):
         serializer = self.get_valid_serializer()
+        self.throttle_classes = []
+        self.throttle_map = {'post': [(AnonRateThrottle, ['2/m', '10/d'])]}
+        self.check_throttles(self.request)
         password_reset_verifier.send(serializer.validated_data['email'])
 
     def put(self):

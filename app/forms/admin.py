@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.db import models
+from django.utils import timezone
 from django.utils.html import format_html
 
 from app.forms.models import Application
@@ -9,14 +10,11 @@ from app.users.models import User
 
 
 class UserRegisteredFilter(admin.SimpleListFilter):
-    title = 'User registered'
+    title = "User registered"
     parameter_name = 'user_registered'
 
     def lookups(self, request, model_admin):
-        return (
-            ('yes', 'Yes'),
-            ('no', 'No'),
-        )
+        return (('yes', "Yes"), ('no', "No"))
 
     def queryset(self, request, queryset):
         match self.value():
@@ -32,14 +30,11 @@ class UserRegisteredFilter(admin.SimpleListFilter):
 
 
 class UserVerifiedFilter(admin.SimpleListFilter):
-    title = 'User verified'
+    title = "User verified"
     parameter_name = 'user_verified'
 
     def lookups(self, request, model_admin):
-        return (
-            ('yes', 'Yes'),
-            ('no', 'No'),
-        )
+        return (('yes', "Yes"), ('no', "No"))
 
     def queryset(self, request, queryset):
         is_verified = (
@@ -54,6 +49,19 @@ class UserVerifiedFilter(admin.SimpleListFilter):
         )
 
 
+class CreatedAtFilter(admin.SimpleListFilter):
+    title = "Created at"
+    parameter_name = 'last_24_hours'
+
+    def lookups(self, request, model_admin):
+        return (('last_24_hours', "Last 24 hours"),)
+
+    def queryset(self, request, queryset):
+        if self.value() == 'last_24_hours':
+            last_24_hours = timezone.now() - timezone.timedelta(hours=24)
+            return queryset.filter(created_at__gte=last_24_hours)
+
+
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = [
@@ -62,7 +70,12 @@ class ApplicationAdmin(admin.ModelAdmin):
         'email',
         'URL',
     ]
-    list_filter = ['form__type', UserRegisteredFilter, UserVerifiedFilter]
+    list_filter = [
+        'form__type',
+        CreatedAtFilter,
+        UserRegisteredFilter,
+        UserVerifiedFilter,
+    ]
     ordering = ['-created_at']
     formfield_overrides = {
         models.TextField: {
@@ -78,10 +91,6 @@ class ApplicationAdmin(admin.ModelAdmin):
             'URL',
             'name',
             'email',
-            'telegram',
-            'facebook',
-            'whats_app',
-            'viber',
             'about',
             'link',
             'created_at',
