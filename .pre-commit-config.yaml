@@ -19,7 +19,6 @@ repos:
       - id: text-unicode-replacement-char
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.6.0
     hooks:
       - id: pyupgrade
 
