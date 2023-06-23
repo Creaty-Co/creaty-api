@@ -12,6 +12,8 @@ services:
     extends:
       file: docker/docker-compose.base.yml
       service: redis
+    volumes:
+      - redis_volume:/data
   api:
     extends:
       file: docker/docker-compose.base.yml
@@ -44,6 +46,7 @@ services:
 
 volumes:
   db_volume:
+  redis_volume:
   profiles_volume:
   media_volume:
 
