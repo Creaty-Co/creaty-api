@@ -6,9 +6,10 @@ from app.base.tests.factories.base import BaseFactory
 from app.base.tests.fakers import Faker
 from app.geo.tests.factories.country import CountryFactory
 from app.mentors.models import Mentor, Package
+from app.users.tests.factories import UserFactory
 
 
-class MentorFactory(BaseFactory):
+class MentorFactory(UserFactory):
     avatar = factory.django.ImageField()
     first_name = Faker('first_name')
     last_name = Faker('last_name')

@@ -1,9 +1,11 @@
 from django import forms
 from django.contrib import admin
+from django.utils.crypto import get_random_string
 from django.utils.html import format_html
 
 from app.mentors.models import Mentor, Package
 from app.pages.models import PageMentors
+from app.users.models import User
 
 
 class PackageInline(admin.TabularInline):
@@ -18,6 +20,8 @@ class PageInline(admin.TabularInline):
 
 
 class MentorAdminForm(forms.ModelForm):
+    instance: User
+
     class Meta:
         model = Mentor
         fields = '__all__'
@@ -35,6 +39,12 @@ class MentorAdminForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['what_help'].label = "How can I help"
 
+    def save(self, commit=True):
+        self.instance.set_password(get_random_string(16))
+        self.instance.is_verified = True
+        self.instance.has_discount = True
+        return super().save(commit)
+
 
 @admin.register(Mentor)
 class MentorAdmin(admin.ModelAdmin):
@@ -47,7 +57,7 @@ class MentorAdmin(admin.ModelAdmin):
         (
             "Profile Information",
             {
-                'fields': (
+                'fields': [
                     'is_draft',
                     'slug',
                     'link',
@@ -58,21 +68,22 @@ class MentorAdmin(admin.ModelAdmin):
                     'email',
                     'country',
                     'city',
-                )
+                ]
             },
         ),
         (
             "Professional Details",
             {
-                'fields': (
+                'fields': [
                     'languages',
                     'tags',
                     'resume',
                     'experience',
                     'what_help',
+                    'profession',
                     'price',
                     'trial_meeting',
-                )
+                ]
             },
         ),
     )

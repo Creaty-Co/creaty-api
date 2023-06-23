@@ -8,21 +8,19 @@ from app.base.models.base import BaseModel
 from app.base.money import Money
 from app.geo.models import *
 from app.tags.models import Tag
+from app.users.models import User
 
 __all__ = ['Mentor', 'Package']
 
 
-class Mentor(BaseModel):
+class Mentor(User):
     slug = models.SlugField(unique=True)
     tags = models.ManyToManyField(Tag, related_name='mentors')
     languages = models.ManyToManyField(Language, related_name='mentors')
     country = models.ForeignKey(Country, models.PROTECT, related_name='mentors')
     avatar = models.ImageField(upload_to='avatars', null=True, blank=True)
-    email = models.EmailField(blank=True, default='', db_index=True)
     company = models.TextField(blank=True, default='')
     profession = models.TextField()
-    first_name = models.TextField()
-    last_name = models.TextField()
     price: Money = MoneyField(max_digits=10, decimal_places=2)
     is_draft = models.BooleanField(default=True)
     trial_meeting = models.SmallIntegerField(

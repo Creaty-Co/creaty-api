@@ -19,7 +19,7 @@ from app.base.logs.configs import LogConfig
 # env
 
 env = environ.Env(
-    ENV_FILE=(str, None),
+    ENV_FILE=(str, '.env'),
     DEBUG=bool,
     TEST=bool,
     USE_BROWSABLE_API=bool,
@@ -43,7 +43,7 @@ env = environ.Env(
     UPDATE_RATES_INTERVAL=(int, 60 * 60 * 8),
 )
 
-if (ENV_FILE := env('ENV_FILE')) is not None:
+if (ENV_FILE := env('ENV_FILE')) is not None and os.path.isfile(ENV_FILE):
     environ.Env.read_env(ENV_FILE, overwrite=True)
 
 # root
