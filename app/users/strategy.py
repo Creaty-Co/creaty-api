@@ -23,6 +23,8 @@ class SocialStrategy(DjangoStrategy):
 
     def create_user(self, *args, **kwargs):
         try:
+            kwargs['is_verified'] = True
+            kwargs['has_discount'] = True
             return super().create_user(*args, **kwargs)
         except IntegrityError as err:
             try:
