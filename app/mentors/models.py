@@ -1,3 +1,4 @@
+from cacheops import invalidate_obj
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -14,6 +15,7 @@ __all__ = ['Mentor', 'Package']
 
 
 class Mentor(User):
+    user_ptr: User
     slug = models.SlugField(unique=True)
     tags = models.ManyToManyField(Tag, related_name='mentors')
     languages = models.ManyToManyField(Language, related_name='mentors')
@@ -40,6 +42,7 @@ class Mentor(User):
         if not self.slug:
             self.slug = uuslug(f"{self.first_name}_{self.last_name}", self)
         super().save(*args, **kwargs)
+        invalidate_obj(self.user_ptr)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
