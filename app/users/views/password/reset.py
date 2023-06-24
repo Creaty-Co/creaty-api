@@ -8,7 +8,6 @@ from app.users.serializers.password.reset import (
     POSTUsersPasswordResetSerializer,
     PUTUsersPasswordResetSerializer,
 )
-from app.users.verification import password_reset_verifier
 
 
 class UsersPasswordResetView(BaseView):
@@ -23,7 +22,7 @@ class UsersPasswordResetView(BaseView):
         self.throttle_classes = []
         self.throttle_map = {'post': [(AnonRateThrottle, ['2/m', '10/d'])]}
         self.check_throttles(self.request)
-        password_reset_verifier.send(serializer.validated_data['email'])
+        password_resetter.send(serializer.validated_data['email'])
 
     def put(self):
         serializer = self.get_valid_serializer()

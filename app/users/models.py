@@ -26,9 +26,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     @property
     def is_mentor(self) -> bool:
-        from app.mentors.models import Mentor
-
-        return Mentor.objects.filter(email=self.email).exists()
+        return hasattr(self, 'mentor')
 
     def clean(self):
         super().clean()

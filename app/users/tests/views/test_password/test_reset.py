@@ -3,6 +3,7 @@ from django.utils.crypto import get_random_string
 
 from app.base.tests.fakers import fake
 from app.base.tests.views.base import BaseViewTest
+from app.mentors.tests.factories import MentorFactory
 from app.users.models import User
 from app.users.password_reset import password_resetter
 from app.users.serializers.password.reset import (
@@ -31,11 +32,10 @@ class UsersPasswordResetTest(BaseViewTest):
         )
         self.assert_equal(len(mail.outbox), 0)
 
-    def test_put(self):
-        user = UserFactory()
+    def _test_put(self, user, verifier):
         code = get_random_string(10)
-        password_resetter.verifier.cache.set((user.email, None), code)
-        password_resetter.verifier.cache.set(code, user.email)
+        verifier.cache.set((user.email, None), code)
+        verifier.cache.set(code, user.email)
         new_password = fake.password()
         self._test(
             'put',
@@ -47,6 +47,16 @@ class UsersPasswordResetTest(BaseViewTest):
             status=200,
         )
         self.assert_true(User.objects.get().check_password(new_password))
+
+    def test_put_user(self):
+        user = UserFactory()
+        verifier = password_resetter.user_verifier
+        self._test_put(user, verifier)
+
+    def test_put_mentor(self):
+        user = MentorFactory().user_ptr
+        verifier = password_resetter.mentor_verifier
+        self._test_put(user, verifier)
 
     def test_put_warn_408(self):
         user = UserFactory()
