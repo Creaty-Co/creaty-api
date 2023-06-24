@@ -6,6 +6,7 @@ from django.utils.html import format_html
 from app.mentors.models import Mentor, Package
 from app.pages.models import PageMentors
 from app.users.models import User
+from app.users.password_reset import password_resetter
 
 
 class PackageInline(admin.TabularInline):
@@ -43,7 +44,14 @@ class MentorAdminForm(forms.ModelForm):
         self.instance.set_password(get_random_string(16))
         self.instance.is_verified = True
         self.instance.has_discount = True
+        if not self.instance.id:
+            password_resetter.send(self.instance.email)
         return super().save(commit)
+
+
+def send_password_reset_email(_, __, queryset):
+    for mentor in queryset:
+        password_resetter.send(mentor.email)
 
 
 @admin.register(Mentor)
@@ -61,7 +69,7 @@ class MentorAdmin(admin.ModelAdmin):
                     'is_draft',
                     'slug',
                     'link',
-                    'display_avatar',
+                    'avatar_image',
                     'avatar',
                     'first_name',
                     'last_name',
@@ -88,14 +96,13 @@ class MentorAdmin(admin.ModelAdmin):
         ),
     )
     filter_horizontal = ['tags', 'languages']
-    readonly_fields = ['display_avatar', 'url']
+    readonly_fields = ['avatar_image', 'url']
     search_fields = ['first_name', 'last_name']
+    actions = [send_password_reset_email]
     inlines = [PackageInline, PageInline]
 
-    def display_avatar(self, obj):
+    def avatar_image(self, obj):
         return format_html('<img src="{}" width="500"/>', obj.avatar.url)
-
-    display_avatar.short_description = 'Avatar image'
 
     def url(self, obj):
         return format_html('<a href="{}">{}</a>', obj.url, obj.url)
