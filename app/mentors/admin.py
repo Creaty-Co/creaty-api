@@ -17,7 +17,6 @@ class PackageInline(admin.TabularInline):
 class PageInline(admin.TabularInline):
     model = PageMentors
     extra = 1
-    max_num = 10
 
 
 class MentorAdminForm(forms.ModelForm):

@@ -52,7 +52,12 @@ class _BaseAdminForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         page = self.instance.page
         choices = []
-        for mentor in Mentor.objects.all():
+        mentors = Mentor.objects.all()
+        if page.tag:
+            mentors = mentors.filter(tags=page.tag)
+        elif page.category:
+            mentors = mentors.filter(tags__categories=page.category)
+        for mentor in mentors:
             page_mentors = PageMentors.objects.filter(page=page, mentor=mentor).first()
             mentor.index = page_mentors.index if page_mentors else -1
             choices.append((mentor, str(mentor)))
