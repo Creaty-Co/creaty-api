@@ -1,3 +1,5 @@
+import re
+
 from django.core import mail
 from django.utils.crypto import get_random_string
 
@@ -18,12 +20,28 @@ class UsersPasswordResetTest(BaseViewTest):
 
     me_data = None
 
-    def test_post(self):
-        user = UserFactory()
+    def _test_post(self, user, link_regex):
         self._test('post', data={'email': user.email}, status=204)
         self.assert_equal(len(mail.outbox), 1)
-        self.assert_equal(mail.outbox[0].to, [user.email])
+        email_message = mail.outbox[0]
+        self.assert_equal(email_message.to, [user.email])
+        self.assert_is_not_none(
+            re.fullmatch(
+                link_regex.format(**email_message.context),
+                email_message.context['link'],
+            )
+        )
         self.assert_model(User, {'password': user.password})
+
+    def test_post_user(self):
+        user = UserFactory()
+        link_regex = r"https://.+/reset-password/{code}"
+        self._test_post(user, link_regex)
+
+    def test_post_mentor(self):
+        user = MentorFactory().user_ptr
+        link_regex = r"https://.+/reset-password/{code}\?first_name=.+"
+        self._test_post(user, link_regex)
 
     def test_post_warn_404(self):
         email = fake.email()

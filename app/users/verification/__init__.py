@@ -23,7 +23,7 @@ password_reset_verifier: Final[EmailVerifier] = EmailVerifier(
 
 mentor_password_reset_verifier: Final[EmailVerifier] = EmailVerifier(
     email_sender=SimpleEmailSender(template_name='email/mentor_password_reset.html'),
-    cache=Cacher('password_reset', timeout=60 * 30),
+    cache=Cacher('mentor_password_reset', timeout=60 * 30),
     code_generator=SymbolicCodeGenerator(10),
     link_generator=MentorLinkGenerator(path='reset-password'),
 )
