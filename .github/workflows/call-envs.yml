@@ -58,10 +58,8 @@ jobs:
           envs=''
           for env_key in "${env_keys[@]}"; do
             env_var=$(echo $envs_json | jq -r --arg env_key "$env_key" '.[$env_key]')
-            if [ "$env_var" == "null" ]; then
-              echo "::error::KeyError: $env_key"
-              exit 1
+            if [ "$env_var" != "null" ]; then
+              envs=$envs$env_key=$env_var\\n
             fi
-            envs=$envs$env_key=$env_var\\n
           done
           echo envs=$envs >> $GITHUB_OUTPUT
