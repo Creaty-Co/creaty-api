@@ -19,7 +19,7 @@ jobs:
             echo $env_key
             env_var=$(echo $vars_json | jq -r --arg env_key "$env_key" '.[$env_key]')
             echo $env_var
-            envs='${{ env.ENVS }}\n$env_key=$env_var'
+            envs=${{ env.ENVS }}\\n$env_key=$env_var
             echo ENVS=$envs >> $GITHUB_ENV
             echo ${{ env.ENVS }}
           done
