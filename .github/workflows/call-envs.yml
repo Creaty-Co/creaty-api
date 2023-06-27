@@ -62,6 +62,7 @@ jobs:
             if [ "$env_var" != "null" ]; then
               echo $env_key=$env_var
               envs=$envs$env_key=$env_var\\n
+              echo $envs
             fi
           done
           echo envs=$envs >> $GITHUB_OUTPUT
