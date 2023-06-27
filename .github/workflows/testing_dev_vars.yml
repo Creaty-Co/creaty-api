@@ -4,7 +4,11 @@ on:
       - task-275
 
 jobs:
-  build:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: ./.github/workflows/call-ci.yml@task-275
+  deploy:
     runs-on: ubuntu-22.04
     environment:
       name: dev
