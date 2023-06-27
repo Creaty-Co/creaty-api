@@ -36,15 +36,32 @@ jobs:
           clean: false
       - name: Set variables
         run: |
+          variable_keys=(
+            "WEB_DOMAIN"
+            "API_DOMAIN"
+            "DEBUG"
+            "TEST"
+            "ANON_THROTTLE_RATE"
+            "USE_BROWSABLE_API"
+            "EMAIL_BACKEND"
+            "CELERY_TASK_EAGER"
+            "CELERY_REDIS_MAX_CONNECTIONS"
+            "CELERY_BROKER_POOL_LIMIT"
+            "CLOUDINARY_PREFIX"
+            "USE_SILK"
+            "SENTRY_ENVIRONMENT"
+            "REDIRECT_ON_UNSUBSCRIBE"
+            "ADMINS"
+            "LOG_PRETTY"
+            "LOG_REQUESTS"
+            "LOG_LEVEL"
+          )
           env_filename=envs/.${{ inputs.environment }}.env
-          env_keys="${{ inputs.env_keys }}"
-          IFS=',' read -ra env_keys <<< "${env_keys// /}"
-          envs_json='${{ toJSON(vars) }}'
-          for env_key in "${env_keys[@]}"; do
-            env_var=$(echo $envs_json | jq -r --arg env_key "$env_key" '.[$env_key]')
-            echo "$env_key=$env_var"
-            if [ "$env_var" != "null" ]; then
-              echo $env_key=$env_var >> $env_filename
+          vars_json='${{ toJSON(vars) }}'
+          for key in "${variable_keys[@]}"; do
+            value=$(echo $vars_json | jq -r --arg key "$key" '.[$key]')
+            if [ "$value" != "null" ]; then
+              echo $key=$value >> $env_filename
             fi
           done
       - name: Set secrets
@@ -59,8 +76,7 @@ jobs:
           GOOGLE_APP_SECRET: ${{ secrets.GOOGLE_APP_SECRET }}
           FIXER_ACCESS_KEY: ${{ secrets.FIXER_ACCESS_KEY }}
         run: |
-          env_filename=envs/.${{ inputs.environment }}.env
-          secrets=(
+          secret_keys=(
             "SECRET_KEY"
             "CLOUDINARY_URL"
             "EMAIL_URL"
@@ -71,14 +87,17 @@ jobs:
             "GOOGLE_APP_SECRET"
             "FIXER_ACCESS_KEY"
           )
-          for secret in ${secrets[@]}; do
-            value=$(echo "${!secret}")
+          env_filename=envs/.${{ inputs.environment }}.env
+          for key in ${secret_keys[@]}; do
+            value=$(echo "${!key}")
             if [[ -z "$value" ]]; then
-              echo "$secret is not defined"
+              echo "$key is not defined"
               exit 1
             fi
-            echo "$secret=$value" >> $env_filename
+            echo "$key=$value" >> $env_filename
           done
+      - name: Set Sentry release
+        run: |
           if [[ "${{ inputs.tag }}" == "latest" ]]; then
             echo "SENTRY_RELEASE=${{ github.sha }}" >> $env_filename
           else
