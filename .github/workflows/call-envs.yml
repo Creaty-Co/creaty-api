@@ -1,5 +1,14 @@
 on:
   workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+      env_keys:
+        type: string
+        required: false
+        default: "WEB_DOMAIN, API_DOMAIN, SECRET_KEY, DEBUG, TEST, ANON_THROTTLE_RATE,
+          USER_THROTTLE_RATE, USE_BROWSABLE_API, EMAIL_URL, EMAIL_BACKEND"
     outputs:
       envs:
         value: ${{ jobs.envs.outputs.envs }}
@@ -10,15 +19,18 @@ jobs:
     outputs:
       envs: ${{ steps.envs.outputs.envs }}
     environment:
-      name: dev
+      name: ${{ inputs.environment }}
     steps:
       - id: envs
         run: |
-          env_keys=("TEST_VAR" "TEST_VAR2")
+          IFS=',' read -ra env_keys <<< "${{ env_keys }}"
           vars_json='${{ toJSON(vars) }}'
+          secrets_json='${{ toJSON(secrets) }}'
+          envs_json=$(jq -s '.[0] * .[1]' <(echo $vars_json) <(echo $secrets_json))
           envs=''
           for env_key in "${env_keys[@]}"; do
-            env_var=$(echo $vars_json | jq -r --arg env_key "$env_key" '.[$env_key]')
+            echo $env_key
+            env_var=$(echo $envs_json | jq -r --arg env_key "$env_key" '.[$env_key]')
             envs=$envs$env_key=$env_var\\n
           done
           echo envs=$envs >> $GITHUB_OUTPUT
