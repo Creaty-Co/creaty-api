@@ -9,3 +9,4 @@ jobs:
   deploy:
     uses: ./.github/workflows/call-deploy.yml
     secrets: inherit
+    needs: [ ci ]
