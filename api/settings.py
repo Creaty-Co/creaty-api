@@ -27,10 +27,6 @@ env = environ.Env(
     CELERY_REDIS_MAX_CONNECTIONS=int,
     CELERY_BROKER_POOL_LIMIT=int,
     CELERY_TASK_EAGER=bool,
-    USE_SILK=bool,
-    SILKY_ANALYZE_QUERIES=bool,
-    SILKY_PYTHON_PROFILER=bool,
-    SILKY_PYTHON_PROFILER_BINARY=bool,
     CLOUDINARY_URL=(str, None),
     SENTRY_DSN=(str, None),
     LOG_CONF={'value': lambda s: s.split(',')},
@@ -89,7 +85,6 @@ INSTALLED_APPS = [
     'django_cleanup',
     'django_pickling',
     'cacheops',
-    'silk',
     'social_django',
     'cloudinary',
     'cloudinary_storage',
@@ -150,7 +145,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     # third-party middlewares
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'app.base.middlewares.SilkyMiddleware',
     # own middlewares
     'app.base.middlewares.LogMiddleware',
 ]
@@ -296,30 +290,6 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = None
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR + 'static'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# silk
-
-USE_SILK = env('USE_SILK', default=DEBUG)
-SILKY_INTERCEPT_FUNC = lambda _: USE_SILK  # noqa: E731
-SILKY_MIDDLEWARE_CLASS = 'app.base.middlewares.SilkyMiddleware'
-SILKY_MAX_RECORDED_REQUESTS = 100_000
-SILKY_AUTHENTICATION = True
-SILKY_AUTHORISATION = True
-SILKY_META = True
-SILKY_HIDE_COOKIES = False
-SILKY_ANALYZE_QUERIES = env('SILKY_ANALYZE_QUERIES')
-SILKY_EXPLAIN_FLAGS = {
-    'format': 'JSON',
-    'costs': True,
-    'verbose': True,
-    'buffers': True,
-}
-SILKY_SENSITIVE_KEYS = {'𘚠'}
-SILKY_PYTHON_PROFILER = env('SILKY_PYTHON_PROFILER')
-SILKY_PYTHON_PROFILER_BINARY = env('SILKY_PYTHON_PROFILER_BINARY')
-SILKY_PYTHON_PROFILER_RESULT_PATH = BASE_DIR + 'profiles/'
-if USE_SILK and not os.path.exists(SILKY_PYTHON_PROFILER_RESULT_PATH):
-    os.makedirs(SILKY_PYTHON_PROFILER_RESULT_PATH)
 
 # sentry
 
