@@ -9,7 +9,7 @@ jobs:
     secrets: inherit
   deploy:
     runs-on: ubuntu-22.04
-    needs: [envs]
+    needs: [ envs ]
     steps:
       - name: Set dev envs
         run: |
