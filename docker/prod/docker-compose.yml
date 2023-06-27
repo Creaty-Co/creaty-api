@@ -21,7 +21,6 @@ services:
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.prod.env ]
     volumes:
-      - /home/www/creaty/media:/api/media
       - api_static_volume:/api/static
     command: bash -c "
       python manage.py migrate
@@ -55,7 +54,6 @@ services:
     env_file: [ ../../envs/.prod.env ]
     ports: [ 443:443 ]
     volumes:
-      - /home/www/creaty/media:/etc/nginx/html/api/media
       - api_static_volume:/etc/nginx/html/api/static
     depends_on: [ api ]
 
