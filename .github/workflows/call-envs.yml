@@ -58,6 +58,7 @@ jobs:
           envs=''
           for env_key in "${env_keys[@]}"; do
             env_var=$(echo $envs_json | jq -r --arg env_key "$env_key" '.[$env_key]')
+            echo "$env_key=$env_var"
             if [ "$env_var" != "null" ]; then
               envs=$envs$env_key=$env_var\\n
             fi
