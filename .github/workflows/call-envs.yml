@@ -11,14 +11,13 @@ jobs:
       name: dev
     env:
       ENVS: ''
-    strategy:
-      matrix:
-        env_key: [ TEST_VAR, TEST_VAR2 ]
     steps:
       - run: |
+          env_keys=("TEST_VAR" "TEST_VAR2")
           vars_json='${{ toJSON(vars) }}'
-          env_var=$(echo $vars_json | jq -r '.${{ matrix.env_key }}')
-          envs='{{ env.ENVS }}\n${{ matrix.env_key }}=$env_var'
-          echo ENVS=$envs >> $GITHUB_ENV
+          for env_key in "${env_keys[@]}"; do
+            env_var=$(echo $vars_json | jq -r --arg env_key "$env_key" '.[$env_key]')
+            echo "$env_key=$env_var" >> $GITHUB_ENV
+          done
       - name: Set output
         run: echo envs=${{ env.ENVS }} >> $GITHUB_OUTPUT
