@@ -1,4 +1,4 @@
-name: "Call: deploy dev"
+name: "Call: deploy"
 
 on:
   workflow_call:
@@ -9,10 +9,6 @@ on:
       url:
         type: string
         required: true
-      sentry_release:
-        type: string
-        required: false
-        default: "${{ github.sha }}"
       tag:
         type: string
         required: false
@@ -22,9 +18,6 @@ on:
       environment:
         type: string
         required: true
-      sentry_release:
-        type: string
-        required: false
       tag:
         type: string
         required: false
@@ -74,8 +67,10 @@ jobs:
             fi
             echo "$secret=$value" >> $env_filename
           done
-          if [[ -n "${{ inputs.SENTRY_RELEASE }}" ]]; then
-            echo "SENTRY_RELEASE=${{ inputs.SENTRY_RELEASE }}" >> $env_filename
+          if [[ "${{ inputs.tag }}" == "latest" ]]; then
+            echo "SENTRY_RELEASE=${{ github.sha }} >> $env_filename
+          else
+            echo "SENTRY_RELEASE=${{ inputs.tag }} >> $env_filename
           fi
       - uses: actions/checkout@v3.5.3
         with:
