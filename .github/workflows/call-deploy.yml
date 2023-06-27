@@ -40,6 +40,7 @@ jobs:
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           EMAIL_URL: ${{ secrets.EMAIL_URL }}
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -51,6 +52,7 @@ jobs:
           echo -e "${{ needs.envs.outputs.envs }}" > $env_filename
           secrets=(
             "SECRET_KEY"
+            "CLOUDINARY_URL"
             "EMAIL_URL"
             "SENTRY_DSN"
             "POSTGRES_PASSWORD"
