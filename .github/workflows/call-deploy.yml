@@ -13,8 +13,5 @@ jobs:
     steps:
       - name: Set dev envs
         run: |
-          echo ${{ toJSON(needs) }}
-          echo ${{ toJSON(needs.envs) }}
-          echo ${{ toJSON(needs.envs.outputs) }}
           echo ${{ needs.envs.outputs.envs }} > .env
           cat .env
