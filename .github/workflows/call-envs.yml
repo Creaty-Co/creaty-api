@@ -2,7 +2,7 @@ on:
   workflow_call:
     outputs:
       envs:
-        value: ${{ jobs.get_envs.outputs.envs }}
+        value: ${{ jobs.envs.outputs.envs }}
 
 jobs:
   envs:
@@ -15,10 +15,7 @@ jobs:
           vars_json='${{ toJSON(vars) }}'
           envs=''
           for env_key in "${env_keys[@]}"; do
-            echo $env_key
             env_var=$(echo $vars_json | jq -r --arg env_key "$env_key" '.[$env_key]')
-            echo $env_var
             envs=$envs$env_key=$env_var\\n
-            echo $envs
           done
           echo envs=$envs >> $GITHUB_OUTPUT
