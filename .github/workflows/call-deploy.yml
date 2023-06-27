@@ -1,0 +1,16 @@
+name: "Call: deploy dev"
+
+on:
+  workflow_call:
+
+jobs:
+  envs:
+    uses: ./.github/workflows/call-envs.yml
+    secrets: inherit
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set dev envs
+        run: |
+          echo ${{ steps.envs.outputs.envs }} > .env
+          cat .env
