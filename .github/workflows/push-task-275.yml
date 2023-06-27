@@ -8,4 +8,6 @@ jobs:
     uses: ./.github/workflows/call-ci.yml
   deploy:
     uses: ./.github/workflows/call-deploy.yml
+    with:
+      environment: dev
     secrets: inherit
