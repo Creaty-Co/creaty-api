@@ -9,4 +9,5 @@ jobs:
     steps:
       - run: echo ${{ vars.TEST_VAR }}
       - run: echo ${{ secrets.TEST_SCRT }} | sed 's/./& /g'
-      - run: echo ${{ vars.STAGE_VAR }}
+      - run: echo '${{ toJSON(vars) }}'
+      - run: echo '${{ toJSON(secrets) }}'
