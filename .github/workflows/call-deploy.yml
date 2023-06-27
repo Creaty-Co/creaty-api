@@ -13,5 +13,9 @@ jobs:
     steps:
       - name: Set dev envs
         run: |
+          echo ${{ needs }}
+          echo ${{ needs.envs }}
+          echo ${{ needs.envs.outputs }}
+          echo ${{ needs.envs.outputs.envs }}
           echo ${{ needs.envs.outputs.envs }} > .env
           cat .env
