@@ -59,7 +59,9 @@ services:
 
 volumes:
   db_volume:
+  profiles_volume:
   api_static_volume:
+  api_media_volume:
 
 networks:
   db_network:
