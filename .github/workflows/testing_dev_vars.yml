@@ -1,0 +1,12 @@
+on:
+  push:
+    branches:
+      - task-275
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    environment:
+      name: dev
+    steps:
+      - run: echo ${{ secrets.TEST_VAR }}
