@@ -5,9 +5,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: ./.github/workflows/call-ci.yml@task-275
+    uses: ./.github/workflows/call-ci.yml
   deploy:
     runs-on: ubuntu-22.04
     environment:
