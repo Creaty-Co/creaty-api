@@ -24,11 +24,6 @@ on:
         default: 'latest'
 
 jobs:
-  envs:
-    uses: ./.github/workflows/call-envs.yml
-    with:
-      environment: ${{ inputs.environment }}
-    secrets: inherit
   deploy:
     runs-on: [ self-hosted, "${{ inputs.environment }}" ]
     needs: [ envs ]
@@ -36,7 +31,23 @@ jobs:
       name: ${{ inputs.environment }}
       url: ${{ inputs.url }}
     steps:
-      - name: Set .env file
+      - uses: actions/checkout@v3.5.3
+        with:
+          clean: false
+      - name: Set variables
+        run: |
+          env_filename=envs/.${{ inputs.environment }}.env
+          env_keys="${{ inputs.env_keys }}"
+          IFS=',' read -ra env_keys <<< "${env_keys// /}"
+          envs_json='${{ toJSON(vars) }}'
+          for env_key in "${env_keys[@]}"; do
+            env_var=$(echo $envs_json | jq -r --arg env_key "$env_key" '.[$env_key]')
+            echo "$env_key=$env_var"
+            if [ "$env_var" != "null" ]; then
+              echo $env_key=$env_var >> $env_filename
+            fi
+          done
+      - name: Set secrets
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           EMAIL_URL: ${{ secrets.EMAIL_URL }}
@@ -49,7 +60,6 @@ jobs:
           FIXER_ACCESS_KEY: ${{ secrets.FIXER_ACCESS_KEY }}
         run: |
           env_filename=envs/.${{ inputs.environment }}.env
-          echo -e "${{ needs.envs.outputs.envs }}" > $env_filename
           secrets=(
             "SECRET_KEY"
             "CLOUDINARY_URL"
@@ -74,9 +84,6 @@ jobs:
           else
             echo "SENTRY_RELEASE=${{ inputs.tag }}" >> $env_filename
           fi
-      - uses: actions/checkout@v3.5.3
-        with:
-          clean: false
       - name: Pull images
         run: |
           export TAG=${{ inputs.tag }}
