@@ -16,8 +16,11 @@ jobs:
           env_keys=("TEST_VAR" "TEST_VAR2")
           vars_json='${{ toJSON(vars) }}'
           for env_key in "${env_keys[@]}"; do
-            env_var=$(echo $vars_json | jq -r --arg env_key "$env_key" '.[$env_key]')
-            echo "$env_key=$env_var" >> $GITHUB_ENV
+            echo $env_key
+            env_var=$(echo $vars_json | jq -r '.$env_key')
+            echo $env_var
+            echo "ENVS='${{ env.ENVS }}\n$env_key=$env_var'" >> $GITHUB_ENV
+            echo ${{ env.ENVS }}
           done
       - name: Set output
         run: echo envs=${{ env.ENVS }} >> $GITHUB_OUTPUT
