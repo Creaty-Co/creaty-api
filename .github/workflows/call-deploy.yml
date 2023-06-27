@@ -6,6 +6,8 @@ on:
 jobs:
   envs:
     uses: ./.github/workflows/call-envs.yml
+    with:
+      environment: dev
     secrets: inherit
   deploy:
     runs-on: ubuntu-22.04
