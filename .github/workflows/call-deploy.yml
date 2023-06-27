@@ -6,25 +6,41 @@ on:
       environment:
         type: string
         required: true
+      url:
+        type: string
+        required: true
+      sentry_release:
+        type: string
+        required: true
+      tag:
+        type: string
+        required: false
+        default: 'latest'
   workflow_dispatch:
     inputs:
       environment:
         type: string
         required: true
+      sentry_release:
+        type: string
+        required: false
+      tag:
+        type: string
+        required: false
+        default: 'latest'
 
 jobs:
   envs:
     uses: ./.github/workflows/call-envs.yml
     with:
       environment: ${{ inputs.environment }}
-    environment:
-      name: ${{ inputs.environment }}
     secrets: inherit
   deploy:
-    runs-on: ubuntu-22.04
+    runs-on: [ self-hosted, ${{ inputs.environment }} ]
     needs: [ envs ]
     environment:
       name: ${{ inputs.environment }}
+      url: ${{ inputs.url }}
     steps:
       - name: Set .env file
         env:
@@ -37,7 +53,8 @@ jobs:
           GOOGLE_APP_SECRET: ${{ secrets.GOOGLE_APP_SECRET }}
           FIXER_ACCESS_KEY: ${{ secrets.FIXER_ACCESS_KEY }}
         run: |
-          echo -e "${{ needs.envs.outputs.envs }}" > .env
+          env_filename=envs/.${{ inputs.environment }}.env
+          echo -e "${{ needs.envs.outputs.envs }}" > $env_filename
           secrets=(
             "SECRET_KEY"
             "EMAIL_URL"
@@ -54,6 +71,20 @@ jobs:
               echo "$secret is not defined"
               exit 1
             fi
-            echo "$secret=$value" >> .env
+            echo "$secret=$value" >> $env_filename
           done
-          cat .env
+          if [[ -n "${{ inputs.SENTRY_RELEASE }}" ]]; then
+            echo "SENTRY_RELEASE=${{ inputs.SENTRY_RELEASE }}" >> $env_filename
+          fi
+      - uses: actions/checkout@v3.5.3
+        with:
+          clean: false
+      - name: Pull images
+        run: |
+          export TAG=${{ inputs.tag }}
+          docker-compose -f docker/${{ inputs.environment }}/docker-compose.yml pull api
+          docker pull ghcr.io/creaty-co/creaty-web/web:${{ inputs.tag }}
+      - name: Up docker compose
+        run: |
+          docker-compose -f docker/${{ inputs.environment }}/docker-compose.yml up \
+          --build -d
