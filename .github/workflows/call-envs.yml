@@ -25,7 +25,7 @@ jobs:
     steps:
       - id: envs
         run: |
-          env_keys=${{ inputs.env_keys }}
+          env_keys="${{ inputs.env_keys }}"
           IFS=',' read -ra env_keys <<< "${env_keys// /}"
           vars_json='${{ toJSON(vars) }}'
           secrets_json='${{ toJSON(secrets) }}'
