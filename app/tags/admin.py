@@ -4,6 +4,7 @@ from django import forms
 from django.conf import settings
 from django.contrib import admin
 from django.db import transaction
+from django.db.models import Q
 from django.utils.html import format_html
 
 from app.mentors.models import Mentor
@@ -52,11 +53,11 @@ class _BaseAdminForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         page = self.instance.page
         choices = []
-        mentors = Mentor.objects.all()
+        mentors = Mentor.objects.distinct()
         if page.tag:
-            mentors = mentors.filter(tags=page.tag)
+            mentors = mentors.filter(Q(tags=page.tag) | Q(pages=page))
         elif page.category:
-            mentors = mentors.filter(tags__categories=page.category)
+            mentors = mentors.filter(Q(tags__categories=page.category) | Q(pages=page))
         for mentor in mentors:
             page_mentors = PageMentors.objects.filter(page=page, mentor=mentor).first()
             mentor.index = page_mentors.index if page_mentors else -1
