@@ -5,23 +5,20 @@ on:
         value: ${{ jobs.get_envs.outputs.envs }}
 
 jobs:
-  get_envs:
+  envs:
     runs-on: ubuntu-22.04
     environment:
       name: dev
-    env:
-      ENVS: ''
     steps:
       - run: |
           env_keys=("TEST_VAR" "TEST_VAR2")
           vars_json='${{ toJSON(vars) }}'
+          envs=''
           for env_key in "${env_keys[@]}"; do
             echo $env_key
             env_var=$(echo $vars_json | jq -r --arg env_key "$env_key" '.[$env_key]')
             echo $env_var
-            envs=$ENVS$env_key=$env_var\\n
-            echo ENVS=$envs >> $GITHUB_ENV
-            echo $ENVS
+            envs=$envs$env_key=$env_var\\n
+            echo $envs
           done
-      - name: Set output
-        run: echo envs=${{ env.ENVS }} >> $GITHUB_OUTPUT
+          echo envs=$envs >> $GITHUB_OUTPUT
