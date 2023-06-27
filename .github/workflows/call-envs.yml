@@ -8,11 +8,12 @@ jobs:
   envs:
     runs-on: ubuntu-22.04
     outputs:
-      envs: ${{ steps.step1.outputs.envs }}
+      envs: ${{ steps.envs.outputs.envs }}
     environment:
       name: dev
     steps:
-      - run: |
+      - id: envs
+        run: |
           env_keys=("TEST_VAR" "TEST_VAR2")
           vars_json='${{ toJSON(vars) }}'
           envs=''
