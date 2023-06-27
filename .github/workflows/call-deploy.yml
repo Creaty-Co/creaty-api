@@ -16,12 +16,22 @@ jobs:
       - name: Set .env file
         run: |
           echo -e "${{ needs.envs.outputs.envs }}" > .env
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo EMAIL_URL=${{ secrets.EMAIL_URL }} >> .env
-          echo SENTRY_DSN=${{ secrets.SENTRY_DSN }} >> .env
-          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
-          echo GOOGLE_APP_ID=${{ secrets.GOOGLE_APP_ID }} >> .env
-          echo GOOGLE_APP_SECRET=${{ secrets.GOOGLE_APP_SECRET }} >> .env
-          echo FIXER_ACCESS_KEY=${{ secrets.FIXER_ACCESS_KEY }} >> .env
+          secrets=(
+            "SECRET_KEY"
+            "EMAIL_URL"
+            "SENTRY_DSN"
+            "POSTGRES_PASSWORD"
+            "DATABASE_URL"
+            "GOOGLE_APP_ID"
+            "GOOGLE_APP_SECRET"
+            "FIXER_ACCESS_KEY"
+          )
+          for secret in ${secrets[@]}; do
+            value=$(echo "${{ secrets[$secret] }}")
+            if [[ -z "$value" ]]; then
+              echo "$secret is not defined"
+              exit 1
+            fi
+            echo "$secret=$value" >> .env
+          done
           cat .env
