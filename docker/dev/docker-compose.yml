@@ -20,8 +20,6 @@ services:
     image: ${API_IMAGE}
     env_file: [ ../../envs/.dev.env ]
     volumes:
-      - profiles_volume:/api/profiles
-      - api_media_volume:/api/media
       - api_static_volume:/api/static
     command: bash -c "
       python manage.py migrate
@@ -60,9 +58,7 @@ services:
 
 volumes:
   db_volume:
-  profiles_volume:
   api_static_volume:
-  api_media_volume:
 
 networks:
   db_network:
