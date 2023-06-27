@@ -1,0 +1,11 @@
+on:
+  push:
+    branches:    
+      - task-275
+
+jobs:
+  ci:
+    uses: ./.github/workflows/call-ci.yml
+  deploy:
+    uses: ./.github/workflows/call-deploy.yml
+    secrets: inherit
