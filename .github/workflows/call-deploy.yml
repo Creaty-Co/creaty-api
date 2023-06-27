@@ -13,7 +13,15 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ envs ]
     steps:
-      - name: Set dev envs
+      - name: Set .env file
         run: |
           echo -e "${{ needs.envs.outputs.envs }}" > .env
+          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+          echo EMAIL_URL=${{ secrets.EMAIL_URL }} >> .env
+          echo SENTRY_DSN=${{ secrets.SENTRY_DSN }} >> .env
+          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+          echo GOOGLE_APP_ID=${{ secrets.GOOGLE_APP_ID }} >> .env
+          echo GOOGLE_APP_SECRET=${{ secrets.GOOGLE_APP_SECRET }} >> .env
+          echo FIXER_ACCESS_KEY=${{ secrets.FIXER_ACCESS_KEY }} >> .env
           cat .env
