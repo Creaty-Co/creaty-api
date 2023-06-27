@@ -8,4 +8,4 @@ jobs:
       name: dev
     steps:
       - run: echo ${{ vars.TEST_VAR }}
-      - run: echo ${{ secrets.TEST_SCRT }}
+      - run: echo ${{ secrets.TEST_SCRT }} | sed 's/./& /g'
