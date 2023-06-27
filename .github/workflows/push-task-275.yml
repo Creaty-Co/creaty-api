@@ -11,5 +11,5 @@ jobs:
     with:
       environment: dev
       url: 'https://dev.creaty.club'
-      sentry_release: ${{ github.sha }}
+      sentry_release: "${{ github.sha }}"
     secrets: inherit
