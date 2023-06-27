@@ -16,6 +16,5 @@ jobs:
           echo ${{ toJSON(needs) }}
           echo ${{ toJSON(needs.envs) }}
           echo ${{ toJSON(needs.envs.outputs) }}
-          echo ${{ toJSON(needs.envs.outputs.envs) }}
           echo ${{ needs.envs.outputs.envs }} > .env
           cat .env
