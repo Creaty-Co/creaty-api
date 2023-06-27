@@ -68,9 +68,9 @@ jobs:
             echo "$secret=$value" >> $env_filename
           done
           if [[ "${{ inputs.tag }}" == "latest" ]]; then
-            echo "SENTRY_RELEASE=${{ github.sha }} >> $env_filename
+            echo "SENTRY_RELEASE=${{ github.sha }}" >> $env_filename
           else
-            echo "SENTRY_RELEASE=${{ inputs.tag }} >> $env_filename
+            echo "SENTRY_RELEASE=${{ inputs.tag }}" >> $env_filename
           fi
       - uses: actions/checkout@v3.5.3
         with:
