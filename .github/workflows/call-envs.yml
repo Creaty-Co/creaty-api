@@ -9,32 +9,7 @@ on:
         required: false
         default: '
           WEB_DOMAIN,
-          API_DOMAIN,
-          SECRET_KEY,
-          DEBUG,
-          TEST,
-          ANON_THROTTLE_RATE,
-          USE_BROWSABLE_API,
-          EMAIL_URL,
-          EMAIL_BACKEND,
-          CELERY_TASK_EAGER,
-          CELERY_REDIS_MAX_CONNECTIONS,
-          CELERY_BROKER_POOL_LIMIT,
-          CLOUDINARY_URL,
-          CLOUDINARY_PREFIX,
-          USE_SILK,
-          SENTRY_DSN,
-          SENTRY_ENVIRONMENT,
-          POSTGRES_PASSWORD,
-          DATABASE_URL,
-          REDIRECT_ON_UNSUBSCRIBE,
-          GOOGLE_APP_ID,
-          GOOGLE_APP_SECRET,
-          ADMINS,
-          LOG_PRETTY,
-          LOG_REQUESTS,
-          LOG_LEVEL,
-          FIXER_ACCESS_KEY
+          API_DOMAIN
         '
     outputs:
       envs:
@@ -51,7 +26,7 @@ jobs:
       - id: envs
         run: |
           env_keys=${{ inputs.env_keys }}
-          IFS=',' read -ra env_keys <<< "${{env_keys// /}"
+          IFS=',' read -ra env_keys <<< "${env_keys// /}"
           vars_json='${{ toJSON(vars) }}'
           secrets_json='${{ toJSON(secrets) }}'
           envs_json=$(jq -s '.[0] * .[1]' <(echo $vars_json) <(echo $secrets_json))
