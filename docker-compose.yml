@@ -22,12 +22,12 @@ services:
       context: .
     ports: [ 801:8000 ]
     volumes:
-      - profiles_volume:/api/profiles
       - media_volume:/api/media
     command: bash -c "
       python manage.py migrate
       && python manage.py collectstatic --noinput
-      && daphne -b 0.0.0.0 -p 8000 api.asgi:application"
+      && daphne -b 0.0.0.0 -p 8000 api.asgi:application
+      "
     depends_on: [ db, redis ]
   celery:
     extends:
@@ -47,7 +47,6 @@ services:
 volumes:
   db_volume:
   redis_volume:
-  profiles_volume:
   media_volume:
 
 networks:

@@ -5,10 +5,7 @@ from rest_framework import exceptions, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
-
-# noinspection PyPackageRequirements
 from rest_framework.throttling import BaseThrottle
-from silk.profiling.profiler import silk_profile
 
 from app.base.exceptions.handler import exception_handler
 from app.base.models.base import BaseModel
@@ -136,7 +133,7 @@ class BaseView(GenericAPIView):
         if cls.many:
             cls.__bases__ += (ListModelMixin,)
         cls._decorate_methods()
-        return silk_profile(name='view')(csrf_exempt(super().as_view(**init_kwargs)))
+        return csrf_exempt(super().as_view(**init_kwargs))
 
     def handle_exception(self, exception):
         return exception_handler(exception)
