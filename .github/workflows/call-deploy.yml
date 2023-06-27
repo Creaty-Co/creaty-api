@@ -17,6 +17,8 @@ jobs:
     uses: ./.github/workflows/call-envs.yml
     with:
       environment: ${{ inputs.environment }}
+    environment:
+      name: ${{ inputs.environment }}
     secrets: inherit
   deploy:
     runs-on: ubuntu-22.04

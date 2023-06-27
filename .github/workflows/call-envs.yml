@@ -36,8 +36,8 @@ jobs:
     runs-on: ubuntu-22.04
     outputs:
       envs: ${{ steps.envs.outputs.envs }}
-    environment:
-      name: ${{ inputs.environment }}
+#    environment:
+#      name: ${{ inputs.environment }}
     steps:
       - id: envs
         run: |
