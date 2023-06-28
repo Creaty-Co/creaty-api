@@ -26,7 +26,6 @@ on:
 jobs:
   deploy:
     runs-on: [ self-hosted, "${{ inputs.environment }}" ]
-    needs: [ envs ]
     environment:
       name: ${{ inputs.environment }}
       url: ${{ inputs.url }}
