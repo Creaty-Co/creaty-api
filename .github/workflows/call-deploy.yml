@@ -1,0 +1,114 @@
+name: "Call: deploy"
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+      url:
+        type: string
+        required: true
+      tag:
+        type: string
+        required: false
+        default: 'latest'
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: string
+        required: true
+      tag:
+        type: string
+        required: false
+        default: 'latest'
+
+jobs:
+  deploy:
+    runs-on: [ self-hosted, "${{ inputs.environment }}" ]
+    needs: [ envs ]
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ inputs.url }}
+    steps:
+      - uses: actions/checkout@v3.5.3
+        with:
+          clean: false
+      - name: Set variables
+        run: |
+          variable_keys=(
+            "WEB_DOMAIN"
+            "API_DOMAIN"
+            "DEBUG"
+            "TEST"
+            "ANON_THROTTLE_RATE"
+            "USE_BROWSABLE_API"
+            "EMAIL_BACKEND"
+            "CELERY_TASK_EAGER"
+            "CELERY_REDIS_MAX_CONNECTIONS"
+            "CELERY_BROKER_POOL_LIMIT"
+            "CLOUDINARY_PREFIX"
+            "USE_SILK"
+            "SENTRY_ENVIRONMENT"
+            "REDIRECT_ON_UNSUBSCRIBE"
+            "ADMINS"
+            "LOG_PRETTY"
+            "LOG_REQUESTS"
+            "LOG_LEVEL"
+          )
+          env_filename=envs/.${{ inputs.environment }}.env
+          vars_json='${{ toJSON(vars) }}'
+          for key in "${variable_keys[@]}"; do
+            value=$(echo $vars_json | jq -r --arg key "$key" '.[$key]')
+            if [ "$value" != "null" ]; then
+              echo $key=$value >> $env_filename
+            fi
+          done
+      - name: Set secrets
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          EMAIL_URL: ${{ secrets.EMAIL_URL }}
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GOOGLE_APP_ID: ${{ secrets.GOOGLE_APP_ID }}
+          GOOGLE_APP_SECRET: ${{ secrets.GOOGLE_APP_SECRET }}
+          FIXER_ACCESS_KEY: ${{ secrets.FIXER_ACCESS_KEY }}
+        run: |
+          secret_keys=(
+            "SECRET_KEY"
+            "CLOUDINARY_URL"
+            "EMAIL_URL"
+            "SENTRY_DSN"
+            "POSTGRES_PASSWORD"
+            "DATABASE_URL"
+            "GOOGLE_APP_ID"
+            "GOOGLE_APP_SECRET"
+            "FIXER_ACCESS_KEY"
+          )
+          env_filename=envs/.${{ inputs.environment }}.env
+          for key in ${secret_keys[@]}; do
+            value=$(echo "${!key}")
+            if [[ -z "$value" ]]; then
+              echo "$key is not defined"
+              exit 1
+            fi
+            echo "$key=$value" >> $env_filename
+          done
+      - name: Set Sentry release
+        run: |
+          if [[ "${{ inputs.tag }}" == "latest" ]]; then
+            echo "SENTRY_RELEASE=${{ github.sha }}" >> $env_filename
+          else
+            echo "SENTRY_RELEASE=${{ inputs.tag }}" >> $env_filename
+          fi
+      - name: Pull images
+        run: |
+          export TAG=${{ inputs.tag }}
+          docker-compose -f docker/${{ inputs.environment }}/docker-compose.yml pull api
+          docker pull ghcr.io/creaty-co/creaty-web/web:${{ inputs.tag }}
+      - name: Up docker compose
+        run: |
+          docker-compose -f docker/${{ inputs.environment }}/docker-compose.yml up \
+          --build -d
