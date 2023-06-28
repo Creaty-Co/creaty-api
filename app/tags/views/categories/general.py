@@ -14,8 +14,10 @@ class TagsCategoriesView(BaseView):
         'post': CreateTagsCategoriesSerializer,
     }
     permissions_map = {'post': [AdminPermission]}
-    queryset = Category.objects.prefetch_related('tags').filter(
-        tags__isnull=False, tags__mentors__isnull=False
+    queryset = (
+        Category.objects.prefetch_related('tags')
+        .filter(tags__isnull=False, tags__mentors__isnull=False)
+        .distinct()
     )
 
     def get(self):
