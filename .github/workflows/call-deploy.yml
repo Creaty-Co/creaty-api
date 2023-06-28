@@ -29,6 +29,8 @@ jobs:
     environment:
       name: ${{ inputs.environment }}
       url: ${{ inputs.url }}
+    env:
+      env_filename: envs/.${{ inputs.environment }}.env
     steps:
       - uses: actions/checkout@v3.5.3
         with:
@@ -55,7 +57,6 @@ jobs:
             "LOG_REQUESTS"
             "LOG_LEVEL"
           )
-          env_filename=envs/.${{ inputs.environment }}.env
           vars_json='${{ toJSON(vars) }}'
           for key in "${variable_keys[@]}"; do
             value=$(echo $vars_json | jq -r --arg key "$key" '.[$key]')
@@ -86,7 +87,6 @@ jobs:
             "GOOGLE_APP_SECRET"
             "FIXER_ACCESS_KEY"
           )
-          env_filename=envs/.${{ inputs.environment }}.env
           for key in ${secret_keys[@]}; do
             value=$(echo "${!key}")
             if [[ -z "$value" ]]; then
