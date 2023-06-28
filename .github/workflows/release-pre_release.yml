@@ -11,9 +11,11 @@ jobs:
     secrets: inherit
     with:
       tag: ${{ github.ref_name }}
-  cd:
-    uses: ./.github/workflows/call-deploy_stage.yml
+  deploy:
+    uses: ./.github/workflows/call-deploy.yml
     with:
+      environment: stage
+      url: 'https://stage.creaty.club'
       tag: ${{ github.ref_name }}
     secrets: inherit
     needs: [ build ]
