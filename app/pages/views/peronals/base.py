@@ -19,6 +19,9 @@ class BasePersonalPageView(BaseView):
                 'page_mentors__index'
             ),
         ),
+        Prefetch(
+            'tags', queryset=Tag.objects.filter(mentors__isnull=False).order_by('?')
+        ),
     )
 
     def get_object(self):

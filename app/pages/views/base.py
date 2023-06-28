@@ -1,6 +1,5 @@
-from django.db.models import Count, Prefetch
+from django.db.models import Prefetch
 
-from app.admin_.permissions import AdminPermission
 from app.base.views import BaseView
 from app.mentors.views import MentorsView
 from app.pages.models import Page
@@ -15,17 +14,11 @@ class BaseMainPageView(BaseView):
             queryset=MentorsView.queryset.filter(is_draft=False).order_by(
                 'page_mentors__index'
             ),
-        )
+        ),
+        Prefetch(
+            'tags', queryset=Tag.objects.filter(mentors__isnull=False).order_by('?')
+        ),
     )
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        tags_prefetch_qs = Tag.objects.order_by('?').nocache()
-        if AdminPermission().has_permission(self.request, self):
-            tags_prefetch_qs = tags_prefetch_qs.annotate(Count('mentors')).exclude(
-                mentors__count=0
-            )
-        return queryset.prefetch_related(Prefetch('tags', queryset=tags_prefetch_qs))
 
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
