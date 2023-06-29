@@ -37,8 +37,10 @@ jobs:
           clean: false
       - name: Set certs
         run: |
+          mkdir nginx/certs
           echo -e "${{ vars.NGINX_SSL_CRT }}" > nginx/certs/crt.pem
           echo -e "${{ secrets.NGINX_SSL_KEY }}" > nginx/certs/key.pem
+          mkdir db/certs
           echo -e "${{ vars.DB_SSL_CRT }}" > db/certs/crt.pem
           echo -e "${{ secrets.DB_SSL_KEY }}" > db/certs/key.pem
       - name: Set variables
