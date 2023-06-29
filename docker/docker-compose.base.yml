@@ -2,13 +2,12 @@ version: '3.9'
 
 services:
   db:
-    image: postgres:15.1
+    build:
+      context: ../db
     env_file: [ ../envs/.base.env ]
     environment:
       - POSTGRES_USER=pg
       - POSTGRES_DB=db
-      - POSTGRES_HOST=127.0.0.1
-      - PGDATA=/var/lib/postgresql/data/pgdata
     networks: [ db_network ]
     restart: unless-stopped
   redis:
