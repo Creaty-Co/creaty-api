@@ -35,6 +35,12 @@ jobs:
       - uses: actions/checkout@v3.5.3
         with:
           clean: false
+      - name: Set certs
+        run: |
+          echo -e "${{ vars.NGINX_SSL_CRT }}" > nginx/certs/crt.pem
+          echo -e "${{ secrets.NGINX_SSL_KEY }}" > nginx/certs/key.pem
+          echo -e "${{ vars.DB_SSL_CRT }}" > db/certs/crt.pem
+          echo -e "${{ secrets.DB_SSL_KEY }}" > db/certs/key.pem
       - name: Set variables
         run: |
           variable_keys=(
