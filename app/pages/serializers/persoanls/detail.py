@@ -12,8 +12,8 @@ class PagesRetrievePersonalSerializer(PagesRetrieveMainSerializer):
     title = serializers.SerializerMethodField(allow_null=True)
 
     class Meta(PagesRetrieveMainSerializer.Meta):
-        fields = PagesRetrieveMainSerializer.Meta.fields[:]
-        fields.insert(1, 'title')
+        read_only_fields = PagesRetrieveMainSerializer.Meta.read_only_fields[:]
+        read_only_fields.insert(1, 'title')
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_title(self, page):

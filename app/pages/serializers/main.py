@@ -1,3 +1,5 @@
+import random
+
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -16,7 +18,13 @@ class PagesRetrieveMainSerializer(BaseModelSerializer):
 
     class Meta:
         model = Page
-        fields = ['id', 'tags', 'mentors']
+        read_only_fields = ['id', 'tags', 'mentors']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        tags = representation['tags']
+        representation['tags'] = random.sample(tags, len(tags))
+        return representation
 
 
 class PagesUpdateMainSerializer(BaseModelSerializer):
