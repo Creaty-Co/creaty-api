@@ -11,8 +11,8 @@ class TagsCategoriesTest(BaseViewTest):
         CategoryFactory()
         # category with tag without mentors: will be hidden
         CategoryFactory().tags.add(TagFactory())
-        # category with tag with mentor: will be visible
+        # category with tags with mentor: will be visible
         tag = TagFactory()
         tag.mentors.add(MentorFactory())
-        CategoryFactory().tags.add(tag)
-        self._test('get', {'count': 1})
+        CategoryFactory().tags.add(tag, TagFactory())
+        self._test('get', {'count': 1, 'results': [{'tags': [{'id': tag.id}]}]})
