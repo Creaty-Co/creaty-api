@@ -11,37 +11,53 @@ MULTIPART_CONTENT = "multipart/form-data; boundary=%s" % BOUNDARY
 class BaseTest(APITestCase):
     client: APIClient
 
-    assert_equal = APITestCase.assertEqual
     assert_contains = APITestCase.assertContains
     assert_in = APITestCase.assertIn
     assert_true = APITestCase.assertTrue
     assert_false = APITestCase.assertFalse
-    assert_dict_equal = APITestCase.assertDictEqual
     assert_is_instance = APITestCase.assertIsInstance
     assert_is_none = APITestCase.assertIsNone
     assert_is_not_none = APITestCase.assertIsNotNone
+    assert_set = APITestCase.assertSetEqual
 
-    def assert_json(self, json: dict, exp_json: dict):
-        def dfs(inner_json, inner_exp_json):
+    def assert_equal(self, exp_value, value) -> None:
+        match value:
+            case dict():
+                self.assert_dict(exp_value, value)
+            case list():
+                self.assert_list(exp_value, value)
+            case _:
+                self.assertEqual(exp_value, value)
+
+    def assert_list(self, exp_list: list, list_: list) -> None:
+        if exp_list[-1] is ...:
+            self.assert_list(exp_list[:-1], list_[: len(exp_list) - 1])
+        else:
+            self.assert_equal(len(exp_list), len(list_))
+            for exp_element, element in zip(exp_list, list_):
+                self.assert_equal(exp_element, element)
+
+    def assert_dict(self, exp_dict: dict, dict_: dict) -> None:
+        def dfs(inner_dict, inner_exp_dict):
             def visit(exp_key, exp_value):
-                self.assert_in(exp_key, inner_json)
-                value = inner_json[exp_key]
+                self.assert_in(exp_key, inner_dict)
+                value = inner_dict[exp_key]
                 if callable(exp_value):
                     if exp_value(value) is False:
                         self.fail(f'{exp_key = }, {value = }')
-                else:
+                elif exp_value is not ...:
                     self.assert_is_instance(value, type(exp_value))
                     if isinstance(value, dict):
                         dfs(value, exp_value)
                     else:
-                        self.assert_equal(value, exp_value)
+                        self.assert_equal(exp_value, value)
 
-            [visit(*items) for items in inner_exp_json.items()]
+            [visit(*items) for items in inner_exp_dict.items()]
 
-        dfs(json, exp_json)
+        dfs(dict_, exp_dict)
 
     def assert_instance(self, instance: models.Model, instance_data: dict):
-        self.assert_json(model_to_dict(instance), instance_data)
+        self.assert_dict(instance_data, model_to_dict(instance))
 
     def assert_model(
         self,
