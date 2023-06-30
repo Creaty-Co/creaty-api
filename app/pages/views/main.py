@@ -4,10 +4,10 @@ from app.pages.serializers.main import (
     PagesRetrieveMainSerializer,
     PagesUpdateMainSerializer,
 )
-from app.pages.views.base import BaseMainPageView
+from app.pages.views.base import BasePageView
 
 
-class PagesMainView(BaseMainPageView):
+class PagesMainView(BasePageView):
     serializer_map = {
         'get': PagesRetrieveMainSerializer,
         'patch': PagesUpdateMainSerializer,
