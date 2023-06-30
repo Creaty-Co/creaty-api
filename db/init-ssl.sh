@@ -2,8 +2,8 @@
 
 set -e
 
-cp ssl/server.crt /var/lib/postgresql/data/
-cp ssl/server.key /var/lib/postgresql/data/
+cp /ssl/server.crt /var/lib/postgresql/data/
+cp /ssl/server.key /var/lib/postgresql/data/
 chown postgres:postgres /var/lib/postgresql/data/server.key
 chown postgres:postgres /var/lib/postgresql/data/server.crt
 chmod 600 /var/lib/postgresql/data/server.key

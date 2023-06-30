@@ -34,7 +34,7 @@ class BaseTest(APITestCase):
                     if isinstance(value, dict):
                         dfs(value, exp_value)
                     else:
-                        self.assert_equal(value, exp_value)
+                        self.assert_equal(exp_value, value)
 
             [visit(*items) for items in inner_exp_json.items()]
 
