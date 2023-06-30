@@ -1,29 +1,13 @@
-from django.db.models import Prefetch, Q
+from django.db.models import Q
 from django.http import Http404
 from rest_framework.generics import get_object_or_404
 
-from app.base.views import BaseView
-from app.mentors.views import MentorsView
-from app.pages.models import Page
 from app.pages.services.page import PageService
+from app.pages.views import BasePageView
 from app.tags.models import Category, Tag
 
 
-class BasePersonalPageView(BaseView):
-    queryset = Page.objects.prefetch_related(
-        'tag',
-        'category',
-        Prefetch(
-            'mentors',
-            queryset=MentorsView.queryset.filter(is_draft=False).order_by(
-                'page_mentors__index'
-            ),
-        ),
-        Prefetch(
-            'tags', queryset=Tag.objects.filter(mentors__isnull=False).order_by('?')
-        ),
-    )
-
+class BasePersonalPageView(BasePageView):
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
         shortcut = self.kwargs['shortcut']
