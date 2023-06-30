@@ -17,15 +17,14 @@ class TagsCategoriesView(BaseView):
     }
     permissions_map = {'post': [AdminPermission]}
     queryset = (
-        Category.objects.annotate(
-            tags_count=models.Count(
-                'tags', filter=models.Q(tags__mentors__isnull=False)
-            ),
+        Category.objects.prefetch_related(
+            models.Prefetch(
+                'tags',
+                queryset=Tag.objects.filter(mentors__is_draft=False),
+            )
         )
-        .exclude(tags_count=0)
-        .prefetch_related(
-            models.Prefetch('tags', queryset=Tag.objects.filter(mentors__isnull=False))
-        )
+        .filter(tags__mentors__is_draft=False)
+        .distinct()
     )
 
     def get(self):

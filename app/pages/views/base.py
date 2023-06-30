@@ -1,22 +1,24 @@
 from django.db.models import Prefetch
 
 from app.base.views import BaseView
-from app.mentors.views import MentorsView
+from app.mentors.models import Mentor
 from app.pages.models import Page
 from app.pages.services.page import PageService
 from app.tags.models import Tag
 
 
-class BaseMainPageView(BaseView):
+class BasePageView(BaseView):
     queryset = Page.objects.prefetch_related(
+        'tag',
+        'category',
         Prefetch(
             'mentors',
-            queryset=MentorsView.queryset.filter(is_draft=False).order_by(
-                'page_mentors__index'
-            ),
+            queryset=Mentor.objects.filter(is_draft=False)
+            .prefetch_related('country', 'tags')
+            .order_by('page_mentors__index'),
         ),
         Prefetch(
-            'tags', queryset=Tag.objects.filter(mentors__isnull=False).order_by('?')
+            'tags', queryset=Tag.objects.filter(mentors__is_draft=False).order_by('?')
         ),
     )
 
