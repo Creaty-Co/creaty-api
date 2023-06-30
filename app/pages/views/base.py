@@ -18,7 +18,7 @@ class BasePageView(BaseView):
             .order_by('page_mentors__index'),
         ),
         Prefetch(
-            'tags', queryset=Tag.objects.filter(mentors__is_draft=False).order_by('?')
+            'tags', queryset=Tag.objects.filter(mentors__is_draft=False).distinct()
         ),
     )
 

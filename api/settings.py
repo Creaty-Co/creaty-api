@@ -185,24 +185,24 @@ REDIS_URL = env.cache('REDIS_URL')['LOCATION']
 
 # cacheops
 
-CACHEOPS_REDIS = REDIS_URL
+# CACHEOPS_REDIS = REDIS_URL
 
-CACHEOPS_DEFAULTS = {
-    'timeout': 60 * 60,
-    'cache_on_save': True,
-    'ops': ['get', 'fetch', 'exists', 'count'],
-}
-CACHEOPS = {
-    'users.*': {'timeout': 60 * 60 * 24},
-    'admin_.*': {},
-    'geo.*': {'local_get': True},
-    'tags.*': {'timeout': 60 * 60 * 4},
-    'mentors.*': {},
-    'forms.Application': None,
-    'forms.*': {'timeout': 60 * 60 * 4},
-    'mailings.*': {},
-    'pages.*': {'timeout': 60 * 60 * 4},
-}
+# CACHEOPS_DEFAULTS = {
+#     'timeout': 60 * 60,
+#     'cache_on_save': True,
+#     'ops': ['get', 'fetch', 'exists', 'count'],
+# }
+# CACHEOPS = {
+#     'users.*': {'timeout': 60 * 60 * 24},
+#     'admin_.*': {},
+#     'geo.*': {'local_get': True},
+#     'tags.*': {'timeout': 60 * 60 * 4},
+#     'mentors.*': {},
+#     'forms.Application': None,
+#     'forms.*': {'timeout': 60 * 60 * 4},
+#     'mailings.*': {},
+#     'pages.*': {'timeout': 60 * 60 * 4},
+# }
 
 CACHEOPS_DEGRADE_ON_FAILURE = True
 
