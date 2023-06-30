@@ -8,7 +8,7 @@ class TagsView(BaseView):
     many = True
     permissions_map = {'post': [AdminPermission]}
     serializer_map = {'get': ListTagsSerializer, 'post': POSTTagsSerializer}
-    queryset = Tag.objects.filter(mentors__isnull=False)
+    queryset = Tag.objects.filter(mentors__is_draft=False)
 
     def get(self):
         return self.list()

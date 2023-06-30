@@ -9,8 +9,12 @@ class TagsTest(BaseViewTest):
     path = '/tags/'
 
     def test_get(self):
-        TagFactory()  # tag without mentor: will be hidden
-        TagFactory().mentors.add(MentorFactory())  # tag with mentor: will be visible
+        # tag without mentor: will be hidden
+        TagFactory()
+        # tag with draft mentor: will be hidden
+        TagFactory().mentors.add(MentorFactory(is_draft=True))
+        # tag with mentor: will be visible
+        TagFactory().mentors.add(MentorFactory())
         self._test('get', {'count': 1})
 
     def test_post(self):

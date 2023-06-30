@@ -8,10 +8,10 @@ from app.mentors.models import Mentor
 from app.pages.models import PageMentors
 from app.pages.serializers.mentor import UpdatePageMentorSerializer
 from app.pages.services.page import PageService
-from app.pages.views import BaseMainPageView
+from app.pages.views import BasePageView
 
 
-class PagesMainMentorView(BaseMainPageView):
+class PagesMainMentorView(BasePageView):
     serializer_map = {'patch': UpdatePageMentorSerializer}
     permissions_map = {'patch': [AdminPermission], 'delete': [AdminPermission]}
 
