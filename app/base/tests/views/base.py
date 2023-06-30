@@ -69,7 +69,7 @@ class BaseViewTest(BaseTest):
 
     def assert_response(self, response, status=200, data: dict = None):
         self.assert_equal(response.status_code, status)
-        self.assert_json(response.json() if response.content else {}, data or {})
+        self.assert_equal(data or {}, response.json() if response.content else {})
 
     def _test(
         self,

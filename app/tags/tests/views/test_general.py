@@ -11,7 +11,7 @@ class TagsTest(BaseViewTest):
     def test_get(self):
         TagFactory()  # tag without mentor: will be hidden
         TagFactory().mentors.add(MentorFactory())  # tag with mentor: will be visible
-        self._test('get', exp_data={'count': 1})
+        self._test('get', {'count': 1})
 
     def test_post(self):
         self.become_staff()

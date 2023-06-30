@@ -15,4 +15,4 @@ class TagsCategoriesTest(BaseViewTest):
         tag = TagFactory()
         tag.mentors.add(MentorFactory())
         CategoryFactory().tags.add(tag)
-        self._test('get', exp_data={'count': 1})
+        self._test('get', {'count': 1})
