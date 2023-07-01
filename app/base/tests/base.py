@@ -21,13 +21,14 @@ class BaseTest(APITestCase):
     assert_set = APITestCase.assertSetEqual
 
     def assert_equal(self, exp_value, value) -> None:
-        match value:
+        match exp_value:
             case dict():
                 self.assert_dict(exp_value, value)
             case list():
                 self.assert_list(exp_value, value)
             case _:
-                self.assertEqual(exp_value, value)
+                if exp_value is not ...:
+                    self.assertEqual(exp_value, value)
 
     def assert_list(self, exp_list: list, list_: list) -> None:
         if exp_list[-1] is ...:
