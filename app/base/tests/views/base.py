@@ -69,7 +69,11 @@ class BaseViewTest(BaseTest):
 
     def assert_response(self, response, status=200, data: dict = None):
         self.assert_equal(response.status_code, status)
-        self.assert_equal(data or {}, response.json() if response.content else {})
+        try:
+            response_data = response.json() if response.content else {}
+        except ValueError:
+            response_data = {}
+        self.assert_equal(data or {}, response_data)
 
     def _test(
         self,
@@ -94,3 +98,4 @@ class BaseViewTest(BaseTest):
                 exp_exception['error']['code'] = exp_data.code
             exp_data = exp_exception
         self.assert_response(response, status, exp_data)
+        return response
