@@ -54,15 +54,16 @@ class PageMentorsInline(admin.TabularInline):
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
     form = PageAdminForm
-    # inlines = [PageMentorsInline]
-    # fields = ['tag', 'category', 'tags', 'mentors_on_page']
+    fields = ['tag', 'category', 'tags', 'mentors_on_page']
     list_display = ['__str__']
     list_filter = [
         'tag',
         'category',
     ]
     search_fields = [
-        'tag__name',
-        'category__name',
+        'tag__title',
+        'tag__shortcut',
+        'category__title',
+        'category__shortcut',
     ]
     filter_horizontal = ['tags']
