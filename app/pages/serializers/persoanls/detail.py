@@ -2,6 +2,7 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from app.pages.models import Page
 from app.pages.serializers.main import (
     PagesRetrieveMainSerializer,
     PagesUpdateMainSerializer,
@@ -11,9 +12,9 @@ from app.pages.serializers.main import (
 class PagesRetrievePersonalSerializer(PagesRetrieveMainSerializer):
     title = serializers.SerializerMethodField(allow_null=True)
 
-    class Meta(PagesRetrieveMainSerializer.Meta):
-        read_only_fields = PagesRetrieveMainSerializer.Meta.read_only_fields[:]
-        read_only_fields.insert(1, 'title')
+    class Meta:
+        model = Page
+        read_only_fields = ['id', 'title', 'tags', 'mentors']
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_title(self, page):
