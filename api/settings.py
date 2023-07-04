@@ -269,7 +269,11 @@ CELERY_BEAT_SCHEDULE = {
     'update_rates': {
         'task': 'app.geo.tasks.update_rates',
         'schedule': timedelta(seconds=env('UPDATE_RATES_INTERVAL')),
-    }
+    },
+    'check_health': {
+        'task': 'app.base.tasks.check_health',
+        'schedule': timedelta(minutes=1),
+    },
 }
 
 # media

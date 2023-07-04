@@ -37,15 +37,17 @@ class MentorAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.save_m2m = None
         self.fields['what_help'].label = "How can I help"
+        self.fields['slug'].required = False
 
     def save(self, commit=True):
-        self.instance.set_password(get_random_string(16))
         self.instance.is_verified = True
         self.instance.has_discount = True
         if not self.instance.id:
-            password_resetter.send(self.instance.email)
-        return super().save(commit)
+            self.instance.set_password(f"A1{get_random_string(14)}")
+        super().save(commit)
+        return self.instance
 
 
 def send_password_reset_email(_, __, queryset):
@@ -108,5 +110,9 @@ class MentorAdmin(admin.ModelAdmin):
 
     def get_inline_instances(self, request, obj=None):
         if not obj:
-            return list()
+            return []
         return super().get_inline_instances(request, obj)
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        password_resetter.send(obj.email)

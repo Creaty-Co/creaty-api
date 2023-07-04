@@ -51,25 +51,29 @@ class _BaseAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        page = self.instance.page
-        choices = []
-        mentors = Mentor.objects.distinct()
-        if page.tag:
-            mentors = mentors.filter(Q(tags=page.tag) | Q(pages=page))
-        elif page.category:
-            mentors = mentors.filter(Q(tags__categories=page.category) | Q(pages=page))
-        for mentor in mentors:
-            page_mentors = PageMentors.objects.filter(page=page, mentor=mentor).first()
-            mentor.index = page_mentors.index if page_mentors else -1
-            choices.append((mentor, str(mentor)))
-        self.fields['mentors_on_page'].choices = choices
+        if self.instance.pk:
+            page = self.instance.page
+            choices = []
+            mentors = Mentor.objects.distinct()
+            if page.tag:
+                mentors = mentors.filter(Q(tags=page.tag) | Q(pages=page))
+            elif page.category:
+                mentors = mentors.filter(
+                    Q(tags__categories=page.category) | Q(pages=page)
+                )
+            for mentor in mentors:
+                page_mentors = PageMentors.objects.filter(
+                    page=page, mentor=mentor
+                ).first()
+                mentor.index = page_mentors.index if page_mentors else -1
+                choices.append((mentor, str(mentor)))
+            self.fields['mentors_on_page'].choices = choices
 
     @transaction.atomic
-    def save(self, commit=True):
+    def save(self, commit=None):
         mentors = self.cleaned_data['mentors_on_page']
         instance = super().save(commit=False)
-        if commit:
-            instance.save()
+        instance.save()
         page = instance.page
         if page is not None:
             page.page_mentors.all().delete()
