@@ -5,7 +5,6 @@ on:
     inputs:
       environment:
         type: string
-        required: true
       version:
         type: string
         required: false
@@ -13,10 +12,8 @@ on:
     inputs:
       environment:
         type: string
-        required: true
       version:
         type: string
-        required: false
 
 jobs:
   release:
@@ -25,6 +22,15 @@ jobs:
       - uses: actions/checkout@v3.5.3
         with:
           fetch-depth: 0
+      - id: get_commit_title
+        uses: ./.github/workflows/call-get_commit_title.yml
+      - name: Determine version
+        run: |
+          version=${{ inputs.version }}
+          if [ -z "$version" ]; then
+            version=${{ steps.get_commit_title.outputs.title }}
+          fi
+          echo "version=$version" >> $GITHUB_ENV
       - name: Create Sentry release
         uses: getsentry/action-release@v1.4.1
         env:
@@ -34,4 +40,4 @@ jobs:
         with:
           ignore_empty: true
           environment: ${{ inputs.environment }}
-          version: ${{ inputs.version }}
+          version: ${{ env.version }}

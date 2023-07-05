@@ -1,0 +1,25 @@
+name: "Call: get commit title"
+
+on:
+  workflow_call:
+    inputs:
+      sha:
+        type: string
+        required: false
+    outputs:
+      title:
+        type: string
+
+jobs:
+  get_title:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Extract title
+        id: extract_title
+        run: |
+          sha=${{ inputs.sha }}
+          if [ -z "$sha" ]; then
+            sha=${{ github.sha }}
+          fi
+          title=$(git log --format=%s -n 1 $sha)
+          echo "title=$title" >> $GITHUB_OUTPUT

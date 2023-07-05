@@ -8,5 +8,4 @@ jobs:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
       environment: dev
-      version: "Проверка названия на русском с пробелами (#305)"
     secrets: inherit
