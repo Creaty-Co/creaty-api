@@ -27,9 +27,9 @@ jobs:
           fetch-depth: 0
       - name: Determine version
         run: |
-          version=${{ inputs.version }}
+          version="${{ inputs.version }}"
           if [ -z "$version" ]; then
-            version=${{ needs.get_commit_title.outputs.title }}
+            version="${{ needs.get_commit_title.outputs.title }}"
           fi
           echo "version=$version" >> $GITHUB_ENV
       - name: Create Sentry release
