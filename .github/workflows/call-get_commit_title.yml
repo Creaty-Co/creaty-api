@@ -8,7 +8,7 @@ on:
         required: false
     outputs:
       title:
-        value: ${{ jobs.get_title.outputs.
+        value: ${{ jobs.get_title.outputs.title }}
 
 jobs:
   get_title:
