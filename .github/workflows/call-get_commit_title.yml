@@ -8,11 +8,13 @@ on:
         required: false
     outputs:
       title:
-        type: string
+        value: ${{ jobs.get_title.outputs.
 
 jobs:
   get_title:
     runs-on: ubuntu-22.04
+    outputs:
+      title: ${{ steps.extract_title.outputs.title }}
     steps:
       - name: Extract title
         id: extract_title
