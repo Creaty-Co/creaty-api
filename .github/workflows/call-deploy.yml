@@ -24,8 +24,11 @@ on:
         default: 'latest'
 
 jobs:
+  get_commit_title:
+    uses: ./.github/workflows/call-get_commit_title.yml
   deploy:
     runs-on: [ self-hosted, "${{ inputs.environment }}" ]
+    needs: [ get_commit_title ]
     environment:
       name: ${{ inputs.environment }}
       url: ${{ inputs.url }}
@@ -106,7 +109,8 @@ jobs:
       - name: Set Sentry release
         run: |
           if [[ "${{ inputs.tag }}" == "latest" ]]; then
-            echo "SENTRY_RELEASE=${{ github.sha }}" >> $env_filename
+            version="${{ needs.get_commit_title.outputs.title }}"
+            echo "SENTRY_RELEASE=$version" >> $env_filename
           else
             echo "SENTRY_RELEASE=${{ inputs.tag }}" >> $env_filename
           fi
