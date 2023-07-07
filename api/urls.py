@@ -1,9 +1,10 @@
 import mimetypes
+import re
 
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import URLPattern, URLResolver, include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 mimetypes.add_type('application/javascript', '.js')
@@ -30,3 +31,21 @@ urlpatterns += [
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]
+
+
+def _make_optional_slash(url_pattern_or_resolver):
+    match url_pattern_or_resolver:
+        case URLResolver():
+            url_pattern_or_resolver: URLResolver
+            for child in url_pattern_or_resolver.url_patterns:
+                _make_optional_slash(child)
+        case URLPattern():
+            url_pattern_or_resolver.pattern.regex = re.compile(
+                url_pattern_or_resolver.pattern.regex.pattern.replace(
+                    r'/\Z', r'/?\Z'
+                ).replace(r'/$', r'/?$')
+            )
+
+
+for url_pattern in urlpatterns:
+    _make_optional_slash(url_pattern)
