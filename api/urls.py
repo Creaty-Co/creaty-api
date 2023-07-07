@@ -41,7 +41,11 @@ def _make_optional_slash(url_pattern_or_resolver):
                 _make_optional_slash(child)
         case URLPattern():
             url_pattern_or_resolver.pattern.regex = re.compile(
-                re.sub(r'/(?=[\\Z$]|$)', '/?', url_pattern_or_resolver)
+                re.sub(
+                    r'/(?=[\\Z$]|$)',
+                    '/?',
+                    url_pattern_or_resolver.pattern.regex.pattern,
+                )
             )
 
 
