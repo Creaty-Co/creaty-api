@@ -20,7 +20,7 @@ class TagsCategoriesView(BaseView):
         Category.objects.prefetch_related(
             models.Prefetch(
                 'tags',
-                queryset=Tag.objects.filter(mentors__is_draft=False),
+                queryset=Tag.objects.filter(mentors__is_draft=False).distinct(),
             )
         )
         .filter(tags__mentors__is_draft=False)
