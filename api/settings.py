@@ -65,6 +65,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 TEST = env('TEST')
 USE_BROWSABLE_API = env('USE_BROWSABLE_API')
+APPEND_SLASH = False
 
 INSTALLED_APPS = [
     'admin_interface',  # must be before django.contrib.admin
