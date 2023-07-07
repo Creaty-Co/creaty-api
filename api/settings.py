@@ -295,7 +295,18 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR + 'static'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
 # sentry
+
+
+def _traces_sampler(sampling_context):
+    if sampling_context['celery_job']['task'] == 'app.base.tasks.check_health':
+        return 0
+    match sampling_context['asgi_scope']['path']:
+        case '/base/status/':
+            return 0
+    return 1
+
 
 if (SENTRY_DSN := env('SENTRY_DSN')) is not None:
     sentry_sdk.init(
@@ -309,13 +320,11 @@ if (SENTRY_DSN := env('SENTRY_DSN')) is not None:
             RedisIntegration(),
         ],
         environment=env('SENTRY_ENVIRONMENT'),
-        traces_sample_rate=1.0,
+        traces_sampler=_traces_sampler,
         attach_stacktrace=True,
         send_default_pii=True,
         request_bodies='always',
-        _experiments={
-            'profiles_sample_rate': 1.0,
-        },
+        _experiments={'profiles_sample_rate': 1},
     )
 
 # swagger
