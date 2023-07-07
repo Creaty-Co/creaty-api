@@ -300,11 +300,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 def _traces_sampler(sampling_context):
-    if sampling_context['celery_job']['task'] == 'app.base.tasks.check_health':
+    if (
+        sampling_context.get('celery_job', {}).get('task')
+        == 'app.base.tasks.check_health'
+    ):
         return 0
-    match sampling_context['asgi_scope']['path']:
-        case '/base/status/':
-            return 0
+    if sampling_context.get('asgi_scope', {}).get('path') == '/base/status/':
+        return 0
     return 1
 
 
