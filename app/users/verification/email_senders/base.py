@@ -1,22 +1,19 @@
-from abc import ABC, abstractmethod
+from typing import Any, TypedDict
 
-from templated_mail.mail import BaseEmailMessage
+from app.base.services.email.senders.base import BaseEmailSender
 
 
-class BaseEmailSender(ABC):
-    def __init__(
-        self,
-        template_name: str,
-        email_message_factory: type[BaseEmailMessage] = BaseEmailMessage,
-    ):
-        self.template_name = template_name
-        self.email_message_factory = email_message_factory
+class BaseVerificationEmailSender(BaseEmailSender):
+    class ContextDict(TypedDict):
+        email: str
+        link: str
+        code: Any
 
-    @abstractmethod
-    def _create_context(self, email: str, code, link: str, payload) -> dict:
-        raise NotImplementedError
+    def _create_context(
+        self, email, link: str = None, code=None, payload=None
+    ) -> ContextDict:
+        assert link is not None
+        return {'email': email, 'link': link, 'code': code}
 
-    def send(self, email: str, code, link: str, payload=None) -> None:
-        email_message = self.email_message_factory(template_name=self.template_name)
-        email_message.context = self._create_context(email, code, link, payload)
-        email_message.send([email])
+    def send_verification(self, email: str, link: str, code, payload=None) -> None:
+        self.send(email, link=link, code=code, payload=payload)
