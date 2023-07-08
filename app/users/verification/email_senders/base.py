@@ -1,7 +1,9 @@
+from abc import ABC, abstractmethod
+
 from templated_mail.mail import BaseEmailMessage
 
 
-class BaseEmailSender:
+class BaseEmailSender(ABC):
     def __init__(
         self,
         template_name: str,
@@ -10,8 +12,9 @@ class BaseEmailSender:
         self.template_name = template_name
         self.email_message_factory = email_message_factory
 
+    @abstractmethod
     def _create_context(self, email: str, code, link: str, payload) -> dict:
-        return {}
+        raise NotImplementedError
 
     def send(self, email: str, code, link: str, payload=None) -> None:
         email_message = self.email_message_factory(template_name=self.template_name)

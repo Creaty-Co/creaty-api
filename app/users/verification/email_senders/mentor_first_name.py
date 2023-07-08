@@ -1,12 +1,12 @@
-from app.mentors.models import Mentor
+from app.users.models import User
 from app.users.verification.email_senders.base import BaseEmailSender
 
 
-class MentorFirstNameEmailSender(BaseEmailSender):
+class UserEmailSender(BaseEmailSender):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.mentor_manager = Mentor.objects
+        self.user_manager = User.objects
 
     def _create_context(self, email: str, code, link: str, payload):
-        first_name = self.mentor_manager.get(email=email).first_name
-        return {'code': code, 'link': link, 'first_name': first_name}
+        user = self.user_manager.get(email=email)
+        return {'email': email, 'link': link, 'user': user}
