@@ -1,0 +1,262 @@
+{% load i18n %}
+
+{% block subject %}
+  After sign up
+{% endblock subject %}
+
+{% block html_body %}
+
+  <!DOCTYPE html>
+  <html
+      lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+  >
+  <head>
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!--<![endif]-->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html charset=UTF-8"/>
+    <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet"/>
+    <title>
+      Verify your account and unlock a 10% discount for your first session! ✦
+    </title>
+    <style type="text/css">
+        #outlook a {
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        table,
+        td {
+            border-collapse: collapse;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        a,
+        a:link,
+        a:visited {
+            text-decoration: none;
+            color: #00788a;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
+
+        h2,
+        h2 a,
+        h2 a:visited,
+        h3,
+        h3 a,
+        h3 a:visited,
+        h4,
+        h5,
+        h6,
+        .ExternalClass .colored {
+            background-color: #ffffff;
+        }
+
+        .ExternalClass .image {
+            width: 100%;
+        }
+
+        .ExternalClass {
+            width: 100%;
+            padding-top: 40px;
+        }
+    </style>
+  </head>
+  <body class="ExternalClass" style="background-color: #f7f9fc; margin: 0">
+  <table
+      align="center"
+      class="table"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="font-family: 'Product Sans', sans-serif; font-size: 18px"
+  >
+    <tr>
+      <td style="width: 600px">
+        <img
+            class="image"
+            alt=""
+            height="auto"
+            src="https://oleg-nazarov.ru/static/img/email/header.png"
+            style="
+              border: none;
+              display: block;
+              outline: none;
+              text-decoration: none;
+              height: auto;
+              width: 100%;
+              font-size: 13px;
+            "
+            width="600px"
+        />
+      </td>
+    </tr>
+    <tr class="colored" style="background-color: #ffffff">
+      <td>
+        <img
+            alt=""
+            height="auto"
+            src="https://oleg-nazarov.ru/static/img/email/full_white.png"
+            style="
+              border: none;
+              display: block;
+              outline: none;
+              text-decoration: none;
+              height: auto;
+              margin-left: 40px;
+            "
+            width="130px"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="colored" style="background-color: #ffffff">
+        <p style="padding: 32px 40px 12px 40px; margin: 0">
+          Hey <span>{{ user.first_name }}</span>! Welcome to Creaty Club!
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p style="margin: 0; padding: 0 40px; background-color: #ffffff">
+          We're excited to have you on board! You now have an account
+          associated with
+          <span style="text-decoration: underline">{{ email }}</span>.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="colored" style="background-color: #ffffff">
+        <p style="margin: 0; padding: 0 40px 32px 40px">
+          <span style="font-weight: bold">To get started and enjoy a 10% discount</span>
+          on your first session, simply click the button below to confirm your
+          email address.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="colored" style="padding: 0 40px; background-color: #ffffff">
+        <!--[if mso]>
+        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+                     xmlns:w="urn:schemas-microsoft-com:office:word" href="http://"
+                     style="height:56px;v-text-anchor:middle;width:200px;" arcsize="43%"
+                     stroke="f" fillcolor="#000000">
+          <w:anchorlock/>
+          <center>
+        <![endif]-->
+        <a
+            href="{{ link }}"
+            target="__blank"
+            style="
+              background-color: #070707;
+              border-radius: 24px;
+              color: #ffffff;
+              display: inline-block;
+              line-height: 56px;
+              text-align: center;
+              text-decoration: none;
+              width: 200px;
+              -webkit-text-size-adjust: none;
+              mso-line-height-rule: exactly;
+            "
+        >Confirm my email</a>
+        <!--[if mso]>
+        </center>
+        </v:roundrect>
+        <![endif]-->
+      </td>
+    </tr>
+    <tr>
+      <td class="colored" style="padding: 0 40px; background-color: #ffffff">
+        <p style="margin: 32px 0">
+          If you have any questions or need assistance, feel free to reach out
+          to us. We're here to support you every step of the way. Wishing you
+          a rewarding mentoring experience!
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 0 40px; background-color: #ffffff">
+        <p style="margin: 0; color: #595f69; font-size: 16px">
+          Need help or have questions? Contact us at
+          <a
+              style="color: #6610eb; text-decoration: none"
+              href="mailto:support@creaty.club"
+              target="__blank"
+          >support@creaty.club</a>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="colored" style="padding: 0 40px; background-color: #ffffff">
+        <p style="margin-top: 32px">Creaty team</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img
+            class="image"
+            alt=""
+            height="auto"
+            src="https://oleg-nazarov.ru/static/img/email/footer.png"
+            style="
+              border: none;
+              display: block;
+              outline: none;
+              text-decoration: none;
+              height: auto;
+              width: 100%;
+              font-size: 13px;
+            "
+            width="600"
+        />
+      </td>
+    </tr>
+  </table>
+  <table
+      align="center"
+      class="table"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="
+        font-family: 'Product Sans', sans-serif;
+        font-size: 12px;
+        text-align: center;
+        margin-top: 32px;
+        color: #595f69;
+      "
+  >
+    <tr>
+      <td>
+        <p>
+          Creaty Co., 2180, 1603 Capitol Avenue, Suite 413A, Cheyenne, WY,
+          Laramie, US, 82001
+        </p>
+      </td>
+    </tr>
+  </table>
+  </body>
+  </html>
+
+{% endblock html_body %}
