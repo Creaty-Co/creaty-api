@@ -1,3 +1,5 @@
+from templated_mail.mail import BaseEmailMessage
+
 from app.base.services.email.senders.base import BaseEmailSender
 from app.users.models import User
 
@@ -6,8 +8,8 @@ class UserEmailSender(BaseEmailSender):
     class ContextDict(BaseEmailSender.ContextDict):
         user: User
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, template_name, email_message_factory=BaseEmailMessage):
+        super().__init__(template_name, email_message_factory)
         self.user_manager = User.objects
 
     def _get_user(self, email: str) -> User:

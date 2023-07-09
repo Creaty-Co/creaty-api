@@ -1,3 +1,5 @@
+from templated_mail.mail import BaseEmailMessage
+
 from app.users.services.email.senders.user import UserEmailSender
 from app.users.verification.email_senders.base import BaseVerificationEmailSender
 
@@ -8,9 +10,9 @@ class UserVerificationEmailSender(BaseVerificationEmailSender, UserEmailSender):
     ):
         pass
 
-    def __init__(self, *args, **kwargs):
-        BaseVerificationEmailSender.__init__(self, *args, **kwargs)
-        UserEmailSender.__init__(self, *args, **kwargs)
+    def __init__(self, template_name, email_message_factory=BaseEmailMessage):
+        BaseVerificationEmailSender.__init__(self, template_name, email_message_factory)
+        UserEmailSender.__init__(self, template_name, email_message_factory)
 
     def _create_context(self, email, link=None, code=None, payload=None):
         return BaseVerificationEmailSender._create_context(

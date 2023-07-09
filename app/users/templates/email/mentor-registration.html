@@ -132,19 +132,17 @@
     <tr>
       <td class="colored" style="background-color: #ffffff">
         <p style="padding: 32px 40px 12px 40px; margin: 0">
-          Hey <span>{{ mentorName }}</span>!
+          Hey <span>{{ user.mentor.first_name }}</span>!
         </p>
       </td>
     </tr>
     <tr>
       <td>
-        <p
-            style="
+        <p style="
               margin: 0;
               padding: 0 40px 32px 40px;
               background-color: #ffffff;
-            "
-        >
+            ">
           On behalf of the entire team, I wanted to express my warmest
           congratulations on joining Creaty marketplace as a mentor!
         </p>
@@ -183,7 +181,7 @@
           <center>
         <![endif]-->
         <a
-            href="http://"
+            href="{{ link }}"
             target="__blank"
             style="
               background-color: #070707;
@@ -197,8 +195,7 @@
               -webkit-text-size-adjust: none;
               mso-line-height-rule: exactly;
             "
-        >Confirm my email</a
-        >
+        >Confirm my email</a>
         <!--[if mso]>
         </center>
         </v:roundrect>
@@ -223,8 +220,7 @@
               style="color: #6610eb; text-decoration: none"
               href="mailto:support@creaty.club"
               target="__blank"
-          >support@creaty.club</a
-          >
+          >support@creaty.club</a>
         </p>
       </td>
     </tr>
