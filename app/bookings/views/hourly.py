@@ -1,9 +1,6 @@
-from app.base.views import BaseView
 from app.bookings.serializers.hourly import BookingsHourlySerializer
+from app.bookings.views.base import BaseBookingsView
 
 
-class BookingsHourlyView(BaseView):
+class BookingsHourlyView(BaseBookingsView):
     serializer_map = {'post': BookingsHourlySerializer}
-
-    def post(self):
-        return self.create()

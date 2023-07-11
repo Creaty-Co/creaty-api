@@ -15,15 +15,17 @@ class BaseUsersNotifier(BaseNotifier, ABC):
         self.user_manager = User.objects
 
     @property
-    def users(self) -> Iterable[User]:
+    def default_users(self) -> Iterable[User]:
         return self.user_manager.all()
 
     def create_notification(self, user: User) -> Notification:
         return self.Notification(user=user)
 
+    def get_users(self, users: Iterable[User] = None) -> Iterable[User]:
+        return self.default_users if users is None else users
+
     def get_notifications(self, users: Iterable[User] = None) -> list[Notification]:
-        users = self.users if users is None else users
-        return [self.create_notification(user) for user in users]
+        return [self.create_notification(user) for user in self.get_users(users)]
 
     def notify_users(self, users: Iterable[User] = None):
         self.notify(self.get_notifications(users))

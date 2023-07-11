@@ -18,7 +18,6 @@ class BaseTest(APITestCase):
     assert_is_instance = APITestCase.assertIsInstance
     assert_is_none = APITestCase.assertIsNone
     assert_is_not_none = APITestCase.assertIsNotNone
-    assert_set = APITestCase.assertSetEqual
 
     def assert_equal(self, exp_value, value) -> None:
         match exp_value:
@@ -26,8 +25,14 @@ class BaseTest(APITestCase):
                 self.assert_dict(exp_value, value)
             case list():
                 self.assert_list(exp_value, value)
+            case set():
+                self.assert_set(exp_value, value)
             case _:
-                if exp_value is not ...:
+                if callable(exp_value):
+                    if exp_value(value) is False:
+                        self.fail(f"{exp_value = }({value = }) is False")
+                elif exp_value is not ...:
+                    self.assert_is_instance(value, type(exp_value))
                     self.assertEqual(exp_value, value)
 
     def assert_list(self, exp_list: list, list_: list) -> None:
@@ -38,20 +43,27 @@ class BaseTest(APITestCase):
             for exp_element, element in zip(exp_list, list_):
                 self.assert_equal(exp_element, element)
 
+    def assert_set(self, exp_set: set, set_: set) -> None:
+        self.assert_equal(len(exp_set), len(set_))
+        for exp_element in exp_set:
+            for element in set_:
+                try:
+                    self.assert_equal(exp_element, element)
+                    break
+                except AssertionError:
+                    continue
+            else:
+                self.fail(f"{exp_set} != {set_}")
+
     def assert_dict(self, exp_dict: dict, dict_: dict) -> None:
         def dfs(inner_dict, inner_exp_dict):
             def visit(exp_key, exp_value):
                 self.assert_in(exp_key, inner_dict)
                 value = inner_dict[exp_key]
-                if callable(exp_value):
-                    if exp_value(value) is False:
-                        self.fail(f'{exp_key = }, {value = }')
-                elif exp_value is not ...:
-                    self.assert_is_instance(value, type(exp_value))
-                    if isinstance(value, dict):
-                        dfs(value, exp_value)
-                    else:
-                        self.assert_equal(exp_value, value)
+                if isinstance(value, dict):
+                    dfs(value, exp_value)
+                else:
+                    self.assert_equal(exp_value, value)
 
             [visit(*items) for items in inner_exp_dict.items()]
 

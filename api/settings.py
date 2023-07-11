@@ -15,6 +15,7 @@ from sentry_sdk.integrations.redis import RedisIntegration
 
 from app.base.enums.currency import Currency
 from app.base.logs.configs import LogConfig
+from app.base.template.undefinable_variable import UndefinableVariable
 
 # env
 
@@ -151,6 +152,11 @@ MIDDLEWARE = [
 ]
 
 TEMPLATES = [
+    # {
+    #     'BACKEND': 'app.base.template.engine.StrictTemplates',
+    #     'DIRS': [],
+    #     'APP_DIRS': True,
+    # },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -161,9 +167,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ]
+            ],
+            'string_if_invalid': UndefinableVariable('%s'),
         },
-    }
+    },
 ]
 
 # allow

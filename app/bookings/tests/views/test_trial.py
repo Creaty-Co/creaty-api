@@ -1,21 +1,9 @@
-from app.base.tests.fakers import fake
-from app.base.tests.views.base import BaseViewTest
 from app.bookings.models import TrialBooking
-from app.mentors.tests.factories import MentorFactory
+from app.bookings.tests.views.base import BaseBookingsTest
 
 
-class BookingsTrialTest(BaseViewTest):
+class BookingsTrialTest(BaseBookingsTest):
     path = '/bookings/trial/'
 
     def test_post(self):
-        mentor = MentorFactory()
-        self._test(
-            'post',
-            data={
-                'mentor': mentor.slug,
-                'name': fake.first_name(),
-                'email': fake.email(),
-                'description': fake.english_text(),
-            },
-        )
-        self.assert_model(TrialBooking, {})
+        self._test_post(TrialBooking)
