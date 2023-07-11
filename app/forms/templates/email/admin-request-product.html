@@ -153,7 +153,7 @@
           User Email: {{ userEmail }}<br/>
           Name: {{ userName }}<br/>
           «How can mentor help» field: {{ description }}<br/>
-          <a href="{{ page_url }}">Sent from page link</a>
+          <a href="{{ page_url }}">Sent from page URL</a>
         </p>
       </td>
     </tr>
@@ -201,7 +201,7 @@
           <center>
         <![endif]-->
         <a
-            href="http://"
+            href="mailto:{{ email }}"
             target="__blank"
             style="
               background-color: #070707;
@@ -215,8 +215,7 @@
               -webkit-text-size-adjust: none;
               mso-line-height-rule: exactly;
             "
-        >Contact user now</a
-        >
+        >Contact user now</a>
         <!--[if mso]>
         </center>
         </v:roundrect>

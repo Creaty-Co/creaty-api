@@ -411,12 +411,6 @@ SOCIAL_AUTH_PIPELINE = (
 
 # logs
 
-LOG_ADMINS = {
-    v[0]: list(map(lambda s: s.lower(), v[1:])) for v in env('ADMINS').values()
-}
-ADMINS = [(name, email__levels[0]) for name, email__levels in env('ADMINS').items()]
-EMAIL_SUBJECT_PREFIX = f'{SITE_NAME} logger > '
-
 LOG_FORMATTERS = env('LOG_FORMATTERS')
 LOG_PRETTY = env('LOG_PRETTY')
 LOG_MAX_LENGTH = env('LOG_MAX_LENGTH')
