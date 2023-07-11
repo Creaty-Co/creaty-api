@@ -5,7 +5,7 @@ from app.base.services.email.senders.base import BaseEmailSender
 from app.base.views import BaseView
 from app.bookings.models import AbstractBooking
 from app.bookings.senders.admin import AdminBookingSender
-from app.users.services.admin.notifiers.staff import StaffEmailNotifier
+from app.users.services.admin.notifiers.operator import OperatorsEmailNotifier
 
 
 class BaseBookingsView(BaseView):
@@ -22,7 +22,7 @@ class BaseBookingsView(BaseView):
                 )
             ]
         )
-        admin_notifier = StaffEmailNotifier(email_sender=AdminBookingSender())
+        admin_notifier = OperatorsEmailNotifier(email_sender=AdminBookingSender())
         notifications = admin_notifier.get_notifications()
         for notification in notifications:
             notification.context['booking'] = booking

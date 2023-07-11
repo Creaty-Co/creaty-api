@@ -3,6 +3,7 @@ from django.core.mail import send_mail
 from app.forms.models import Application
 from app.forms.models.choices import rFormType
 from app.users.models import User
+from app.users.services.admin.notifiers.operator import OperatorsEmailNotifier
 
 
 class AdminNotificationService:
@@ -12,7 +13,9 @@ class AdminNotificationService:
     @staticmethod
     def _get_admins() -> list[str]:
         return list(
-            User.objects.filter(is_superuser=True).values_list('email', flat=True)
+            User.objects.filter(
+                groups__name=OperatorsEmailNotifier.GROUP_NAME
+            ).values_list('email', flat=True)
         )
 
     def _send_admin_emails(self, subject: str, message: str):
