@@ -16,7 +16,8 @@ class FormApplicationsView(BaseView):
     @response_204
     def post(self):
         form = get_object_or_404(Form, id=self.kwargs['form_id'])
-        application = self.create(form=form)
+        serializer = self.get_valid_serializer()
+        application = serializer.save(form=form)
         match form.type:
             case FormType.BECOME_MENTOR:
                 template_name = 'email/mentors-application.html'
