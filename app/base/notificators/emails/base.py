@@ -19,5 +19,4 @@ class BaseEmailNotifier(BaseNotifier):
 
     def notify(self, notifications: Iterable[Notification]):
         for notification in notifications:
-            notification.context.setdefault('email', notification.email)
             self.email_sender.send(notification.email, **notification.context)

@@ -15,5 +15,5 @@ class UserEmailSender(BaseEmailSender):
     def _get_user(self, email: str) -> User:
         return self.user_manager.get(email=email)
 
-    def _create_context(self, email, **_) -> ContextDict:
-        return {'user': self._get_user(email)}
+    def _create_context(self, email, **kwargs) -> ContextDict:
+        return super()._create_context(email, user=self._get_user(email), **kwargs)

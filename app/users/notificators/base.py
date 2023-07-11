@@ -25,5 +25,5 @@ class BaseUsersNotifier(BaseNotifier, ABC):
         users = self.users if users is None else users
         return [self.create_notification(user) for user in users]
 
-    def notify_users(self, users: Iterable[User] = None) -> None:
+    def notify_users(self, users: Iterable[User] = None):
         self.notify(self.get_notifications(users))

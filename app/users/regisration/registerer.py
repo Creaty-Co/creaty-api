@@ -1,7 +1,7 @@
 from django.conf import settings
 
-from app.base.services.email.senders.base import BaseEmailSender
 from app.users.models import User
+from app.users.notificators.base import BaseUsersNotifier
 from app.users.verification import EmailVerifier
 
 
@@ -12,13 +12,13 @@ class Registerer:
     def __init__(
         self,
         verifier: EmailVerifier,
-        confirm_email_sender: BaseEmailSender,
+        confirm_notifier: BaseUsersNotifier,
         failure_path: str = settings.VERIFICATION_REGISTER_FAILURE_PATH,
         successful_path: str = settings.VERIFICATION_REGISTER_SUCCESSFUL_PATH,
         domain: str = settings.WEB_DOMAIN,
     ):
         self.verifier = verifier
-        self.confirm_email_sender = confirm_email_sender
+        self.confirm_notifier = confirm_notifier
         self.failure_path = failure_path
         self.successful_path = successful_path
         self.domain = domain
@@ -39,6 +39,6 @@ class Registerer:
             user.has_discount = True
             user.is_verified = True
             user.save()
-            self.confirm_email_sender.send(email)
+            self.confirm_notifier.notify_users([user])
             return user
         raise self.InvalidCodeError

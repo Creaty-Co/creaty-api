@@ -7,7 +7,6 @@ from app.base.entities.base import BaseEntity
 
 
 class BaseNotifier(ABC):
-    @abstractmethod
     class Notification(BaseEntity):
         pass
 

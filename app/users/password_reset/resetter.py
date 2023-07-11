@@ -1,5 +1,5 @@
-from app.base.services.email.senders.base import BaseEmailSender
 from app.users.models import User
+from app.users.notificators.base import BaseUsersNotifier
 from app.users.serializers.password.reset import PUTUsersPasswordResetSerializer
 from app.users.verification import EmailVerifier
 
@@ -9,11 +9,11 @@ class PasswordResetter:
         self,
         user_verifier: EmailVerifier,
         mentor_verifier: EmailVerifier,
-        confirm_email_sender: BaseEmailSender,
+        confirm_notifier: BaseUsersNotifier,
     ):
         self.user_verifier = user_verifier
         self.mentor_verifier = mentor_verifier
-        self.confirm_email_sender = confirm_email_sender
+        self.confirm_notifier = confirm_notifier
         self.user_manager = User.objects
 
     def send(self, email: str) -> None:
@@ -28,5 +28,5 @@ class PasswordResetter:
         user = self.user_manager.get(email=email)
         user.set_password(password)
         user.save()
-        self.confirm_email_sender.send(email)
+        self.confirm_notifier.notify_users([user])
         return user
