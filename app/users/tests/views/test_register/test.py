@@ -47,6 +47,7 @@ class UsersRegisterTest(BaseViewTest):
                 'password': fake.password(),
             },
         )
+        self.assert_equal(len(mail.outbox), 0)
 
     def test_put(self):
         user = UserFactory(is_verified=False, has_discount=False)
@@ -63,6 +64,7 @@ class UsersRegisterTest(BaseViewTest):
             status=200,
         )
         self.assert_model(User, {'is_verified': True, 'has_discount': True})
+        self.assert_equal(len(mail.outbox), 1)
 
     def test_put_warn_408(self):
         UserFactory(is_verified=False, has_discount=False)
@@ -73,3 +75,4 @@ class UsersRegisterTest(BaseViewTest):
             {'code': code},
         )
         self.assert_model(User, {'is_verified': False, 'has_discount': False})
+        self.assert_equal(len(mail.outbox), 0)

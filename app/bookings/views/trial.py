@@ -1,9 +1,6 @@
-from app.base.views import BaseView
 from app.bookings.serializers.trial import BookingsTrialSerializer
+from app.bookings.views.base import BaseBookingsView
 
 
-class BookingsTrialView(BaseView):
+class BookingsTrialView(BaseBookingsView):
     serializer_map = {'post': BookingsTrialSerializer}
-
-    def post(self):
-        return self.create()

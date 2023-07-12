@@ -1,11 +1,12 @@
-import factory
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import Group
 
+from app.base.tests.factories.base import BaseFactory
 from app.base.tests.fakers import Faker
 from app.users.models import User
 
 
-class UserFactory(factory.django.DjangoModelFactory):
+class UserFactory(BaseFactory):
     email = Faker('email')
     password = Faker('password')
     first_name = Faker('first_name')
@@ -26,3 +27,10 @@ class UserFactory(factory.django.DjangoModelFactory):
         )
         obj.raw_password = raw_password
         return obj
+
+
+class GroupFactory(BaseFactory):
+    class Meta:
+        model = Group
+
+    name = Faker('english_word')

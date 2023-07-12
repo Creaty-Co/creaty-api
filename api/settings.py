@@ -15,6 +15,7 @@ from sentry_sdk.integrations.redis import RedisIntegration
 
 from app.base.enums.currency import Currency
 from app.base.logs.configs import LogConfig
+from app.base.template.undefinable_variable import UndefinableVariable
 
 # env
 
@@ -151,6 +152,11 @@ MIDDLEWARE = [
 ]
 
 TEMPLATES = [
+    # {
+    #     'BACKEND': 'app.base.template.engine.StrictTemplates',
+    #     'DIRS': [],
+    #     'APP_DIRS': True,
+    # },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -161,9 +167,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ]
+            ],
+            'string_if_invalid': UndefinableVariable('%s'),
         },
-    }
+    },
 ]
 
 # allow
@@ -410,12 +417,6 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 # logs
-
-LOG_ADMINS = {
-    v[0]: list(map(lambda s: s.lower(), v[1:])) for v in env('ADMINS').values()
-}
-ADMINS = [(name, email__levels[0]) for name, email__levels in env('ADMINS').items()]
-EMAIL_SUBJECT_PREFIX = f'{SITE_NAME} logger > '
 
 LOG_FORMATTERS = env('LOG_FORMATTERS')
 LOG_PRETTY = env('LOG_PRETTY')

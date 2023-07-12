@@ -150,10 +150,10 @@
               padding-top: 32px;
               background-color: #ffffff;
             ">
-          User Email: {{ userEmail }}<br/>
-          Name: {{ userName }}<br/>
-          «How can mentor help» field: {{ description }}<br/>
-          <a href="{{ page_url }}">Sent from page link</a>
+          User Email: {{ email }}<br/>
+          Name: {{ booking.name }}<br/>
+          «How can mentor help» field: {{ booking.description }}<br/>
+          <a href="{{ booking.mentor.url }}">Mentor URL</a>
         </p>
       </td>
     </tr>
@@ -163,22 +163,25 @@
             padding: 0 40px;
             padding-top: 32px;
             background-color: #ffffff;
-          ">
-        <p style="margin: 0">
-          Product {{ productType }} + Cost {{ productPrice }}
-        </p>
-        <ul style="margin: 0; padding-left: 28px">
-          <li>Free Trial Session</li>
-          <li>1-Hour Session</li>
-          <li>Session Pack (Number of Sessions: {{ number }})</li>
-        </ul>
+          "
+      >
+      <p style="margin: 0">
+        {% if type == 'TrialBooking' %}
+          <strong>Free Trial Session:</strong> No cost
+        {% elif type == 'HourlyBooking' %}
+          <strong>1-Hour Session:</strong> {{ booking.price }}
+        {% elif type == 'PackageBooking' %}
+          <strong>Session Pack:</strong>
+          {{ booking.price }} (Number of Sessions: {{ booking.package.lessons_count }})
+        {% endif %}
+      </p>
       </td>
     </tr>
     <tr>
       <td class="colored" style="background-color: #ffffff">
         <p style="margin: 0; padding: 32px 40px">
-          Email Sent: {{ dateTime }}<br/>
-          Response Deadline: {{ responseDeadline }}
+          Email Sent: {{ booking.created_at }}<br/>
+          Response Deadline: {{ deadline }}
         </p>
       </td>
     </tr>
@@ -201,7 +204,7 @@
           <center>
         <![endif]-->
         <a
-            href="http://"
+            href="mailto:{{ email }}"
             target="__blank"
             style="
               background-color: #070707;
@@ -215,8 +218,7 @@
               -webkit-text-size-adjust: none;
               mso-line-height-rule: exactly;
             "
-        >Contact user now</a
-        >
+        >Contact user now</a>
         <!--[if mso]>
         </center>
         </v:roundrect>

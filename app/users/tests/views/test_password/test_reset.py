@@ -65,6 +65,7 @@ class UsersPasswordResetTest(BaseViewTest):
             status=200,
         )
         self.assert_true(User.objects.get().check_password(new_password))
+        self.assert_equal(len(mail.outbox), 1)
 
     def test_put_user(self):
         user = UserFactory()
@@ -86,3 +87,4 @@ class UsersPasswordResetTest(BaseViewTest):
             {'code': code, 'new_password': new_password},
         )
         self.assert_model(User, {'password': user.password})
+        self.assert_equal(len(mail.outbox), 0)
