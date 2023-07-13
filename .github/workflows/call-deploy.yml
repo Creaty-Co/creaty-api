@@ -36,8 +36,6 @@ jobs:
       env_filename: envs/.${{ inputs.environment }}.env
     steps:
       - uses: actions/checkout@v3.5.3
-        with:
-          clean: false
       - name: Set certs
         run: |
           mkdir -p nginx/certs
