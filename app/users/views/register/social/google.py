@@ -21,6 +21,7 @@ class UsersRegisterSocialGoogleView(BaseView):
         }
     )
     def get(self, request):
+        logout(request)
         request.strategy = request.social_strategy = load_strategy(request)
         request.backend = load_backend(
             request.strategy, 'google-oauth2', reverse('google_complete')
@@ -36,7 +37,6 @@ class UsersRegisterSocialGoogleCompleteView(BaseView):
         request.backend = load_backend(
             request.strategy, 'google-oauth2', reverse('google_complete')
         )
-        logout(request)
         return do_complete(
             request.backend,
             _do_login,
