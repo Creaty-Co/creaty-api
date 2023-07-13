@@ -315,6 +315,8 @@ def _traces_sampler(sampling_context):
         return 0
     if sampling_context.get('asgi_scope', {}).get('path') == '/base/status/':
         return 0
+    if sampling_context.get('wsgi_scope', {}).get('path') == '/base/status/':
+        return 0
     return 1
 
 
