@@ -25,11 +25,9 @@ services:
     volumes:
       - media_volume:/api/media
     command: bash -c "
-      sleep 3
-      && python manage.py migrate
+      python manage.py migrate
       && python manage.py collectstatic --noinput
-      && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
-      && gunicorn api.wsgi -c gunicorn/config.py
+      && daphne -b 0.0.0.0 -p 8000 api.asgi:application
       "
     depends_on: [ db, redis ]
   celery:
