@@ -61,6 +61,7 @@ jobs:
             "USE_SILK"
             "SENTRY_ENVIRONMENT"
             "REDIRECT_ON_UNSUBSCRIBE"
+            "GOOGLE_CLIENT_ID"
             "ADMINS"
             "LOG_PRETTY"
             "LOG_REQUESTS"
@@ -92,7 +93,6 @@ jobs:
             "SENTRY_DSN"
             "POSTGRES_PASSWORD"
             "DATABASE_URL"
-            "GOOGLE_APP_ID"
             "GOOGLE_APP_SECRET"
             "FIXER_ACCESS_KEY"
           )
