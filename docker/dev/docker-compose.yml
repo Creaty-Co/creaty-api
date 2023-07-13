@@ -24,7 +24,8 @@ services:
     volumes:
       - api_static_volume:/api/static
     command: bash -c "
-      python manage.py migrate
+      sleep 3
+      && python manage.py migrate
       && python manage.py collectstatic --noinput
       && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
       && gunicorn api.wsgi -c gunicorn/config.py
