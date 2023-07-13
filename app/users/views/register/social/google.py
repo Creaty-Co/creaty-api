@@ -3,7 +3,6 @@ from django.contrib.auth import REDIRECT_FIELD_NAME, logout
 from django.urls import reverse
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 from social_core.actions import do_auth, do_complete
-from social_core.exceptions import AuthAlreadyAssociated
 from social_django.utils import load_backend, load_strategy
 
 # noinspection PyProtectedMember
@@ -37,16 +36,13 @@ class UsersRegisterSocialGoogleCompleteView(BaseView):
         request.backend = load_backend(
             request.strategy, 'google-oauth2', reverse('google_complete')
         )
-        for _ in range(2):
-            try:
-                return do_complete(
-                    request.backend,
-                    _do_login,
-                    user=request.user,
-                    redirect_name=REDIRECT_FIELD_NAME,
-                    request=request,
-                    *args,
-                    **kwargs,
-                )
-            except AuthAlreadyAssociated:
-                logout(request)
+        logout(request)
+        return do_complete(
+            request.backend,
+            _do_login,
+            user=request.user,
+            redirect_name=REDIRECT_FIELD_NAME,
+            request=request,
+            *args,
+            **kwargs,
+        )
