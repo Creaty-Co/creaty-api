@@ -24,7 +24,7 @@ services:
     volumes:
       - api_static_volume:/api/static
     command: bash -c "
-      sleep 3
+      sleep 8
       && python manage.py migrate
       && python manage.py collectstatic --noinput
       && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
