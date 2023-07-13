@@ -21,13 +21,13 @@ services:
     extends:
       service: api
     env_file: [ ../envs/.base.env ]
-    command: sleep 10 && celery -A api worker -c 1 -P gevent -l info
+    command: bash -c "sleep 5 && celery -A api worker -c 1 -P gevent -l info"
     restart: unless-stopped
   celery_beat:
     extends:
       service: api
     env_file: [ ../envs/.base.env ]
-    command: sleep 15 && celery -A api beat -S django -l info
+    command: bash -c "sleep 10 && celery -A api beat -S django -l info"
     restart: unless-stopped
   nginx:
     build:
