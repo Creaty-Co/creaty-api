@@ -61,7 +61,7 @@ jobs:
             "USE_SILK"
             "SENTRY_ENVIRONMENT"
             "REDIRECT_ON_UNSUBSCRIBE"
-            "GOOGLE_CLIENT_ID"
+            "GOOGLE_APP_ID"
             "ADMINS"
             "LOG_PRETTY"
             "LOG_REQUESTS"
