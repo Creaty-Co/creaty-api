@@ -152,11 +152,6 @@ MIDDLEWARE = [
 ]
 
 TEMPLATES = [
-    # {
-    #     'BACKEND': 'app.base.template.engine.StrictTemplates',
-    #     'DIRS': [],
-    #     'APP_DIRS': True,
-    # },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -202,7 +197,6 @@ CACHEOPS_DEFAULTS = {
 }
 CACHEOPS = {
     'users.*': {'timeout': 60 * 60 * 24},
-    'admin_.*': {},
     'geo.*': {'local_get': True},
     'tags.*': {'timeout': 60 * 60 * 4},
     'mentors.*': {},
