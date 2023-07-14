@@ -97,6 +97,7 @@ INSTALLED_APPS = [
     'djmoney.contrib.exchange',
     'django_countries',
     'rest_framework_simplejwt',
+    'debug_toolbar',
     # own apps
     'app.base',
     'app.users',
@@ -147,6 +148,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     # third-party middlewares
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # own middlewares
     'app.base.middlewares.LogMiddleware',
 ]
@@ -175,6 +177,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 INTERNAL_IPS = ['127.0.0.1']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+DEBUG_TOOLBAR_CONFIG = {'SHOW_TOOLBAR_CALLBACK': lambda _: DEBUG}
+
 # cache
 
 CACHES = {
@@ -196,8 +200,8 @@ CACHEOPS_DEFAULTS = {
     'ops': ['get', 'fetch', 'exists', 'count'],
 }
 CACHEOPS = {
-    'users.*': {'timeout': 60 * 60 * 24},
-    'geo.*': {'local_get': True},
+    'users.*': {},
+    'geo.*': {'timeout': 60 * 60 * 24},
     'tags.*': {'timeout': 60 * 60 * 4},
     'mentors.*': {},
     'forms.Application': None,
