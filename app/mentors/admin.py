@@ -16,6 +16,7 @@ class PackageInline(admin.TabularInline):
 
 class PageInline(admin.TabularInline):
     model = PageMentors
+    raw_id_fields = ['page']
     extra = 1
 
 
