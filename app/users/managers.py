@@ -4,8 +4,6 @@ from django.contrib.auth.models import UserManager as _UserManager
 
 class UserManager(_UserManager):
     def create_user(self, email, password=None, first_name=None, **extra_fields):
-        if password is None or first_name is None:
-            raise ValueError
         user = self.model(email=email, first_name=first_name, **extra_fields)
         user.password = make_password(password)
         user.save(using=self._db)
