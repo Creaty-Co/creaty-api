@@ -54,4 +54,5 @@ class PackageBooking(AbstractBooking):
 
     @property
     def price(self):
-        return self.mentor.price * (1 - self.package.discount / 100)
+        package = self.package
+        return self.mentor.price * package.lessons_count * (1 - package.discount / 100)
