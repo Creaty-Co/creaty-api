@@ -220,16 +220,15 @@ EMAIL_USE_SSL: bool
 EMAIL_HOST_USER: str | None = None
 EMAIL_HOST_PASSWORD: str
 EMAIL_BACKEND: str
+DEFAULT_FROM_EMAIL: str
 
 try:
     vars().update(
         env.email('EMAIL_URL', backend='djcelery_email.backends.CeleryEmailBackend')
     )
+    DEFAULT_FROM_EMAIL = f'"Creaty Co." <{EMAIL_HOST_USER}>'
 except environ.ImproperlyConfigured:
     pass
-
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-SERVER_EMAIL = EMAIL_HOST_USER
 
 # celery_email
 
