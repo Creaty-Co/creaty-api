@@ -5,7 +5,6 @@ services:
     extends:
       file: docker/docker-compose.base.yml
       service: db
-    image: postgres:15.3
     ports: [ 54320:5432 ]
     volumes:
       - db_volume:/var/lib/postgresql/data

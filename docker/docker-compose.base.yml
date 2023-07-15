@@ -2,14 +2,19 @@ version: '3.9'
 
 services:
   db:
+    build:
+      context: ../db
     env_file: [ ../envs/.base.env ]
     environment:
       - POSTGRES_USER=pg
       - POSTGRES_DB=db
+    volumes:
+      - ../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     networks: [ db_network ]
     restart: unless-stopped
   redis:
-    image: redis:7.0.8
+    build:
+      context: ../redis
     env_file: [ ../envs/.base.env ]
     networks: [ redis_network ]
     restart: unless-stopped
