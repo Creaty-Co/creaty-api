@@ -10,6 +10,6 @@ class PagesPersonalTest(PagesMainTest):
         return f"/pages/personal/{self.shortcut}/"
 
     def test_get(self):
-        page = CategoryFactory().pages.first()
+        page = CategoryFactory().page
         self.shortcut = page.category.shortcut
         self._test_get(page)
