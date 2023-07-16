@@ -11,6 +11,7 @@ services:
     ports: [ 5433:5432 ]
     volumes:
       - db_volume:/var/lib/postgresql/data
+      # - ../../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
   redis:
     extends:
       file: ../docker-compose.base.yml

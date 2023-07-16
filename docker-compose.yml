@@ -5,9 +5,12 @@ services:
     extends:
       file: docker/docker-compose.base.yml
       service: db
+    build:
+      context: db
     ports: [ 54320:5432 ]
     volumes:
       - db_volume:/var/lib/postgresql/data
+      - ./db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
   redis:
     extends:
       file: docker/docker-compose.base.yml
@@ -20,7 +23,7 @@ services:
       service: api
     build:
       context: .
-    ports: [ 801:8000 ]
+    ports: [ 8000:8000 ]
     volumes:
       - media_volume:/api/media
     command: bash -c "

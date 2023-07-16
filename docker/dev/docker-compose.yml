@@ -5,10 +5,13 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: db
+    build:
+      context: ../../db
     env_file: [ ../../envs/.dev.env ]
     ports: [ 5434:5432 ]
     volumes:
       - db_volume:/var/lib/postgresql/data
+      - ../../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
   redis:
     extends:
       file: ../docker-compose.base.yml
