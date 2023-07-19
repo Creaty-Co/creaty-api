@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  zabbix-mysql:
+    image: mysql:8.0.33
+    container_name: zabbix-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: zabbix
+    volumes:
+      - data:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  zabbix-server:
+    image: zabbix/zabbix-server-mysql:6.0.19-ubuntu
+    container_name: zabbix-server
+    environment:
+      DB_SERVER_HOST: 127.0.0.1
+      MYSQL_USER: root
+      MYSQL_PASSWORD: zabbix
+    network_mode: host
+    depends_on:
+      - zabbix-mysql
+
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-mysql:6.0.19-ubuntu
+    container_name: zabbix-web
+    environment:
+      DB_SERVER_HOST: 127.0.0.1
+      MYSQL_USER: root
+      MYSQL_PASSWORD: zabbix
+      ZBX_SERVER_HOST: 127.0.0.1
+    network_mode: host
+    depends_on:
+      - zabbix-mysql
+      - zabbix-server
+
+volumes:
+  data:
