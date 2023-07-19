@@ -35,14 +35,13 @@ jobs:
     env:
       env_filename: envs/.${{ inputs.environment }}.env
     steps:
+      - uses: actions/checkout@v3.5.3
       - name: Cd to ${{ inputs.environment }} directory
         run: |
           mkdir -p ~/creaty/${{ inputs.environment }}
           cd ~/creaty/${{ inputs.environment }}
+          cp -r ~/runner/work/creaty-api/creaty-api/* .
           rm -r ~/runner/work/creaty-api
-      - uses: actions/checkout@v3.5.3
-        with:
-          clean: false
       - name: Set certs
         run: |
           mkdir -p nginx/certs
