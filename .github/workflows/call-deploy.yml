@@ -41,7 +41,6 @@ jobs:
           mkdir -p ~/creaty/${{ inputs.environment }}
           cd ~/creaty/${{ inputs.environment }}
           cp -r ~/runner/work/creaty-api/creaty-api/* .
-          rm -r ~/runner/work/creaty-api
       - name: Set certs
         run: |
           cd ~/creaty/${{ inputs.environment }}
@@ -135,3 +134,5 @@ jobs:
           cd ~/creaty/${{ inputs.environment }}
           docker-compose -f docker/${{ inputs.environment }}/docker-compose.yml up \
             --build -d
+      - name: Remove unused directory
+        run: rm -r ~/runner/work/creaty-api
