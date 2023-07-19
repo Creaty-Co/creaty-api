@@ -44,6 +44,7 @@ jobs:
           rm -r ~/runner/work/creaty-api
       - name: Set certs
         run: |
+          cd ~/creaty/${{ inputs.environment }}
           mkdir -p nginx/certs
           echo -e "${{ vars.NGINX_SSL_CRT }}" > nginx/certs/crt.pem
           echo -e "${{ secrets.NGINX_SSL_KEY }}" > nginx/certs/key.pem
@@ -52,6 +53,7 @@ jobs:
           echo -e "${{ secrets.DB_SSL_KEY }}" > db/certs/key.pem
       - name: Set variables
         run: |
+          cd ~/creaty/${{ inputs.environment }}
           echo '' > $env_filename
           variable_keys=(
             "DEV_API_DOMAIN"
@@ -93,6 +95,7 @@ jobs:
           GOOGLE_APP_SECRET: ${{ secrets.GOOGLE_APP_SECRET }}
           FIXER_ACCESS_KEY: ${{ secrets.FIXER_ACCESS_KEY }}
         run: |
+          cd ~/creaty/${{ inputs.environment }}
           secret_keys=(
             "SECRET_KEY"
             "CLOUDINARY_URL"
@@ -114,6 +117,7 @@ jobs:
             >> $env_filename
       - name: Set Sentry release
         run: |
+          cd ~/creaty/${{ inputs.environment }}
           if [[ "${{ inputs.tag }}" == "latest" ]]; then
             version=${{ needs.get_commit_title.outputs.title }}
             echo "SENTRY_RELEASE=$version" >> $env_filename
@@ -122,10 +126,12 @@ jobs:
           fi
       - name: Pull images
         run: |
+          cd ~/creaty/${{ inputs.environment }}
           export TAG=${{ inputs.tag }}
           docker-compose -f docker/${{ inputs.environment }}/docker-compose.yml pull api
           docker pull ghcr.io/creaty-co/creaty-web/web:${{ inputs.tag }}
       - name: Up docker compose
         run: |
+          cd ~/creaty/${{ inputs.environment }}
           docker-compose -f docker/${{ inputs.environment }}/docker-compose.yml up \
-          --build -d
+            --build -d
