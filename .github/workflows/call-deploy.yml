@@ -46,7 +46,10 @@ jobs:
           echo -e "${{ secrets.DB_SSL_KEY }}" > db/certs/key.pem
       - name: Set variables
         run: |
+          echo '' > $env_filename
           variable_keys=(
+            "DEV_API_DOMAIN"
+            "DEV_WEB_DOMAIN"
             "WEB_DOMAIN"
             "API_DOMAIN"
             "DEBUG"
@@ -58,11 +61,9 @@ jobs:
             "CELERY_REDIS_MAX_CONNECTIONS"
             "CELERY_BROKER_POOL_LIMIT"
             "CLOUDINARY_PREFIX"
-            "USE_SILK"
             "SENTRY_ENVIRONMENT"
             "REDIRECT_ON_UNSUBSCRIBE"
             "GOOGLE_APP_ID"
-            "ADMINS"
             "LOG_PRETTY"
             "LOG_REQUESTS"
             "LOG_LEVEL"
@@ -92,7 +93,6 @@ jobs:
             "EMAIL_URL"
             "SENTRY_DSN"
             "POSTGRES_PASSWORD"
-            "DATABASE_URL"
             "GOOGLE_APP_SECRET"
             "FIXER_ACCESS_KEY"
           )
@@ -104,6 +104,8 @@ jobs:
             fi
             echo "$key=$value" >> $env_filename
           done
+          echo "DATABASE_URL=psql://pg:${{ secrets.POSTGRES_PASSWORD }}@db:5432/db" \
+            >> $env_filename
       - name: Set Sentry release
         run: |
           if [[ "${{ inputs.tag }}" == "latest" ]]; then
