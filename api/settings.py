@@ -357,22 +357,7 @@ REDIRECT_ON_UNSUBSCRIBE = env('REDIRECT_ON_UNSUBSCRIBE')
 
 # auth
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django_advanced_password_validation.advanced_password_validation'
-        '.ContainsDigitsValidator',
-    },
-    {
-        'NAME': 'django_advanced_password_validation.advanced_password_validation'
-        '.ContainsUppercaseValidator',
-    },
-    {
-        'NAME': 'django_advanced_password_validation.advanced_password_validation'
-        '.ContainsLowercaseValidator',
-    },
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-]
+AUTH_PASSWORD_VALIDATORS = []
 
 AUTH_USER_MODEL = 'users.User'
 
