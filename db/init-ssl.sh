@@ -8,4 +8,4 @@ chown postgres:postgres /var/lib/postgresql/data/server.key
 chown postgres:postgres /var/lib/postgresql/data/server.crt
 chmod 600 /var/lib/postgresql/data/server.key
 
-RUN echo "hostssl all all 0.0.0.0/0 md5" >>/var/lib/postgresql/data/pg_hba.conf
+echo "hostssl all all 0.0.0.0/0 md5" >>/var/lib/postgresql/data/pg_hba.conf
