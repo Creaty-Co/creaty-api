@@ -25,6 +25,7 @@ on:
 
 jobs:
   get_commit_title:
+    if: ${{ inputs.tag == 'latest' }}
     uses: ./.github/workflows/call-get_commit_title.yml
   deploy:
     runs-on: [ self-hosted, "${{ inputs.environment }}" ]

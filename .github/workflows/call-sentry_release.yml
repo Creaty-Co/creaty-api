@@ -17,6 +17,7 @@ on:
 
 jobs:
   get_commit_title:
+    if: ${{ inputs.version != '' }}
     uses: ./.github/workflows/call-get_commit_title.yml
   release:
     runs-on: ubuntu-22.04

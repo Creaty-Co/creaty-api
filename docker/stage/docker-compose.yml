@@ -12,10 +12,12 @@ services:
     volumes:
       - db_volume:/var/lib/postgresql/data
       # - ../../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+
   redis:
     extends:
       file: ../docker-compose.base.yml
       service: redis
+
   api:
     extends:
       file: ../docker-compose.base.yml
@@ -32,6 +34,7 @@ services:
       "
     networks: [ nginx_network ]
     depends_on: [ db, redis ]
+
   celery:
     extends:
       file: ../docker-compose.base.yml
@@ -39,6 +42,7 @@ services:
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.stage.env ]
     depends_on: [ api ]
+
   celery_beat:
     extends:
       file: ../docker-compose.base.yml
@@ -46,6 +50,7 @@ services:
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.stage.env ]
     depends_on: [ celery ]
+
   nginx:
     extends:
       file: ../docker-compose.base.yml
