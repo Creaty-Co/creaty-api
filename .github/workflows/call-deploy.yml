@@ -132,5 +132,6 @@ jobs:
       - name: Up docker compose
         run: |
           cd ~/creaty/${{ inputs.environment }}
+          export TAG=${{ inputs.tag }}
           docker-compose -f docker/${{ inputs.environment }}/docker-compose.yml up \
             --build -d
