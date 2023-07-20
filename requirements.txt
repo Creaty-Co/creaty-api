@@ -51,7 +51,7 @@ pybase64==1.2.3
 
 parameterized==0.9.0
 factory_boy==3.3.0
-Faker==19.1.0
+Faker==19.2.0
 coverage==7.2.7
 
 django-debug-toolbar==4.1.0
