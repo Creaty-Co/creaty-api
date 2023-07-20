@@ -7,11 +7,13 @@ services:
       service: db
     image: postgres:15.3
     env_file: [ ../../envs/.test.env ]
+
   redis:
     extends:
       file: ../docker-compose.base.yml
       service: redis
     env_file: [ ../../envs/.test.env ]
+
   api:
     extends:
       file: ../docker-compose.base.yml
