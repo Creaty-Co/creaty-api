@@ -67,5 +67,5 @@ networks:
   redis_network:
   nginx_network:
   proxy_network:
-    name: stage_proxy_network
+    name: creaty-stage_proxy_network
     external: true
