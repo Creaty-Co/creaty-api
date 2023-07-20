@@ -5,6 +5,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: db
+    container_name: stage-db
     build:
       context: ../../db
     env_file: [ ../../envs/.stage.env ]
@@ -17,11 +18,13 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: redis
+    container_name: stage-redis
 
   api:
     extends:
       file: ../docker-compose.base.yml
       service: api
+    container_name: stage-api
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.stage.env ]
     volumes:
@@ -38,6 +41,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: celery
+    container_name: stage-celery
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.stage.env ]
     depends_on: [ api ]
@@ -46,6 +50,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: celery_beat
+    container_name: stage-celery_beat
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.stage.env ]
     depends_on: [ celery ]
@@ -54,6 +59,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: nginx
+    container_name: stage-nginx
     build:
       dockerfile: ../nginx/stage.dockerfile
       args: [ TAG ]
