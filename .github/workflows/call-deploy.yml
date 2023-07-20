@@ -134,5 +134,3 @@ jobs:
           cd ~/creaty/${{ inputs.environment }}
           docker-compose -f docker/${{ inputs.environment }}/docker-compose.yml up \
             --build -d
-      - name: Remove unused directory
-        run: rm -r ~/runner/work/creaty-api
