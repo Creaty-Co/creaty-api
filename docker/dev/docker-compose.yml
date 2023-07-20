@@ -5,6 +5,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: db
+    container_name: dev-db
     build:
       context: ../../db
     env_file: [ ../../envs/.dev.env ]
@@ -12,14 +13,18 @@ services:
     volumes:
       - db_volume:/var/lib/postgresql/data
       - ../../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+
   redis:
     extends:
       file: ../docker-compose.base.yml
       service: redis
+    container_name: dev-redis
+
   api:
     extends:
       file: ../docker-compose.base.yml
       service: api
+    container_name: dev-api
     image: ${API_IMAGE}
     env_file: [ ../../envs/.dev.env ]
     volumes:
@@ -32,24 +37,30 @@ services:
       "
     networks: [ nginx_network ]
     depends_on: [ db, redis ]
+
   celery:
     extends:
       file: ../docker-compose.base.yml
       service: celery
+    container_name: dev-celery
     image: ${API_IMAGE}
     env_file: [ ../../envs/.dev.env ]
     depends_on: [ api ]
+
   celery_beat:
     extends:
       file: ../docker-compose.base.yml
       service: celery_beat
+    container_name: dev-celery_beat
     image: ${API_IMAGE}
     env_file: [ ../../envs/.dev.env ]
     depends_on: [ celery ]
+
   nginx:
     extends:
       file: ../docker-compose.base.yml
       service: nginx
+    container_name: dev-nginx
     build:
       dockerfile: ../nginx/dev.dockerfile
     env_file: [ ../../envs/.dev.env ]
