@@ -12,7 +12,7 @@ services:
     ports: [ 5433:5432 ]
     volumes:
       - db_volume:/var/lib/postgresql/data
-      # - ../../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ../../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
 
   redis:
     extends:
@@ -30,7 +30,8 @@ services:
     volumes:
       - api_static_volume:/api/static
     command: bash -c "
-      python manage.py collectstatic --noinput
+      python manage.py migrate
+      && python manage.py collectstatic --noinput
       && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
       && gunicorn api.wsgi -c gunicorn/config.py
       "
