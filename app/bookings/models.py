@@ -9,7 +9,7 @@ class AbstractBooking(models.Model):
     mentor: Mentor
     name = models.TextField()
     email = models.EmailField()
-    description = models.TextField()
+    description = models.TextField(blank=True, default='')
     created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
