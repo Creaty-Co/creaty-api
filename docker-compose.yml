@@ -5,18 +5,18 @@ services:
     extends:
       file: docker/docker-compose.base.yml
       service: db
-    build:
-      context: db
+    image: postgres:15.3
     ports: [ 54320:5432 ]
     volumes:
       - db_volume:/var/lib/postgresql/data
-      - ./db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+
   redis:
     extends:
       file: docker/docker-compose.base.yml
       service: redis
     volumes:
       - redis_volume:/data
+
   api:
     extends:
       file: docker/docker-compose.base.yml
@@ -24,14 +24,17 @@ services:
     build:
       context: .
     ports: [ 8000:8000 ]
+    networks: [ nginx_network ]
     volumes:
       - media_volume:/api/media
+      - api_static_volume:/api/static
     command: bash -c "
       python manage.py migrate
       && python manage.py collectstatic --noinput
       && daphne -b 0.0.0.0 -p 8000 api.asgi:application
       "
     depends_on: [ db, redis ]
+
   celery:
     extends:
       file: docker/docker-compose.base.yml
@@ -39,6 +42,7 @@ services:
     build:
       context: .
     depends_on: [ api ]
+
   celery_beat:
     extends:
       file: docker/docker-compose.base.yml
@@ -47,11 +51,24 @@ services:
       context: .
     depends_on: [ celery ]
 
+  nginx:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: nginx
+    build:
+      dockerfile: local.dockerfile
+    ports: [ 80:80, 443:443 ]
+    volumes:
+      - api_static_volume:/etc/nginx/html/api/static
+    depends_on: [ api ]
+
 volumes:
   db_volume:
   redis_volume:
   media_volume:
+  api_static_volume:
 
 networks:
   db_network:
   redis_network:
+  nginx_network:
