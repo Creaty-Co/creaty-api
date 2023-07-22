@@ -6,12 +6,18 @@ from django.db import models
 
 from app.base.models.base import BaseModel
 from app.users.managers import UserManager
+from app.users.utils import hash_email
+
+
+def user_avatar_upload_to(instance, _):
+    return f"user/avatar/{hash_email(instance.email)}"
 
 
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.TextField()
     last_name = models.TextField(default='', blank=True)
+    avatar = models.ImageField(upload_to=user_avatar_upload_to, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     has_discount = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
@@ -44,3 +50,8 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    def save(self, **kwargs):
+        super().save(**kwargs)
+        if self.avatar and self.avatar.name.split('/')[-1] != hash_email(self.email):
+            self.avatar.save(None, self.avatar.file)
