@@ -9,7 +9,7 @@ specified for django.request.
 
 import json
 import time
-from logging import DEBUG
+from logging import DEBUG, INFO
 from typing import Iterable, Sized
 from urllib.parse import unquote
 
@@ -134,7 +134,9 @@ class LogMiddleware(MiddlewareMixin):
         return response
 
     def log(self, request, response):
-        if request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
+        if request.method in ['POST', 'PUT', 'PATCH', 'DELETE'] and logger.isEnabledFor(
+            INFO
+        ):
             log_data = self.extract_log_info(request=request, response=response)
             info(log_data)
         elif logger.isEnabledFor(DEBUG):
