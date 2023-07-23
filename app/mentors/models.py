@@ -20,7 +20,6 @@ class Mentor(User):
     tags = models.ManyToManyField(Tag, related_name='mentors')
     languages = models.ManyToManyField(Language, related_name='mentors')
     country = models.ForeignKey(Country, models.PROTECT, related_name='mentors')
-    avatar = models.ImageField(upload_to='avatars', null=True, blank=True)
     company = models.TextField(blank=True, default='')
     profession = models.TextField()
     price: Money = MoneyField(max_digits=10, decimal_places=2)
@@ -38,10 +37,10 @@ class Mentor(User):
     def url(self) -> str:
         return f"https://{settings.WEB_DOMAIN}/mentor/{self.slug}"
 
-    def save(self, *args, **kwargs):
+    def save(self, **kwargs):
         if not self.slug:
             self.slug = uuslug(f"{self.first_name}_{self.last_name}", self)
-        super().save(*args, **kwargs)
+        super().save(**kwargs)
         invalidate_obj(self.user_ptr)
 
     def __str__(self):
