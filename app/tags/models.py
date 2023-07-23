@@ -1,3 +1,5 @@
+import time
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import QuerySet
@@ -7,7 +9,7 @@ from app.pages.models import Page
 
 
 def category_icon_upload_to(instance, _):
-    return f"category/icon/{instance.shortcut}"
+    return f"category/icon/{instance.id}-{int(time.time())}"
 
 
 class Category(BaseModel):
@@ -23,11 +25,11 @@ class Category(BaseModel):
     def clean(self):
         super().clean()
         if Tag.objects.filter(shortcut=self.shortcut).exists():
-            raise ValidationError(f'Тег с shortcut {self.shortcut} уже существует')
+            raise ValidationError(f"Tag with shortcut {self.shortcut} already exists")
 
     def save(self, **kwargs):
         super().save(**kwargs)
-        if self.icon.name.split('/')[-1] != self.shortcut:
+        if self.icon.name.split('/')[-1].rsplit('-', 1)[0] != str(self.id):
             self.icon.save(None, self.icon.file)
 
     def __str__(self):
@@ -50,7 +52,7 @@ class Tag(BaseModel):
         super().clean()
         if Category.objects.filter(shortcut=self.shortcut).exists():
             raise ValidationError(
-                f'Категория с shortcut {self.shortcut} уже существует'
+                f"Category with shortcut {self.shortcut} already exists"
             )
 
     def __str__(self):

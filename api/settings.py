@@ -288,7 +288,7 @@ CELERY_BEAT_SCHEDULE = {
 USE_CLOUDINARY = False
 if (CLOUDINARY_URL := env('CLOUDINARY_URL')) != 'cloudinary://0:stub@_':
     USE_CLOUDINARY = True
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    DEFAULT_FILE_STORAGE = 'app.base.storages.cloudinary.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {'PREFIX': env('CLOUDINARY_PREFIX')}
 

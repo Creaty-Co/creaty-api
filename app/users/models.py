@@ -1,3 +1,5 @@
+import time
+
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.password_validation import validate_password
@@ -6,11 +8,10 @@ from django.db import models
 
 from app.base.models.base import BaseModel
 from app.users.managers import UserManager
-from app.users.utils import hash_email
 
 
 def user_avatar_upload_to(instance, _):
-    return f"user/avatar/{hash_email(instance.email)}"
+    return f"user/avatar/{instance.id}-{int(time.time())}"
 
 
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
@@ -53,5 +54,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     def save(self, **kwargs):
         super().save(**kwargs)
-        if self.avatar and self.avatar.name.split('/')[-1] != hash_email(self.email):
+        if self.avatar and self.avatar.name.split('/')[-1].rsplit('-', 1)[0] != str(
+            self.id
+        ):
             self.avatar.save(None, self.avatar.file)
