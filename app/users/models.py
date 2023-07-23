@@ -1,3 +1,5 @@
+import time
+
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.password_validation import validate_password
@@ -8,10 +10,15 @@ from app.base.models.base import BaseModel
 from app.users.managers import UserManager
 
 
+def user_avatar_upload_to(instance, _):
+    return f"user/avatar/{instance.id}-{int(time.time())}"
+
+
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.TextField()
     last_name = models.TextField(default='', blank=True)
+    avatar = models.ImageField(upload_to=user_avatar_upload_to, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     has_discount = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
@@ -44,3 +51,10 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    def save(self, **kwargs):
+        super().save(**kwargs)
+        if self.avatar and self.avatar.name.split('/')[-1].rsplit('-', 1)[0] != str(
+            self.id
+        ):
+            self.avatar.save(None, self.avatar.file)
