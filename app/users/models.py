@@ -2,7 +2,6 @@ import time
 
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
-from django.contrib.auth.password_validation import validate_password
 from django.core.mail import send_mail
 from django.db import models
 
@@ -39,10 +38,6 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     def clean(self):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
-
-    def set_password(self, raw_password):
-        validate_password(raw_password, self)
-        super().set_password(raw_password)
 
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}".strip()

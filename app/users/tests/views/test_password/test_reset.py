@@ -39,9 +39,11 @@ class UsersPasswordResetTest(BaseViewTest):
         self._test_post(user, link_regex)
 
     def test_post_mentor(self):
-        user = MentorFactory().user_ptr
+        mentor = MentorFactory().user_ptr
+        mentor.set_password(None)
+        mentor.save()
         link_regex = r"https://.+/reset-password/{code}\?first_name=.+"
-        self._test_post(user, link_regex)
+        self._test_post(mentor, link_regex)
 
     def test_post_warn_404(self):
         email = fake.email()
