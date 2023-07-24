@@ -15,6 +15,7 @@ def user_avatar_upload_to(instance, _):
 
 
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
+    social_auth: models.Manager
     email = models.EmailField(unique=True)
     first_name = models.TextField()
     last_name = models.TextField(default='', blank=True)
