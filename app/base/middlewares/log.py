@@ -9,13 +9,13 @@ specified for django.request.
 
 import json
 import time
+from logging import DEBUG, INFO
 from typing import Iterable, Sized
 from urllib.parse import unquote
 
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
 
-from api.settings import DEBUG
 from app.base.logs import debug, info, logger
 
 __all__ = ['LogMiddleware']
@@ -28,7 +28,7 @@ def _get_content_type(request_or_response):
 
 
 # noinspection PyBroadException
-def _cut_back(value, max_str_length=200, max_sized_length=5):
+def _cut_back(value, max_str_length=200, max_sized_length=10):
     if isinstance(value, dict):
         value = _cut_back_dict(value)
     if isinstance(value, (str, bytes, bytearray)):
@@ -41,8 +41,14 @@ def _cut_back(value, max_str_length=200, max_sized_length=5):
             )
     elif isinstance(value, Sized):
         length = len(value)
-        type_name = type(value).__name__
-        return f"<<<{type_name} of length {length}>>>"
+        if length > max_sized_length:
+            type_name = type(value).__name__
+            return f"<<<{type_name} of length {length}>>>"
+        if isinstance(value, Iterable):
+            try:
+                return type(value)(map(_cut_back[:max_str_length], value))  # noqa
+            except Exception:
+                pass
     if len(str(value)) > max_str_length:
         return _cut_back(str(value))
     return value
@@ -128,7 +134,9 @@ class LogMiddleware(MiddlewareMixin):
         return response
 
     def log(self, request, response):
-        if request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
+        if request.method in ['POST', 'PUT', 'PATCH', 'DELETE'] and logger.isEnabledFor(
+            INFO
+        ):
             log_data = self.extract_log_info(request=request, response=response)
             info(log_data)
         elif logger.isEnabledFor(DEBUG):

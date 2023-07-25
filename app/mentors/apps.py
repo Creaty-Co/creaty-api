@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 
+from app.base.apps import AppConfigMixin
 
-class MentorsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
+
+class MentorsConfig(AppConfigMixin, AppConfig):
     name = 'app.mentors'

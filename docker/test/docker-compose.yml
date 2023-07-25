@@ -5,17 +5,22 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: db
+    container_name: test-db
     image: postgres:15.3
     env_file: [ ../../envs/.test.env ]
+
   redis:
     extends:
       file: ../docker-compose.base.yml
       service: redis
+    container_name: test-redis
     env_file: [ ../../envs/.test.env ]
+
   api:
     extends:
       file: ../docker-compose.base.yml
       service: api
+    container_name: test-api
     build:
       context: ../..
     env_file: [ ../../envs/.test.env ]

@@ -10,6 +10,7 @@ class UsersMeView(BaseView):
         'patch': [AuthenticatedPermission],
     }
     serializer_map = {'get': GETUsersMeSerializer, 'patch': PATCHUsersMeSerializer}
+    use_list_cache = True
 
     def get(self):
         return self.retrieve()

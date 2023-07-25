@@ -1,3 +1,4 @@
+from copy import copy
 from typing import Any
 
 from django.core.cache import cache
@@ -18,7 +19,7 @@ class Cacher:
         cache_default = self.default if default is self._NOT_SET else default
         if cache_default is self._NOT_SET:
             return cache.get(self.cache_key(*keys))
-        return cache.get(self.cache_key(*keys), default=cache_default)
+        return cache.get(self.cache_key(*keys), default=copy(cache_default))
 
     def set(self, value, *keys: str, timeout: int = _NOT_SET) -> None:
         cache_timeout = self.timeout if timeout is self._NOT_SET else timeout

@@ -26,6 +26,7 @@ class TagsCategoriesView(BaseView):
         .filter(tags__mentors__is_draft=False)
         .distinct()
     )
+    use_list_cache = True
 
     def get(self):
         return self.list()

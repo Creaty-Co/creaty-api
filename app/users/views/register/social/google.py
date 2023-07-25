@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth import REDIRECT_FIELD_NAME, logout
 from django.urls import reverse
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 from social_core.actions import do_auth, do_complete
@@ -21,6 +21,7 @@ class UsersRegisterSocialGoogleView(BaseView):
         }
     )
     def get(self, request):
+        logout(request)
         request.strategy = request.social_strategy = load_strategy(request)
         request.backend = load_backend(
             request.strategy, 'google-oauth2', reverse('google_complete')

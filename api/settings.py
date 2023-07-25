@@ -24,6 +24,7 @@ env = environ.Env(
     DEBUG=bool,
     TEST=bool,
     USE_BROWSABLE_API=bool,
+    USE_DEBUG_TOOLBAR=bool,
     EMAIL_BACKEND=(str, None),  # default: 'console' if DEBUG else 'smtp'
     CELERY_REDIS_MAX_CONNECTIONS=int,
     CELERY_BROKER_POOL_LIMIT=int,
@@ -66,6 +67,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 TEST = env('TEST')
 USE_BROWSABLE_API = env('USE_BROWSABLE_API')
+USE_DEBUG_TOOLBAR = env('USE_DEBUG_TOOLBAR')
 APPEND_SLASH = False
 
 INSTALLED_APPS = [
@@ -97,6 +99,7 @@ INSTALLED_APPS = [
     'djmoney.contrib.exchange',
     'django_countries',
     'rest_framework_simplejwt',
+    'debug_toolbar',
     # own apps
     'app.base',
     'app.users',
@@ -147,16 +150,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     # third-party middlewares
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # own middlewares
     'app.base.middlewares.LogMiddleware',
 ]
 
 TEMPLATES = [
-    # {
-    #     'BACKEND': 'app.base.template.engine.StrictTemplates',
-    #     'DIRS': [],
-    #     'APP_DIRS': True,
-    # },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -180,6 +179,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 INTERNAL_IPS = ['127.0.0.1']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+DEBUG_TOOLBAR_CONFIG = {'SHOW_TOOLBAR_CALLBACK': lambda _: USE_DEBUG_TOOLBAR}
+
 # cache
 
 CACHES = {
@@ -201,9 +202,8 @@ CACHEOPS_DEFAULTS = {
     'ops': ['get', 'fetch', 'exists', 'count'],
 }
 CACHEOPS = {
-    'users.*': {'timeout': 60 * 60 * 24},
-    'admin_.*': {},
-    'geo.*': {'local_get': True},
+    'users.*': {},
+    'geo.*': {'timeout': 60 * 60 * 24},
     'tags.*': {'timeout': 60 * 60 * 4},
     'mentors.*': {},
     'forms.Application': None,
@@ -222,16 +222,15 @@ EMAIL_USE_SSL: bool
 EMAIL_HOST_USER: str | None = None
 EMAIL_HOST_PASSWORD: str
 EMAIL_BACKEND: str
+DEFAULT_FROM_EMAIL: str
 
 try:
     vars().update(
         env.email('EMAIL_URL', backend='djcelery_email.backends.CeleryEmailBackend')
     )
+    DEFAULT_FROM_EMAIL = f'"Creaty Co." <{EMAIL_HOST_USER}>'
 except environ.ImproperlyConfigured:
     pass
-
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-SERVER_EMAIL = EMAIL_HOST_USER
 
 # celery_email
 
@@ -289,7 +288,7 @@ CELERY_BEAT_SCHEDULE = {
 USE_CLOUDINARY = False
 if (CLOUDINARY_URL := env('CLOUDINARY_URL')) != 'cloudinary://0:stub@_':
     USE_CLOUDINARY = True
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    DEFAULT_FILE_STORAGE = 'app.base.storages.cloudinary.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {'PREFIX': env('CLOUDINARY_PREFIX')}
 
@@ -314,6 +313,8 @@ def _traces_sampler(sampling_context):
     ):
         return 0
     if sampling_context.get('asgi_scope', {}).get('path') == '/base/status/':
+        return 0
+    if sampling_context.get('wsgi_environ', {}).get('PATH_INFO') == '/base/status/':
         return 0
     return 1
 
@@ -356,22 +357,7 @@ REDIRECT_ON_UNSUBSCRIBE = env('REDIRECT_ON_UNSUBSCRIBE')
 
 # auth
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django_advanced_password_validation.advanced_password_validation'
-        '.ContainsDigitsValidator',
-    },
-    {
-        'NAME': 'django_advanced_password_validation.advanced_password_validation'
-        '.ContainsUppercaseValidator',
-    },
-    {
-        'NAME': 'django_advanced_password_validation.advanced_password_validation'
-        '.ContainsLowercaseValidator',
-    },
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-]
+AUTH_PASSWORD_VALIDATORS = []
 
 AUTH_USER_MODEL = 'users.User'
 

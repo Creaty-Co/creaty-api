@@ -25,4 +25,4 @@ jobs:
       environment: stage
       version: ${{ github.ref_name }}
     secrets: inherit
-    needs: [ cd ]
+    needs: [ deploy ]

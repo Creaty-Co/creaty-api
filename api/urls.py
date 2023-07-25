@@ -17,6 +17,9 @@ if settings.USE_BROWSABLE_API:
         path('', SpectacularSwaggerView.as_view(url_name='__docs__')),
     ]
 
+if settings.DEBUG:
+    urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]
+
 urlpatterns += [
     path('admin/', admin.site.urls),
     path('base/', include('app.base.urls')),

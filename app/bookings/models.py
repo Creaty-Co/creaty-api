@@ -9,7 +9,7 @@ class AbstractBooking(models.Model):
     mentor: Mentor
     name = models.TextField()
     email = models.EmailField()
-    description = models.TextField()
+    description = models.TextField(blank=True, default='')
     created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
@@ -54,4 +54,5 @@ class PackageBooking(AbstractBooking):
 
     @property
     def price(self):
-        return self.mentor.price * (1 - self.package.discount / 100)
+        package = self.package
+        return self.mentor.price * package.lessons_count * (1 - package.discount / 100)

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from django.utils.crypto import get_random_string
+from django.contrib.auth.hashers import make_password
 from django.utils.html import format_html
 
 from app.mentors.models import Mentor, Package
@@ -16,6 +16,7 @@ class PackageInline(admin.TabularInline):
 
 class PageInline(admin.TabularInline):
     model = PageMentors
+    raw_id_fields = ['page']
     extra = 1
 
 
@@ -45,7 +46,7 @@ class MentorAdminForm(forms.ModelForm):
         self.instance.is_verified = True
         self.instance.has_discount = True
         if not self.instance.id:
-            self.instance.set_password(f"A1{get_random_string(14)}")
+            self.instance.set_password(make_password(None))
         super().save(commit)
         return self.instance
 
@@ -90,6 +91,7 @@ class MentorAdmin(admin.ModelAdmin):
                     'experience',
                     'what_help',
                     'profession',
+                    'company',
                     'price',
                     'trial_meeting',
                 ]
@@ -112,7 +114,3 @@ class MentorAdmin(admin.ModelAdmin):
         if not obj:
             return []
         return super().get_inline_instances(request, obj)
-
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-        password_resetter.send(obj.email)

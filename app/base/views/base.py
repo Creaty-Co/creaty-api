@@ -11,6 +11,7 @@ from app.base.exceptions.handler import exception_handler
 from app.base.models.base import BaseModel
 from app.base.permissions.base import BasePermission
 from app.base.serializers.base import BaseSerializer
+from app.base.services.cache import Cacher
 from app.base.utils.common import status_by_method
 from app.base.utils.schema import extend_schema
 
@@ -27,12 +28,42 @@ class BaseView(GenericAPIView):
     permissions_map: dict[str, list[type[BasePermission]]] = {}
     throttle_map: dict[str, list[tuple[type[BaseThrottle], list[str]]]] = {}
     lookup_field = 'id'
+    use_list_cache: bool = False
+    list_cacher = Cacher('view_list', default={})
+    list_cache_timeout = 30
 
     _method = ''
 
     @property
     def method(self) -> str:
         return self.request.method.lower() if hasattr(self, 'request') else self._method
+
+    def list_cache(self, response: Response = None) -> Response:
+        if self.use_list_cache:
+            cache_key = type(self).__name__
+            request_key = self.request.query_params.urlencode()
+            cached_responses: dict = self.list_cacher.get(cache_key)
+            cached_response: dict | None = cached_responses.get(request_key)
+            if response is None:
+                if cached_response:
+                    return Response(**cached_response)
+            else:
+                self.list_cacher.set(
+                    cached_responses
+                    | {
+                        request_key: {
+                            'data': response.data,
+                            'status': response.status_code,
+                        }
+                    },
+                    cache_key,
+                    timeout=self.list_cache_timeout,
+                )
+        return response
+
+    @classmethod
+    def invalidate_list_cache(cls, **kwargs) -> None:
+        cls.list_cacher.delete(cls.__name__)
 
     @classmethod
     def _extract_serializer_class_with_status(
@@ -148,13 +179,15 @@ class BaseView(GenericAPIView):
         return self.request.data
 
     def list(self):
+        if cached_response := self.list_cache():
+            return cached_response
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+            return self.list_cache(self.get_paginated_response(serializer.data))
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        return self.list_cache(Response(serializer.data))
 
     def create(self, **kwargs):
         serializer = self.get_valid_serializer()

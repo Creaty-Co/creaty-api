@@ -11,11 +11,14 @@ services:
     ports: [ 5432:5432 ]
     volumes:
       - /home/www/creaty/db:/var/lib/postgresql/data
+      # - ../../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+
   redis:
     extends:
       file: ../docker-compose.base.yml
       service: redis
     env_file: [ ../../envs/.prod.env ]
+
   api:
     extends:
       file: ../docker-compose.base.yml
@@ -25,13 +28,13 @@ services:
     volumes:
       - api_static_volume:/api/static
     command: bash -c "
-      python manage.py migrate
-      && python manage.py collectstatic --noinput
+      python manage.py collectstatic --noinput
       && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
       && gunicorn api.wsgi -c gunicorn/config.py
       "
     networks: [ nginx_network ]
     depends_on: [ db, redis ]
+
   celery:
     extends:
       file: ../docker-compose.base.yml
@@ -39,6 +42,7 @@ services:
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.prod.env ]
     depends_on: [ api ]
+
   celery_beat:
     extends:
       file: ../docker-compose.base.yml
@@ -46,6 +50,7 @@ services:
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.prod.env ]
     depends_on: [ celery ]
+
   nginx:
     extends:
       file: ../docker-compose.base.yml
