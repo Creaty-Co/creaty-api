@@ -2,9 +2,11 @@ from django import forms
 from django.contrib import admin
 from django.db import transaction
 from django.db.models import Q
+from django.utils.html import format_html
 
+from app.base.forms.fields.image import ImageFormField
 from app.mentors.models import Mentor
-from app.pages.models import Page, PageMentors
+from app.pages.models import DocumentLink, Faq, Page, PageMentors, SocialLink
 from app.tags.admin import MentorCheckboxSelectMultiple, MultipleChoiceField
 
 
@@ -67,3 +69,34 @@ class PageAdmin(admin.ModelAdmin):
         'category__shortcut',
     ]
     filter_horizontal = ['tags']
+
+
+@admin.register(Faq)
+class FaqAdmin(admin.ModelAdmin):
+    pass
+
+
+class SocialLinkAdminForm(forms.ModelForm):
+    icon = ImageFormField()
+
+    class Meta:
+        model = SocialLink
+        fields = '__all__'
+
+
+@admin.register(SocialLink)
+class SocialLinkAdmin(admin.ModelAdmin):
+    form = SocialLinkAdminForm
+    readonly_fields = ['display_icon']
+    fields = ['display_icon', 'icon', 'url']
+
+    def display_icon(self, obj):
+        return format_html('<img src="{}" width="100"/>', obj.icon.url)
+
+
+@admin.register(DocumentLink)
+class DocumentLinkAdmin(admin.ModelAdmin):
+    fields = ['url']
+
+    def has_add_permission(self, request):
+        return False
