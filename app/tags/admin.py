@@ -7,6 +7,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.utils.html import format_html
 
+from app.base.forms.fields.image import ImageFormField
 from app.mentors.models import Mentor
 from app.pages.models import PageMentors
 from app.tags.models import Category, CategoryTag, Tag
@@ -94,6 +95,8 @@ class _BaseHasMentorFilter(admin.SimpleListFilter, ABC):
 
 
 class CategoryAdminForm(_BaseAdminForm):
+    icon = ImageFormField()
+
     class Meta:
         model = Category
         fields = '__all__'
