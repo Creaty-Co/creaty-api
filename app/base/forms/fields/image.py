@@ -17,7 +17,7 @@ class ImageFormField(SvgAndImageFormField):
         **kwargs,
     ):
         kwargs['validators'] = [
-            *kwargs['validators'],
+            *kwargs.get('validators', []),
             FileExtensionValidator(allowed_extensions),
         ]
         super().__init__(
