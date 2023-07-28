@@ -99,7 +99,6 @@ class MentorAdmin(admin.ModelAdmin):
         ),
     )
     filter_vertical = ['tags', 'languages']
-    # filter_horizontal = ['tags', 'languages']
     readonly_fields = ['avatar_image', 'url']
     search_fields = ['first_name', 'last_name']
     actions = [send_password_reset_email]
