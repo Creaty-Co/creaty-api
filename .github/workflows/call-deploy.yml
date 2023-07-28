@@ -74,6 +74,7 @@ jobs:
             "LOG_PRETTY"
             "LOG_REQUESTS"
             "LOG_LEVEL"
+            "GUNICORN_WORKERS"
           )
           vars_json='${{ toJSON(vars) }}'
           for key in "${variable_keys[@]}"; do
