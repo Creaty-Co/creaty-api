@@ -12,14 +12,20 @@ def social_link_icon_upload_to(instance, _):
 
 class SocialLink(BaseModel):
     icon = models.ImageField(upload_to=social_link_icon_upload_to)
-    url = models.TextField()
+    url = models.URLField()
 
     def save(self, **kwargs):
         super().save(**kwargs)
         if self.icon.name.split('/')[-1].rsplit('-', 1)[0] != str(self.id):
             self.icon.save(None, self.icon.file)
 
+    def __str__(self):
+        return self.url
+
 
 class DocumentLink(BaseModel):
     type = models.TextField(choices=DocumentLinkType.choices, unique=True)
-    url = models.TextField()
+    url = models.URLField()
+
+    def __str__(self):
+        return DocumentLinkType(self.type).label
