@@ -31,7 +31,8 @@ services:
     command: bash -c "
       python manage.py migrate
       && python manage.py collectstatic --noinput
-      && daphne -b 0.0.0.0 -p 8000 api.asgi:application
+      && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
+      && gunicorn api.wsgi -c gunicorn/config.py
       "
     depends_on: [ db, redis ]
 
