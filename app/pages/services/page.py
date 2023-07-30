@@ -30,7 +30,7 @@ class PageService:
         return page
 
     def _fill_random(self, page: Page) -> None:
-        raw_mentor_qs = Mentor.objects.filter(is_draft=False).order_by('?').nocache()
+        mentor_qs = Mentor.objects.filter(is_draft=False).order_by('?').nocache()
         tags_qs = (
             Tag.objects.annotate(Count('mentors'))
             .exclude(mentors__count=0)
@@ -38,13 +38,12 @@ class PageService:
             .nocache()
         )
         if page.tag is None:
-            mentor_qs = raw_mentor_qs.filter(tags__categories=page.category)
+            mentor_qs = mentor_qs.filter(tags__categories=page.category)
         else:
-            mentor_qs = raw_mentor_qs.filter(tags=page.tag)
             tags_qs = tags_qs.exclude(id=page.tag.id)
         mentors = set(mentor_qs)
         if len(mentors) < self.MENTORS_COUNT:
-            remaining_mentor_qs = raw_mentor_qs.exclude(id__in={m.id for m in mentors})
+            remaining_mentor_qs = mentor_qs.exclude(id__in={m.id for m in mentors})
             mentors |= set(remaining_mentor_qs[: self.MENTORS_COUNT - len(mentors)])
         for index, mentor in enumerate(mentors):
             PageMentors.objects.create(page=page, mentor=mentor, index=index)

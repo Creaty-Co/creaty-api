@@ -36,7 +36,7 @@ class BaseTest(APITestCase):
                     self.assertEqual(exp_value, value)
 
     def assert_list(self, exp_list: list, list_: list) -> None:
-        if exp_list[-1] is ...:
+        if exp_list and exp_list[-1] is ...:
             self.assert_list(exp_list[:-1], list_[: len(exp_list) - 1])
         else:
             self.assert_equal(len(exp_list), len(list_))
