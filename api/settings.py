@@ -17,6 +17,10 @@ from app.base.enums.currency import Currency
 from app.base.logs.configs import LogConfig
 from app.base.template.undefinable_variable import UndefinableVariable
 
+# patches
+
+__import__('api._patch_django_cleanup')
+
 # env
 
 env = environ.Env(
