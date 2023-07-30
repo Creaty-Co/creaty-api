@@ -26,9 +26,9 @@ class PageMentors(BaseModel):
 
 
 class Page(BaseModel):
-    tag = models.ForeignKey('tags.Tag', models.CASCADE, 'pages', blank=True, null=True)
-    category = models.ForeignKey(
-        'tags.Category', models.CASCADE, 'pages', blank=True, null=True
+    tag = models.OneToOneField('tags.Tag', models.CASCADE, blank=True, null=True)
+    category = models.OneToOneField(
+        'tags.Category', models.CASCADE, blank=True, null=True
     )
     mentors = models.ManyToManyField('mentors.Mentor', 'pages', through=PageMentors)
     tags = models.ManyToManyField('tags.Tag', 'pages_by_tags')
@@ -39,11 +39,6 @@ class Page(BaseModel):
             raise ValidationError(
                 "This page has a tag and a category set at the same time"
             )
-        from app.pages.services.page import PageService
-
-        max_tags = PageService.MAX_TAGS_COUNT
-        if self.id is not None and self.tags.count() > max_tags:
-            raise ValidationError(f"There can be no more tags {max_tags}")
 
     def __str__(self):
         return f"Page: {self.tag or self.category or 'main'}"
