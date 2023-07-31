@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib import admin
-from django.contrib.auth.hashers import make_password
 from django.utils.html import format_html
 
 from app.mentors.models import Mentor, Package
@@ -46,7 +45,7 @@ class MentorAdminForm(forms.ModelForm):
         self.instance.is_verified = True
         self.instance.has_discount = True
         if not self.instance.id:
-            self.instance.set_password(make_password(None))
+            self.instance.set_password(None)
         super().save(commit)
         return self.instance
 
