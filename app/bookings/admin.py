@@ -3,7 +3,8 @@ from django.forms import TextInput
 from django.utils import timezone
 from django.utils.html import format_html
 
-from .models import HourlyBooking, PackageBooking, TrialBooking
+from ..users.models import User
+from .models import AbstractBooking, HourlyBooking, PackageBooking, TrialBooking
 
 
 class CreatedAtFilter(admin.SimpleListFilter):
@@ -22,11 +23,22 @@ class CreatedAtFilter(admin.SimpleListFilter):
 class _BaseBookingAdmin(admin.ModelAdmin):
     search_fields = ['name', 'email']
     list_filter = ['mentor', CreatedAtFilter]
-    readonly_fields = ['mentor_url']
+    readonly_fields = ['mentor_url', 'has_discount']
 
-    def mentor_url(self, obj):
+    def mentor_url(self, obj: AbstractBooking):
         mentor = obj.mentor
         return format_html('<a href="{}">{}</a>', mentor.url, mentor.url)
+
+    def has_discount(self, obj: AbstractBooking):
+        try:
+            return User.objects.get(email=obj.email).has_discount
+        except User.DoesNotExist:
+            return False
+
+    has_discount.boolean = True
+
+    def _get_price(self, obj: AbstractBooking):
+        return obj.price
 
     def formfield_for_dbfield(self, db_field, **kwargs):
         formfield = super().formfield_for_dbfield(db_field, **kwargs)
@@ -47,8 +59,8 @@ class HourlyBookingAdmin(_BaseBookingAdmin):
     list_display = ['name', 'email', 'mentor_url']
     readonly_fields = _BaseBookingAdmin.readonly_fields + ['price']
 
-    def price(self, obj):
-        return obj.price
+    def price(self, obj: AbstractBooking):
+        return self._get_price(obj)
 
 
 @admin.register(PackageBooking)
@@ -56,5 +68,5 @@ class PackageBookingAdmin(_BaseBookingAdmin):
     list_display = ['name', 'email', 'mentor_url', 'package']
     readonly_fields = _BaseBookingAdmin.readonly_fields + ['discounted_price']
 
-    def discounted_price(self, obj):
-        return obj.price
+    def discounted_price(self, obj: AbstractBooking):
+        return self._get_price(obj)
