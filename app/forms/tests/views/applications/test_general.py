@@ -19,7 +19,7 @@ class FormsApplicationsTest(BaseViewTest):
     @parameterized.expand(
         [(choice, choice != FormType.STILL_QUESTIONS) for choice in FormType]
     )
-    def test_post(self, form_type: FormType, expects_emails: bool):
+    def test_post(self, form_type: FormType, is_expects_emails: bool):
         self.form = FormFactory(type=form_type)
         operator = UserFactory()
         operator.groups.add(GroupFactory(name='operator'))
@@ -33,13 +33,9 @@ class FormsApplicationsTest(BaseViewTest):
         }
         self._test('post', data=data)
         self.assert_model(Application, {'form': self.form.id, **data})
-        if expects_emails:
-            self.assert_equal(
-                {
-                    lambda message: self.assert_equal(message.to, [email]),
-                    lambda message: self.assert_equal(message.to, [operator.email]),
-                },
-                set(mail.outbox),
-            )
-        else:
-            self.assert_equal(0, len(mail.outbox))
+        expected_emails = {
+            lambda message: self.assert_equal(message.to, [operator.email])
+        }
+        if is_expects_emails:
+            expected_emails.add(lambda message: self.assert_equal(message.to, [email]))
+        self.assert_equal(expected_emails, set(mail.outbox))
