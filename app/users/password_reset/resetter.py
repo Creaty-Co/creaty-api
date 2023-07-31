@@ -22,7 +22,7 @@ class PasswordResetter:
         return (
             self.mentor_verifier
             if user.is_mentor
-            and not is_password_usable(user.password)
+            and is_password_usable(user.password)
             and not user.social_auth.exists()
             else self.user_verifier
         )
