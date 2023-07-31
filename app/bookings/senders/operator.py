@@ -6,7 +6,7 @@ from app.base.services.email.senders.base import BaseEmailSender
 from app.bookings.models import AbstractBooking
 
 
-class AdminBookingSender(BaseEmailSender):
+class OperatorBookingSender(BaseEmailSender):
     class ContextDict(BaseEmailSender.ContextDict):
         booking: AbstractBooking
         deadline: datetime

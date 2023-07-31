@@ -45,16 +45,16 @@ class TrialBookingAdmin(_BaseBookingAdmin):
 @admin.register(HourlyBooking)
 class HourlyBookingAdmin(_BaseBookingAdmin):
     list_display = ['name', 'email', 'mentor_url']
-    readonly_fields = ['price']
+    readonly_fields = _BaseBookingAdmin.readonly_fields + ['price']
 
     def price(self, obj):
-        return obj.mentor.price
+        return obj.price
 
 
 @admin.register(PackageBooking)
 class PackageBookingAdmin(_BaseBookingAdmin):
     list_display = ['name', 'email', 'mentor_url', 'package']
-    readonly_fields = ['discounted_price']
+    readonly_fields = _BaseBookingAdmin.readonly_fields + ['discounted_price']
 
     def discounted_price(self, obj):
-        return obj.mentor.price * (1 - obj.package.discount / 100)
+        return obj.price
