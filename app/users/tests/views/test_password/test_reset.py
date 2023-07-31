@@ -16,6 +16,11 @@ from app.users.tests.factories import UserFactory
 
 
 class UsersPasswordResetTest(BaseViewTest):
+    USER_RESET_PASSWORD_LINK_REGEX = r"https://.+/reset-password/{code}"
+    MENTOR_RESET_PASSWORD_LINK_REGEX = (
+        r"https://.+/reset-password/{code}\?first_name=.+"
+    )
+
     path = '/users/password/reset/'
 
     me_data = None
@@ -35,15 +40,17 @@ class UsersPasswordResetTest(BaseViewTest):
 
     def test_post_user(self):
         user = UserFactory()
-        link_regex = r"https://.+/reset-password/{code}"
-        self._test_post(user, link_regex)
+        self._test_post(user, self.USER_RESET_PASSWORD_LINK_REGEX)
 
-    def test_post_mentor(self):
-        mentor = MentorFactory().user_ptr
+    def test_post_mentor_with_password(self):
+        mentor = MentorFactory()
+        self._test_post(mentor, self.USER_RESET_PASSWORD_LINK_REGEX)
+
+    def test_post_mentor_without_password(self):
+        mentor = MentorFactory()
         mentor.set_password(None)
         mentor.save()
-        link_regex = r"https://.+/reset-password/{code}\?first_name=.+"
-        self._test_post(mentor, link_regex)
+        self._test_post(mentor, self.MENTOR_RESET_PASSWORD_LINK_REGEX)
 
     def test_post_warn_404(self):
         email = fake.email()
