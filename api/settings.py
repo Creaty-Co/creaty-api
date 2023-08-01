@@ -232,7 +232,7 @@ try:
     vars().update(
         env.email('EMAIL_URL', backend='djcelery_email.backends.CeleryEmailBackend')
     )
-    DEFAULT_FROM_EMAIL = f'"Creaty Co." <{EMAIL_HOST_USER}>'
+    DEFAULT_FROM_EMAIL = f'"Creaty.club" <{EMAIL_HOST_USER}>'
 except environ.ImproperlyConfigured:
     pass
 
