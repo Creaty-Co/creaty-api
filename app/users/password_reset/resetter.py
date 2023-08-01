@@ -37,7 +37,11 @@ class PasswordResetter:
         if not email:
             raise PUTUsersPasswordResetSerializer.WARNINGS[408]
         user = self.user_manager.get(email=email)
+        will_notify = True
+        if self._get_verifier(user) is self.mentor_verifier:
+            will_notify = False
         user.set_password(password)
         user.save()
-        self.confirm_notifier.notify_users([user])
+        if will_notify:
+            self.confirm_notifier.notify_users([user])
         return user
