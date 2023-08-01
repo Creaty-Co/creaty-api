@@ -42,7 +42,7 @@ sentry-sdk==1.28.1
 py-moneyed==2.0
 daphne==4.0.0
 Twisted[http2]==22.10.0
-gunicorn==21.1.0
+gunicorn==21.2.0
 requests==2.31.0
 toml==0.10.2
 tablib[xlsx]==3.5.0
