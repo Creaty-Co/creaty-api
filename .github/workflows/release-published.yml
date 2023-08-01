@@ -5,20 +5,14 @@ on:
     types: [ published ]
 
 jobs:
-  build:
-    if: "!github.event.release.prerelease"
-    uses: ./.github/workflows/call-build.yml
-    secrets: inherit
-    with:
-      tag: ${{ github.ref_name }}
   deploy:
+    if: "!github.event.release.prerelease"
     uses: ./.github/workflows/call-deploy.yml
     with:
       environment: prod
       url: 'https://creaty.club'
       tag: ${{ github.ref_name }}
     secrets: inherit
-    needs: [ build ]
   sentry_release:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
