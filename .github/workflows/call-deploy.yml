@@ -13,6 +13,9 @@ on:
         type: string
         required: false
         default: 'latest'
+      web_tag:
+        type: string
+        required: false
   workflow_dispatch:
     inputs:
       environment:
@@ -22,6 +25,9 @@ on:
         type: string
         required: false
         default: 'latest'
+      web_tag:
+        type: string
+        required: false
 
 jobs:
   get_commit_title:
@@ -127,9 +133,12 @@ jobs:
       - name: Pull images
         run: |
           cd ~/creaty/${{ inputs.environment }}
-          export TAG=${{ inputs.tag }}
-          docker-compose -f docker/${{ inputs.environment }}/docker-compose.yml pull api
-          docker pull ghcr.io/creaty-co/creaty-web/web:${{ inputs.tag }}
+          web_tag = ${{ inputs.web_tag }}
+          if [[ -z "$web_tag" ]]; then
+            web_tag=${{ inputs.tag }}
+          fi
+          docker pull ghcr.io/creaty-co/creaty-web/web:$web_tag
+          docker pull ghcr.io/creaty-co/creaty-api/api:${{ inputs.tag }}
       - name: Up docker compose
         run: |
           cd ~/creaty/${{ inputs.environment }}

@@ -17,6 +17,7 @@ jobs:
       environment: stage
       url: 'https://stage.creaty.club'
       tag: ${{ github.ref_name }}
+      web_tag: pre-${{ github.ref_name }}
     secrets: inherit
     needs: [ build ]
   sentry_release:
