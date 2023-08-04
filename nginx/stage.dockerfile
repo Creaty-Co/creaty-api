@@ -1,6 +1,6 @@
 ARG TAG
 
-FROM ghcr.io/creaty-co/creaty-web/web:$TAG as web
+FROM ghcr.io/creaty-co/creaty-web/web:pre-$TAG as web
 
 FROM nginx:1.23.3 as nginx
 

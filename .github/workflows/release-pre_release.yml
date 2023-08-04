@@ -23,6 +23,6 @@ jobs:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
       environment: stage
-      version: ${{ github.ref_name }}
+      version: pre-${{ github.ref_name }}
     secrets: inherit
     needs: [ deploy ]
