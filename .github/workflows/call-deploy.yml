@@ -133,7 +133,7 @@ jobs:
       - name: Pull images
         run: |
           cd ~/creaty/${{ inputs.environment }}
-          web_tag = ${{ inputs.web_tag }}
+          web_tag='${{ inputs.web_tag }}'
           if [[ -z "$web_tag" ]]; then
             web_tag=${{ inputs.tag }}
           fi
