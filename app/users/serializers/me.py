@@ -10,6 +10,7 @@ class GETUsersMeSerializer(BaseModelSerializer):
             'email',
             'first_name',
             'last_name',
+            'avatar',
             'has_discount',
             'is_verified',
             'is_staff',
