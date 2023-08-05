@@ -1,4 +1,4 @@
-name: "Release: pre release"
+name: "Release: published"
 
 on:
   release:
@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-    if: "github.event.release.prerelease"
     uses: ./.github/workflows/call-build.yml
     secrets: inherit
     with:
