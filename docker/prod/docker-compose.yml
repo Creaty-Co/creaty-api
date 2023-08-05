@@ -42,6 +42,7 @@ services:
       service: celery
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.prod.env ]
+    command: celery -A api worker -c 4 -P gevent -l info
     depends_on: [ api ]
 
   celery_beat:
