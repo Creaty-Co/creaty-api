@@ -5,18 +5,8 @@ on:
     types: [ edited ]
 
 jobs:
-  print:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo ${{ github.event.release }}
-          echo ${{ github.event.release.latest }}
-          echo ${{ github.event.release.is_latest }}
-          echo ${{ github.event.release.isLatest }}
-          echo ${{ github.event.release.prerelease }}
-          echo ${{ github.event.release.isPrerelease }}
   deploy:
-    if: "github.event.release.is_latest"
+    if: "!github.event.release.prerelease"
     uses: ./.github/workflows/call-deploy.yml
     with:
       environment: prod
