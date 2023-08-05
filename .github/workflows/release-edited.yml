@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    if: "github.event.release.latest"
+    if: "github.event.release.is_latest"
     uses: ./.github/workflows/call-deploy.yml
     with:
       environment: prod
