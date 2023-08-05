@@ -1,12 +1,12 @@
-name: "Release: published"
+name: "Release: edited"
 
 on:
   release:
-    types: [ published ]
+    types: [ edited ]
 
 jobs:
   deploy:
-    if: "!github.event.release.prerelease"
+    if: "github.event.release.latest"
     uses: ./.github/workflows/call-deploy.yml
     with:
       environment: prod
