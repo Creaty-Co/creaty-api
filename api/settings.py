@@ -225,14 +225,11 @@ EMAIL_PORT: int
 EMAIL_USE_SSL: bool
 EMAIL_HOST_USER: str | None = None
 EMAIL_HOST_PASSWORD: str
-EMAIL_BACKEND: str
-DEFAULT_FROM_EMAIL: str
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+DEFAULT_FROM_EMAIL = f'"Creaty.club" <{EMAIL_HOST_USER}>'
 
 try:
-    vars().update(
-        env.email('EMAIL_URL', backend='djcelery_email.backends.CeleryEmailBackend')
-    )
-    DEFAULT_FROM_EMAIL = f'"Creaty.club" <{EMAIL_HOST_USER}>'
+    vars().update(env.email('EMAIL_URL'))
 except environ.ImproperlyConfigured:
     pass
 
@@ -338,7 +335,7 @@ if (SENTRY_DSN := env('SENTRY_DSN')) is not None:
         traces_sampler=_traces_sampler,
         attach_stacktrace=True,
         send_default_pii=True,
-        request_bodies='always',
+        max_request_body_size='always',
         _experiments={'profiles_sample_rate': 1},
     )
 

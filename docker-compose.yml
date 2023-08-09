@@ -23,7 +23,7 @@ services:
       service: api
     build:
       context: .
-    ports: [ 8000:8000 ]
+    ports: [ 8100:8000 ]
     networks: [ nginx_network ]
     volumes:
       - media_volume:/api/media
