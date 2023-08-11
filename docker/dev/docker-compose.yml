@@ -75,6 +75,8 @@ services:
       file: ../docker-compose.base.yml
       service: cal-web
     env_file: [ ../../envs/.dev.env ]
+    environment:
+      DATABASE_URL: postgresql://pg:password@cal-db:5432/db
     depends_on: [ cal-db ]
 
   cal-api:
@@ -83,6 +85,8 @@ services:
       file: ../docker-compose.base.yml
       service: cal-api
     env_file: [ ../../envs/.dev.env ]
+    environment:
+      DATABASE_URL: postgresql://pg:password@cal-db:5432/db
     depends_on: [ cal-db ]
 
 volumes:
