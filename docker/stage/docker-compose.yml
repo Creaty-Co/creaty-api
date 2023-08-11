@@ -2,10 +2,10 @@ version: '3.9'
 
 services:
   db:
+    container_name: stage-db
     extends:
       file: ../docker-compose.base.yml
       service: db
-    container_name: stage-db
     build:
       context: ../../db
     env_file: [ ../../envs/.stage.env ]
@@ -15,70 +15,63 @@ services:
       - ../../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
 
   redis:
+    container_name: stage-redis
     extends:
       file: ../docker-compose.base.yml
       service: redis
-    container_name: stage-redis
 
   api:
+    container_name: stage-api
     extends:
       file: ../docker-compose.base.yml
       service: api
-    container_name: stage-api
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.stage.env ]
     volumes:
-      - api_static_volume:/api/static
-    command: bash -c "
-      python manage.py migrate
-      && python manage.py collectstatic --noinput
-      && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
-      && gunicorn api.wsgi -c gunicorn/config.py
-      "
-    networks: [ nginx_network ]
+      - static_volume:/api/static
+    networks: [ api_network ]
     depends_on: [ db, redis ]
 
   celery:
+    container_name: stage-celery
     extends:
       file: ../docker-compose.base.yml
       service: celery
-    container_name: stage-celery
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.stage.env ]
     depends_on: [ api ]
 
-  celery_beat:
+  cbeat:
+    container_name: stage-cbeat
     extends:
       file: ../docker-compose.base.yml
-      service: celery_beat
-    container_name: stage-celery_beat
+      service: cbeat
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.stage.env ]
     depends_on: [ celery ]
 
   nginx:
+    container_name: stage-nginx
     extends:
       file: ../docker-compose.base.yml
       service: nginx
-    container_name: stage-nginx
     build:
       dockerfile: ../nginx/stage.dockerfile
       args: [ TAG ]
     env_file: [ ../../envs/.stage.env ]
     ports: [ 443:443 ]
     volumes:
-      - api_static_volume:/etc/nginx/html/api/static
+      - static_volume:/etc/nginx/html/api/static
     networks: [ proxy_network ]
     depends_on: [ api ]
 
 volumes:
   db_volume:
   profiles_volume:
-  api_static_volume:
-  api_media_volume:
+  static_volume:
 
 networks:
   db_network:
   redis_network:
-  nginx_network:
+  api_network:
   proxy_network:

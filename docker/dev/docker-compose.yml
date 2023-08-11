@@ -2,10 +2,10 @@ version: '3.9'
 
 services:
   db:
+    container_name: dev-db
     extends:
       file: ../docker-compose.base.yml
       service: db
-    container_name: dev-db
     build:
       context: ../../db
     env_file: [ ../../envs/.dev.env ]
@@ -15,68 +15,89 @@ services:
       - ../../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
 
   redis:
+    container_name: dev-redis
     extends:
       file: ../docker-compose.base.yml
       service: redis
-    container_name: dev-redis
 
   api:
+    container_name: dev-api
     extends:
       file: ../docker-compose.base.yml
       service: api
-    container_name: dev-api
     image: ${API_IMAGE}
     env_file: [ ../../envs/.dev.env ]
     volumes:
-      - api_static_volume:/api/static
-    command: bash -c "
-      python manage.py migrate
-      && python manage.py collectstatic --noinput
-      && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
-      && gunicorn api.wsgi -c gunicorn/config.py
-      "
-    networks: [ nginx_network ]
+      - static_volume:/api/static
+    networks: [ api_network, cal-api_network ]
     depends_on: [ db, redis ]
 
   celery:
+    container_name: dev-celery
     extends:
       file: ../docker-compose.base.yml
       service: celery
-    container_name: dev-celery
     image: ${API_IMAGE}
     env_file: [ ../../envs/.dev.env ]
     depends_on: [ api ]
 
-  celery_beat:
+  cbeat:
+    container_name: dev-cbeat
     extends:
       file: ../docker-compose.base.yml
-      service: celery_beat
-    container_name: dev-celery_beat
+      service: cbeat
     image: ${API_IMAGE}
     env_file: [ ../../envs/.dev.env ]
     depends_on: [ celery ]
 
   nginx:
+    container_name: dev-nginx
     extends:
       file: ../docker-compose.base.yml
       service: nginx
-    container_name: dev-nginx
     build:
       dockerfile: ../nginx/dev.dockerfile
     env_file: [ ../../envs/.dev.env ]
     volumes:
-      - api_static_volume:/etc/nginx/html/api/static
-    networks: [ proxy_network ]
+      - static_volume:/etc/nginx/html/api/static
+    networks: [ cal-web_network, proxy_network ]
     depends_on: [ api ]
+
+  cal-db:
+    container_name: dev-cal-db
+    extends:
+      file: ../docker-compose.base.yml
+      service: cal-db
+    env_file: [ ../../envs/.dev.env ]
+
+  cal-web:
+    container_name: dev-cal-web
+    extends:
+      file: ../docker-compose.base.yml
+      service: cal-web
+    env_file: [ ../../envs/.dev.env ]
+    depends_on: [ cal-db ]
+
+  cal-api:
+    container_name: dev-cal-api
+    extends:
+      file: ../docker-compose.base.yml
+      service: cal-api
+    env_file: [ ../../envs/.dev.env ]
+    depends_on: [ cal-db ]
 
 volumes:
   db_volume:
-  api_static_volume:
+  static_volume:
+  cal-db_volume:
 
 networks:
   db_network:
   redis_network:
-  nginx_network:
+  api_network:
+  cal-db_network:
+  cal-web_network:
+  cal-api_network:
   proxy_network:
     name: stage_proxy_network
     external: true
