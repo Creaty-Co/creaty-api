@@ -63,6 +63,7 @@ jobs:
           variable_keys=(
             "DEV_API_DOMAIN"
             "DEV_WEB_DOMAIN"
+            "DEV_CAL_DOMAIN"
             "WEB_DOMAIN"
             "API_DOMAIN"
             "DEBUG"
