@@ -26,14 +26,8 @@ services:
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.prod.env ]
     volumes:
-      - api_static_volume:/api/static
-    command: bash -c "
-      python manage.py migrate
-      && python manage.py collectstatic --noinput
-      && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
-      && gunicorn api.wsgi -c gunicorn/config.py
-      "
-    networks: [ nginx_network ]
+      - static_volume:/api/static
+    networks: [ api_network ]
     depends_on: [ db, redis ]
 
   celery:
@@ -42,13 +36,16 @@ services:
       service: celery
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.prod.env ]
-    command: celery -A api worker -c 4 -P gevent -l info
+    command: bash -c "
+      sleep 10
+      && celery -A api worker -c 4 -P gevent -l info
+      "
     depends_on: [ api ]
 
-  celery_beat:
+  cbeat:
     extends:
       file: ../docker-compose.base.yml
-      service: celery_beat
+      service: cbeat
     image: ${API_IMAGE}:${TAG}
     env_file: [ ../../envs/.prod.env ]
     depends_on: [ celery ]
@@ -63,13 +60,13 @@ services:
     env_file: [ ../../envs/.prod.env ]
     ports: [ 80:80, 443:443 ]
     volumes:
-      - api_static_volume:/etc/nginx/html/api/static
+      - static_volume:/etc/nginx/html/api/static
     depends_on: [ api ]
 
 volumes:
-  api_static_volume:
+  static_volume:
 
 networks:
   db_network:
   redis_network:
-  nginx_network:
+  api_network:

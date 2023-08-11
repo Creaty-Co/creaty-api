@@ -3,10 +3,10 @@ version: '3.9'
 services:
   db:
     container_name: db
-    env_file: [ ../envs/.base.env ]
     environment:
-      - POSTGRES_USER=pg
-      - POSTGRES_DB=db
+      POSTGRES_USER: pg
+      POSTGRES_DB: db
+    env_file: [ ../envs/.base.env ]
     networks: [ db_network ]
     restart: unless-stopped
 
@@ -20,6 +20,12 @@ services:
 
   api:
     container_name: api
+    command: bash -c "
+      python manage.py migrate
+      && python manage.py collectstatic --noinput
+      && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
+      && gunicorn api.wsgi -c gunicorn/config.py
+      "
     env_file: [ ../envs/.base.env ]
     networks: [ db_network, redis_network ]
     restart: unless-stopped
@@ -28,24 +34,73 @@ services:
     container_name: celery
     extends:
       service: api
-    env_file: [ ../envs/.base.env ]
-    command: celery -A api worker -c 2 -P gevent -l info
-    restart: unless-stopped
+    command: bash -c "
+      sleep 10
+      && celery -A api worker -c 2 -P gevent -l info
+      "
 
-  celery_beat:
-    container_name: celery_beat
+  cbeat:
+    container_name: cbeat
     extends:
       service: api
-    env_file: [ ../envs/.base.env ]
-    command: celery -A api beat -S django -l info
-    restart: unless-stopped
+    command: bash -c "
+      sleep 10
+      && celery -A api beat -S django -l info
+      "
 
   nginx:
     container_name: nginx
     build:
       context: ../nginx
+    environment:
+      NGINX_ENVSUBST_TEMPLATE_SUFFIX: .conf
+    env_file: [ ../envs/.base.env ]
+    networks: [ api_network ]
+    restart: unless-stopped
+
+  cal-db:
+    container_name: cal-db
+    image: postgres:15.3
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: pg
+      POSTGRES_PASSWORD: password
+    volumes:
+      - cal-db_volume:/var/lib/postgresql/data/
+    networks: [ cal-db_network ]
+    restart: unless-stopped
+
+  cal-web:
+    container_name: cal-web
+    image: calcom/cal.com:v3.1.5
     env_file: [ ../envs/.base.env ]
     environment:
-      - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.conf
-    networks: [ nginx_network ]
+      DATABASE_URL: postgresql://pg:password@cal-db:5432/db
+    networks: [ cal-db_network, cal-web_network ]
     restart: unless-stopped
+
+  cal-api:
+    container_name: cal-api
+    image: calcom/cal.com:v3.1.5
+    env_file: [ ../envs/.base.env ]
+    environment:
+      DATABASE_URL: postgresql://pg:password@cal-db:5432/db
+      NEXT_PUBLIC_WEBAPP_URL: http://cal-api:3000
+      NEXT_AUTH_URL: http://cal-api:3000/api/auth
+    networks: [ cal-db_network, cal-api_network ]
+    restart: unless-stopped
+
+volumes:
+  db_volume:
+  redis_volume:
+  media_volume:
+  api_static_volume:
+  cal-db_volume:
+
+networks:
+  db_network:
+  redis_network:
+  api_network:
+  cal-db_network:
+  cal-web_network:
+  cal-api_network:

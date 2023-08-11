@@ -2,25 +2,27 @@ version: '3.9'
 
 services:
   db:
+    container_name: test-db
     extends:
       file: ../docker-compose.base.yml
       service: db
-    container_name: test-db
     image: postgres:15.3
     env_file: [ ../../envs/.test.env ]
+    restart: 'no'
 
   redis:
+    container_name: test-redis
     extends:
       file: ../docker-compose.base.yml
       service: redis
-    container_name: test-redis
     env_file: [ ../../envs/.test.env ]
+    restart: 'no'
 
   api:
+    container_name: test-api
     extends:
       file: ../docker-compose.base.yml
       service: api
-    container_name: test-api
     build:
       context: ../..
     env_file: [ ../../envs/.test.env ]
