@@ -81,12 +81,17 @@ jobs:
             "LOG_REQUESTS"
             "LOG_LEVEL"
             "GUNICORN_WORKERS"
+            "CAL_DOMAIN"
           )
           vars_json='${{ toJSON(vars) }}'
           for key in "${variable_keys[@]}"; do
             value=$(echo $vars_json | jq -r --arg key "$key" '.[$key]')
             if [ "$value" != "null" ]; then
               echo $key=$value >> $env_filename
+              if [ "$key" == "CAL_DOMAIN" ]; then
+                echo NEXT_PUBLIC_WEBAPP_URL=https://$value >> $env_filename
+                echo NEXT_AUTH_URL=https://$value/api/auth >> $env_filename
+              fi
             fi
           done
       - name: Set secrets
@@ -100,6 +105,8 @@ jobs:
           GOOGLE_APP_ID: ${{ secrets.GOOGLE_APP_ID }}
           GOOGLE_APP_SECRET: ${{ secrets.GOOGLE_APP_SECRET }}
           FIXER_ACCESS_KEY: ${{ secrets.FIXER_ACCESS_KEY }}
+          NEXT_AUTH_SECRET: ${{ secrets.NEXT_AUTH_SECRET }}
+          CALENDSO_ENCRYPTION_KEY: ${{ secrets.CALENDSO_ENCRYPTION_KEY }}
         run: |
           cd ~/creaty/${{ inputs.environment }}
           secret_keys=(
@@ -110,6 +117,8 @@ jobs:
             "POSTGRES_PASSWORD"
             "GOOGLE_APP_SECRET"
             "FIXER_ACCESS_KEY"
+            "NEXT_AUTH_SECRET"
+            "CALENDSO_ENCRYPTION_KEY"
           )
           for key in ${secret_keys[@]}; do
             value=$(echo "${!key}")
