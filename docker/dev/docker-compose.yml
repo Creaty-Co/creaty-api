@@ -68,7 +68,6 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: cal-db
-    env_file: [ ../../envs/.dev.env ]
 
   cal-web:
     container_name: dev-cal-web
