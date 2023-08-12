@@ -24,7 +24,7 @@ services:
     build:
       context: .
     ports: [ 8100:8000 ]
-    networks: [ api_network ]
+    networks: [ api_network, cal-api_network ]
     volumes:
       - media_volume:/api/media
       - static_volume:/api/static
@@ -62,6 +62,7 @@ services:
     extends:
       file: docker/docker-compose.base.yml
       service: cal-db
+    ports: [ 54321:5432 ]
 
   cal-web:
     extends:

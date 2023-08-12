@@ -115,12 +115,11 @@ INSTALLED_APPS = [
     'app.mailings',
     'app.pages',
     'app.bookings',
+    'app.calcom',
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
-        'app.base.renderers.ORJSONRenderer',
-    ],
+    'DEFAULT_RENDERER_CLASSES': ['app.base.renderers.ORJSONRenderer'],
     'DEFAULT_PARSER_CLASSES': [
         'app.base.parsers.ORJSONParser',
         'rest_framework.parsers.FormParser',
@@ -173,7 +172,7 @@ TEMPLATES = [
             ],
             'string_if_invalid': UndefinableVariable('%s'),
         },
-    },
+    }
 ]
 
 # allow
@@ -324,10 +323,7 @@ if (SENTRY_DSN := env('SENTRY_DSN')) is not None:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[
-            LoggingIntegration(
-                level=logging.DEBUG,
-                event_level=logging.ERROR,
-            ),
+            LoggingIntegration(level=logging.DEBUG, event_level=logging.ERROR),
             DjangoIntegration(),
             RedisIntegration(),
         ],
