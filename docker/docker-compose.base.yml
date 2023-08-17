@@ -76,6 +76,8 @@ services:
     env_file: [ ../envs/.base.env ]
     environment:
       DATABASE_URL: postgresql://pg:password@cal-db:5432/db
+      NEXT_PUBLIC_LICENSE_CONSENT: agree
+      LICENSE: agree
     networks: [ cal-db_network, cal-web_network ]
     restart: unless-stopped
 
@@ -87,6 +89,8 @@ services:
       DATABASE_URL: postgresql://pg:password@cal-db:5432/db
       NEXT_PUBLIC_WEBAPP_URL: http://cal-api:3000
       NEXT_AUTH_URL: http://cal-api:3000/api/auth
+      NEXT_PUBLIC_LICENSE_CONSENT: agree
+      LICENSE: agree
     networks: [ cal-db_network, cal-api_network ]
     restart: unless-stopped
 
