@@ -29,7 +29,7 @@ services:
     env_file: [ ../../envs/.dev.env ]
     volumes:
       - static_volume:/api/static
-    networks: [ api_network, cal-api_network ]
+    networks: [ api_network, cal-api_network, proxy_api_network ]
     depends_on: [ db, redis ]
 
   celery:
@@ -103,4 +103,7 @@ networks:
   cal-api_network:
   proxy_network:
     name: stage_proxy_network
+    external: true
+  proxy_api_network:
+    name: stage_proxy_api_network
     external: true
