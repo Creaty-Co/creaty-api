@@ -224,13 +224,14 @@ EMAIL_PORT: int
 EMAIL_USE_SSL: bool
 EMAIL_HOST_USER: str | None = None
 EMAIL_HOST_PASSWORD: str
-EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
-DEFAULT_FROM_EMAIL = f'"Creaty.club" <{EMAIL_HOST_USER}>'
 
 try:
     vars().update(env.email('EMAIL_URL'))
 except environ.ImproperlyConfigured:
     pass
+
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+DEFAULT_FROM_EMAIL = f'"Creaty.club" <{EMAIL_HOST_USER}>'
 
 # celery_email
 
