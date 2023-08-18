@@ -24,6 +24,15 @@ services:
       file: ../docker-compose.base.yml
       service: api
     image: ${API_IMAGE}:${TAG}
+    command: bash -c "
+      python manage.py migrate
+      && python manage.py collectstatic --noinput
+      && (
+      python manage.py update_locales --base_url=https://stage-api.creaty.club
+      || true
+      ) && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
+      && gunicorn api.wsgi -c gunicorn/config.py
+      "
     env_file: [ ../../envs/.prod.env ]
     volumes:
       - static_volume:/api/static
