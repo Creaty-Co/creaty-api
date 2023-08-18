@@ -6,17 +6,13 @@ from app.pages.models import Locale
 
 def synchronize_dicts(source_dict: dict, target_dict: dict) -> dict:
     for key, value in source_dict.items():
-        if isinstance(value, dict) and isinstance(target_dict.get(key), dict):
-            synchronize_dicts(value, target_dict[key])
-        else:
+        if key not in target_dict:
             target_dict[key] = value
+        elif isinstance(value, dict) and isinstance(target_dict.get(key), dict):
+            synchronize_dicts(value, target_dict[key])
     for key in list(target_dict.keys()):
         if key not in source_dict:
             del target_dict[key]
-        elif isinstance(target_dict[key], dict) and isinstance(
-            source_dict.get(key), dict
-        ):
-            synchronize_dicts(source_dict[key], target_dict[key])
     return target_dict
 
 
