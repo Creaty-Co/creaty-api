@@ -6,7 +6,7 @@ services:
       file: docker/docker-compose.base.yml
       service: db
     image: postgres:15.3
-    ports: [ 54320:5432 ]
+    ports: [ 5433:5432 ]
     volumes:
       - db_volume:/var/lib/postgresql/data
 
@@ -77,12 +77,31 @@ services:
     ports: [ 3000:3000 ]
     depends_on: [ cal-db ]
 
+  elasticsearch:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: elasticsearch
+
+  logstash:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: logstash
+    depends_on: [ elasticsearch ]
+
+  kibana:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: kibana
+    depends_on: [ elasticsearch ]
+
 volumes:
   db_volume:
   redis_volume:
   media_volume:
   static_volume:
+  nginx_logs_volume:
   cal-db_volume:
+  elastic_volume:
 
 networks:
   db_network:
@@ -91,3 +110,4 @@ networks:
   cal-db_network:
   cal-web_network:
   cal-api_network:
+  elastic_network:

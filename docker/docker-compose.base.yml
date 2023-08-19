@@ -55,6 +55,8 @@ services:
     environment:
       NGINX_ENVSUBST_TEMPLATE_SUFFIX: .conf
     env_file: [ ../envs/.base.env ]
+    volumes:
+      - nginx_logs_volume:/var/log/nginx
     networks: [ api_network ]
     restart: unless-stopped
 
@@ -94,11 +96,43 @@ services:
     networks: [ cal-db_network, cal-api_network ]
     restart: unless-stopped
 
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.0
+    environment:
+      ELASTIC_PASSWORD: password
+      node.name: elasticsearch
+      discovery.type: single-node
+      xpack.security.http.ssl.enabled: false
+      xpack.security.enabled: false
+    volumes:
+      - elastic_volume:/usr/share/elasticsearch/data
+    networks: [ elastic_network ]
+
+  logstash:
+    container_name: logstash
+    image: docker.elastic.co/logstash/logstash:8.9.0
+    volumes:
+      - nginx_logs_volume:/var/log/nginx
+      - ../logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    networks: [ elastic_network ]
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.9.0
+    environment:
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+      ELASTICSEARCH_PASSWORD: password
+    networks: [ elastic_network ]
+    ports:
+      - 5601:5601
+
 volumes:
   db_volume:
   redis_volume:
   media_volume:
   api_static_volume:
+  nginx_logs_volume:
   cal-db_volume:
 
 networks:
@@ -108,3 +142,4 @@ networks:
   cal-db_network:
   cal-web_network:
   cal-api_network:
+  elastic_network:
