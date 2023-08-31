@@ -34,7 +34,7 @@ psycopg==3.1.10
 redis==5.0.0
 Pillow==10.0.0
 whitenoise==6.5.0
-celery==5.3.1
+celery==5.3.3
 gevent==23.7.0
 argon2-cffi==23.1.0
 pydantic[email]==2.3.0
