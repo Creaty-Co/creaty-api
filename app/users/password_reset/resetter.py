@@ -19,7 +19,7 @@ class PasswordResetter:
     def _get_verifier(self, user: User) -> EmailVerifier:
         return (
             self.mentor_verifier
-            if user.to_mentor is not None and user.to_mentor.is_registered
+            if user.to_mentor is not None and not user.to_mentor.is_registered
             else self.user_verifier
         )
 
