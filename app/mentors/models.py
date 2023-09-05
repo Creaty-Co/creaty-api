@@ -1,5 +1,6 @@
 from cacheops import invalidate_obj
 from django.conf import settings
+from django.contrib.auth.hashers import is_password_usable
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from djmoney.models.fields import MoneyField
@@ -36,6 +37,10 @@ class Mentor(User):
     @property
     def url(self) -> str:
         return f"https://{settings.WEB_DOMAIN}/mentor/{self.slug}"
+
+    @property
+    def is_registered(self) -> bool:
+        return is_password_usable(self.password) or self.social_auth.exists()
 
     def save(self, **kwargs):
         if not self.slug:
