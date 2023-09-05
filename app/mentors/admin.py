@@ -58,7 +58,7 @@ def send_password_reset_email(_, __, queryset):
 @admin.register(Mentor)
 class MentorAdmin(admin.ModelAdmin):
     form = MentorAdminForm
-    list_display = ['__str__', 'url', 'is_draft']
+    list_display = ['__str__', 'url', 'is_draft', 'is_registered']
     list_display_links = ['__str__']
     list_editable = ['is_draft']
     list_filter = ['is_draft']
@@ -108,6 +108,11 @@ class MentorAdmin(admin.ModelAdmin):
 
     def url(self, obj):
         return format_html('<a href="{}">{}</a>', obj.url, obj.url)
+
+    def is_registered(self, obj: Mentor) -> bool:
+        return obj.is_registered
+
+    is_registered.boolean = True
 
     def get_inline_instances(self, request, obj=None):
         if not obj:
