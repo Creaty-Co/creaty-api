@@ -27,13 +27,13 @@ class UserAdmin(BaseUserAdmin):
                 'classes': ['wide'],
                 'fields': ['email', 'first_name', 'password1', 'password2'],
             },
-        ),
+        )
     ]
     search_fields = ['email']
     ordering = None
     filter_horizontal = ['groups', 'user_permissions']
 
     def is_mentor(self, obj: User) -> bool:
-        return obj.is_mentor
+        return obj.to_mentor is not None
 
     is_mentor.boolean = True
