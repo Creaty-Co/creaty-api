@@ -1,4 +1,5 @@
 import time
+from typing import TYPE_CHECKING
 
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -7,6 +8,9 @@ from django.db import models
 
 from app.base.models.base import BaseModel
 from app.users.managers import UserManager
+
+if TYPE_CHECKING:
+    from app.mentors.models import Mentor
 
 
 def user_avatar_upload_to(instance, _):
@@ -32,8 +36,10 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     @property
-    def is_mentor(self) -> bool:
-        return hasattr(self, 'mentor')
+    def to_mentor(self) -> 'Mentor':
+        from app.mentors.models import Mentor
+
+        return Mentor.objects.filter(id=self.id).first()
 
     def clean(self):
         super().clean()
