@@ -23,10 +23,20 @@ class PasswordResetter:
             else self.user_verifier
         )
 
+    def _send(self, email: str, verifier) -> None:
+        verifier.send(email)
+
     def send(self, email: str) -> None:
         user = self.user_manager.get(email=email)
-        verifier = self._get_verifier(user)
-        verifier.send(email)
+        self._send(email, self._get_verifier(user))
+
+    def send_to_user(self, email: str) -> None:
+        self._send(email, self.user_verifier)
+
+    def send_to_mentor(self, email: str) -> None:
+        user = self.user_manager.get(email=email)
+        assert user.to_mentor is not None
+        self._send(email, self.mentor_verifier)
 
     def reset(self, code, password: str) -> User:
         email = self.user_verifier.check(code)[0] or self.mentor_verifier.check(code)[0]

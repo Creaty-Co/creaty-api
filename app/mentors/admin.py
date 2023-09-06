@@ -52,7 +52,12 @@ class MentorAdminForm(forms.ModelForm):
 
 def send_password_reset_email(_, __, queryset):
     for mentor in queryset:
-        password_resetter.send(mentor.email)
+        password_resetter.send_to_user(mentor.email)
+
+
+def send_mentor_registration_email(_, __, queryset):
+    for mentor in queryset:
+        password_resetter.send_to_mentor(mentor.email)
 
 
 @admin.register(Mentor)
@@ -100,7 +105,7 @@ class MentorAdmin(admin.ModelAdmin):
     filter_vertical = ['tags', 'languages']
     readonly_fields = ['avatar_image', 'url']
     search_fields = ['first_name', 'last_name']
-    actions = [send_password_reset_email]
+    actions = [send_password_reset_email, send_mentor_registration_email]
     inlines = [PackageInline, PageInline]
 
     def avatar_image(self, obj):
