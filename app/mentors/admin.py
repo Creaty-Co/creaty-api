@@ -52,13 +52,18 @@ class MentorAdminForm(forms.ModelForm):
 
 def send_password_reset_email(_, __, queryset):
     for mentor in queryset:
-        password_resetter.send(mentor.email)
+        password_resetter.send_to_user(mentor.email)
+
+
+def send_mentor_registration_email(_, __, queryset):
+    for mentor in queryset:
+        password_resetter.send_to_mentor(mentor.email)
 
 
 @admin.register(Mentor)
 class MentorAdmin(admin.ModelAdmin):
     form = MentorAdminForm
-    list_display = ['__str__', 'url', 'is_draft']
+    list_display = ['__str__', 'url', 'is_draft', 'is_registered']
     list_display_links = ['__str__']
     list_editable = ['is_draft']
     list_filter = ['is_draft']
@@ -100,7 +105,7 @@ class MentorAdmin(admin.ModelAdmin):
     filter_vertical = ['tags', 'languages']
     readonly_fields = ['avatar_image', 'url']
     search_fields = ['first_name', 'last_name']
-    actions = [send_password_reset_email]
+    actions = [send_password_reset_email, send_mentor_registration_email]
     inlines = [PackageInline, PageInline]
 
     def avatar_image(self, obj):
@@ -108,6 +113,11 @@ class MentorAdmin(admin.ModelAdmin):
 
     def url(self, obj):
         return format_html('<a href="{}">{}</a>', obj.url, obj.url)
+
+    def is_registered(self, obj: Mentor) -> bool:
+        return obj.is_registered
+
+    is_registered.boolean = True
 
     def get_inline_instances(self, request, obj=None):
         if not obj:

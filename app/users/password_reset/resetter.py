@@ -1,5 +1,3 @@
-from django.contrib.auth.hashers import is_password_usable
-
 from app.users.models import User
 from app.users.notificators.base import BaseUsersNotifier
 from app.users.serializers.password.reset import PUTUsersPasswordResetSerializer
@@ -21,16 +19,24 @@ class PasswordResetter:
     def _get_verifier(self, user: User) -> EmailVerifier:
         return (
             self.mentor_verifier
-            if user.is_mentor
-            and not is_password_usable(user.password)
-            and not user.social_auth.exists()
+            if user.to_mentor is not None and not user.to_mentor.is_registered
             else self.user_verifier
         )
 
+    def _send(self, email: str, verifier) -> None:
+        verifier.send(email)
+
     def send(self, email: str) -> None:
         user = self.user_manager.get(email=email)
-        verifier = self._get_verifier(user)
-        verifier.send(email)
+        self._send(email, self._get_verifier(user))
+
+    def send_to_user(self, email: str) -> None:
+        self._send(email, self.user_verifier)
+
+    def send_to_mentor(self, email: str) -> None:
+        user = self.user_manager.get(email=email)
+        assert user.to_mentor is not None
+        self._send(email, self.mentor_verifier)
 
     def reset(self, code, password: str) -> User:
         email = self.user_verifier.check(code)[0] or self.mentor_verifier.check(code)[0]
