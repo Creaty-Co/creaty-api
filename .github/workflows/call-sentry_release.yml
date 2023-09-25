@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ get_commit_title ]
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
         with:
           fetch-depth: 0
       - name: Determine version
