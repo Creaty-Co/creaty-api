@@ -4,7 +4,7 @@ from collections.abc import Callable
 from typing import Any
 from urllib.parse import urlencode
 
-from django.core.cache import cache
+from django.core.cache import caches
 
 from app.base.exceptions import APIWarning
 from app.base.exceptions.base import APIException
@@ -47,7 +47,8 @@ class BaseViewTest(BaseTest):
         self.me.save()
 
     def setUp(self):
-        cache.clear()
+        for cache in caches.all():
+            cache.clear()
         _ = self.me
 
     def get(self, path=None, query=None, format=None):
