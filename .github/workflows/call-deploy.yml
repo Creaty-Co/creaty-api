@@ -41,7 +41,7 @@ jobs:
     env:
       env_filename: envs/.${{ inputs.environment }}.env
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
       - name: Cd to ${{ inputs.environment }} directory
         run: |
           mkdir -p ~/creaty/${{ inputs.environment }}
