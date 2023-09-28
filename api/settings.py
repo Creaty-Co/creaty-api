@@ -190,7 +190,11 @@ CACHES = {
     'default': {
         **env.cache('REDIS_CACHE_URL', backend='django_redis.cache.RedisCache'),
         'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
-    }
+    },
+    'storage': {
+        **env.cache('REDIS_STORAGE_URL', backend='django_redis.cache.RedisCache'),
+        'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
+    },
 }
 
 # cacheops
