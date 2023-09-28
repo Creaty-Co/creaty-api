@@ -188,16 +188,14 @@ DEBUG_TOOLBAR_CONFIG = {'SHOW_TOOLBAR_CALLBACK': lambda _: USE_DEBUG_TOOLBAR}
 
 CACHES = {
     'default': {
-        **env.cache('REDIS_URL', backend='django_redis.cache.RedisCache'),
+        **env.cache('REDIS_CACHE_URL', backend='django_redis.cache.RedisCache'),
         'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
     }
 }
 
-REDIS_URL = env.cache('REDIS_URL')['LOCATION']
-
 # cacheops
 
-CACHEOPS_REDIS = REDIS_URL
+CACHEOPS_REDIS = env('REDIS_CACHEOPS_URL')
 
 CACHEOPS_DEFAULTS = {
     'timeout': 60 * 60,
@@ -244,7 +242,7 @@ CELERY_EMAIL_CHUNK_SIZE = 1
 
 # celery[broker]
 
-CELERY_BROKER_URL = env('CELERY_BROKER_URL', default=REDIS_URL)
+CELERY_BROKER_URL = env('REDIS_CELERY_URL')
 
 CELERY_TASK_ALWAYS_EAGER = env('CELERY_TASK_EAGER')
 CELERY_REDIS_MAX_CONNECTIONS = env('CELERY_REDIS_MAX_CONNECTIONS')
@@ -265,7 +263,7 @@ CELERY_TASK_SERIALIZER = 'json'
 
 # celery[result]
 
-CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default=REDIS_URL)
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 
 CELERY_RESULT_COMPRESSION = CELERY_TASK_COMPRESSION
 CELERY_RESULT_ACCEPT_CONTENT = ['json']

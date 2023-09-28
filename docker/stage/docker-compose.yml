@@ -8,17 +8,43 @@ services:
       service: db
     build:
       context: ../../db
-    env_file: [ ../../envs/.stage.env ]
-    ports: [ 5433:5432 ]
+    env_file: [../../envs/.stage.env]
+    ports: [5433:5432]
     volumes:
       - db_volume:/var/lib/postgresql/data
       - ../../db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
 
-  redis:
-    container_name: stage-redis
+  redis-cache:
+    container_name: stage-redis-cache
     extends:
       file: ../docker-compose.base.yml
-      service: redis
+      service: redis-cache
+    env_file: [../../envs/.stage.env]
+
+  redis-cacheops:
+    container_name: stage-redis-cacheops
+    extends:
+      file: ../docker-compose.base.yml
+      service: redis-cacheops
+    env_file: [../../envs/.stage.env]
+
+  redis-storage:
+    container_name: stage-redis-storage
+    extends:
+      file: ../docker-compose.base.yml
+      service: redis-storage
+    env_file: [../../envs/.stage.env]
+    volumes:
+      - redis-storage_volume:/data
+
+  redis-celery:
+    container_name: stage-redis-celery
+    extends:
+      file: ../docker-compose.base.yml
+      service: redis-celery
+    env_file: [../../envs/.stage.env]
+    volumes:
+      - redis-celery_volume:/data
 
   api:
     container_name: stage-api
@@ -34,11 +60,11 @@ services:
       ) && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
       && gunicorn api.wsgi -c gunicorn/config.py
       "
-    env_file: [ ../../envs/.stage.env ]
+    env_file: [../../envs/.stage.env]
     volumes:
       - static_volume:/api/static
-    networks: [ api_network, proxy_api_network ]
-    depends_on: [ db, redis ]
+    networks: [api_network, proxy_api_network]
+    depends_on: [db, redis-cache, redis-cacheops, redis-storage]
 
   celery:
     container_name: stage-celery
@@ -46,8 +72,8 @@ services:
       file: ../docker-compose.base.yml
       service: celery
     image: ${API_IMAGE}:${TAG}
-    env_file: [ ../../envs/.stage.env ]
-    depends_on: [ api ]
+    env_file: [../../envs/.stage.env]
+    depends_on: [api, redis-celery]
 
   cbeat:
     container_name: stage-cbeat
@@ -55,8 +81,8 @@ services:
       file: ../docker-compose.base.yml
       service: cbeat
     image: ${API_IMAGE}:${TAG}
-    env_file: [ ../../envs/.stage.env ]
-    depends_on: [ celery ]
+    env_file: [../../envs/.stage.env]
+    depends_on: [celery]
 
   nginx:
     container_name: stage-nginx
@@ -65,15 +91,17 @@ services:
       service: nginx
     build:
       dockerfile: ../nginx/stage.dockerfile
-      args: [ TAG ]
-    env_file: [ ../../envs/.stage.env ]
-    ports: [ 443:443 ]
+      args: [TAG]
+    env_file: [../../envs/.stage.env]
+    ports: [443:443]
     volumes:
       - static_volume:/etc/nginx/html/api/static
-    networks: [ proxy_network ]
-    depends_on: [ api ]
+    networks: [proxy_network]
+    depends_on: [api]
 
 volumes:
+  redis-storage_volume:
+  redis-celery_volume:
   db_volume:
   profiles_volume:
   static_volume:
