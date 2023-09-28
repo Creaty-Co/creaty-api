@@ -6,17 +6,39 @@ services:
     environment:
       POSTGRES_USER: pg
       POSTGRES_DB: db
-    env_file: [ ../envs/.base.env ]
-    networks: [ db_network ]
+    env_file: [../envs/.base.env]
+    networks: [db_network]
     restart: unless-stopped
 
-  redis:
-    container_name: redis
-    build:
-      context: ../redis
-    env_file: [ ../envs/.base.env ]
-    networks: [ redis_network ]
+  redis-cache:
+    container_name: redis-cache
+    image: redis:7.0.12
+    entrypoint: [redis-server, /etc/redis/redis.conf]
+    env_file: [../envs/.base.env]
+    volumes:
+      - ../redis/redis-cache.conf:/etc/redis/redis.conf
+    networks: [redis_network]
     restart: unless-stopped
+
+  redis-cacheops:
+    container_name: redis-cacheops
+    extends:
+      service: redis-cache
+
+  redis-storage:
+    container_name: redis-storage
+    image: redis:7.0.12
+    entrypoint: [redis-server, /etc/redis/redis.conf]
+    env_file: [../envs/.base.env]
+    volumes:
+      - ../redis/redis-storage.conf:/etc/redis/redis.conf
+    networks: [redis_network]
+    restart: unless-stopped
+
+  redis-celery:
+    container_name: redis-celery
+    extends:
+      service: redis-storage
 
   api:
     container_name: api
@@ -26,8 +48,8 @@ services:
       && (daphne -b 0.0.0.0 -p 8001 api.asgi:application &)
       && gunicorn api.wsgi -c gunicorn/config.py
       "
-    env_file: [ ../envs/.base.env ]
-    networks: [ db_network, redis_network ]
+    env_file: [../envs/.base.env]
+    networks: [db_network, redis_network]
     restart: unless-stopped
 
   celery:
@@ -54,8 +76,8 @@ services:
       context: ../nginx
     environment:
       NGINX_ENVSUBST_TEMPLATE_SUFFIX: .conf
-    env_file: [ ../envs/.base.env ]
-    networks: [ api_network ]
+    env_file: [../envs/.base.env]
+    networks: [api_network]
     restart: unless-stopped
 
   cal-db:
@@ -67,31 +89,31 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - cal-db_volume:/var/lib/postgresql/data/
-    networks: [ cal-db_network ]
+    networks: [cal-db_network]
     restart: unless-stopped
 
   cal-web:
     container_name: cal-web
     image: calcom/cal.com:v3.1.5
-    env_file: [ ../envs/.base.env ]
+    env_file: [../envs/.base.env]
     environment:
       DATABASE_URL: postgresql://pg:password@cal-db:5432/db
       NEXT_PUBLIC_LICENSE_CONSENT: agree
       LICENSE: agree
-    networks: [ cal-db_network, cal-web_network ]
+    networks: [cal-db_network, cal-web_network]
     restart: unless-stopped
 
   cal-api:
     container_name: cal-api
     image: calcom/cal.com:v3.1.5
-    env_file: [ ../envs/.base.env ]
+    env_file: [../envs/.base.env]
     environment:
       DATABASE_URL: postgresql://pg:password@cal-db:5432/db
       NEXT_PUBLIC_WEBAPP_URL: http://cal-api:3000
       NEXT_AUTH_URL: http://cal-api:3000/api/auth
       NEXT_PUBLIC_LICENSE_CONSENT: agree
       LICENSE: agree
-    networks: [ cal-db_network, cal-api_network ]
+    networks: [cal-db_network, cal-api_network]
     restart: unless-stopped
 
 volumes:
