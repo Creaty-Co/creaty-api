@@ -1,14 +1,14 @@
-name: "Call: update image"
+name: "Call: update version"
 
 on:
   workflow_call:
     inputs:
-      tag:
+      version:
         type: string
         required: true
   workflow_dispatch:
     inputs:
-      tag:
+      version:
         type: string
         required: true
 
@@ -25,7 +25,7 @@ jobs:
         # language="shell script"
         run: |
           sed -i '
-            0,/api_version: .*/s//api_version: ${{ input.tag }}/
+            0,/api_version: .*/s//api_version: ${{ inputs.version }}/
           ' environments/envy/values.yaml
 
       - name: Commit and push changes
@@ -34,5 +34,5 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add chart/values.yaml
-          git commit -m "Update API version to ${{ input.tag }}"
+          git commit -m "Update API version to ${{ inputs.version }}"
           git push

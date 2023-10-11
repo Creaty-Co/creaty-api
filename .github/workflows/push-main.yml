@@ -17,11 +17,6 @@ jobs:
     with:
       tag: ${{ github.sha }}
     secrets: inherit
-  update_image:
-    uses: ./.github/workflows/call-update_image.yml
-    with:
-      tag: ${{ github.sha }}
-    secrets: inherit
   deploy:
     uses: ./.github/workflows/call-deploy.yml
     with:
@@ -29,6 +24,12 @@ jobs:
       url: 'https://dev.creaty.club'
     secrets: inherit
     needs: [build]
+  update_version:
+    uses: ./.github/workflows/call-update_version.yml
+    with:
+      tag: ${{ github.sha }}
+    secrets: inherit
+    needs: [build_sha]
   sentry_release:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
