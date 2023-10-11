@@ -27,7 +27,7 @@ jobs:
   update_version:
     uses: ./.github/workflows/call-update_version.yml
     with:
-      tag: ${{ github.sha }}
+      version: ${{ github.sha }}
     secrets: inherit
     needs: [build_sha]
   sentry_release:
