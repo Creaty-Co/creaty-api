@@ -16,7 +16,8 @@ jobs:
   update-values:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.0
         with:
           repository: creaty-co/creaty-chart
           ssh-key: ${{ secrets.CHART_DEPLOY_KEY }}
@@ -31,8 +32,8 @@ jobs:
       - name: Commit and push changes
         # language="shell script"
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add chart/values.yaml
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add environments/envy/values.yaml
           git commit -m "Update API version to ${{ inputs.version }}"
           git push
