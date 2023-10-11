@@ -17,14 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.0
-      - uses: actions/checkout@v4.1.0
         with:
           repository: creaty-co/creaty-chart
           ssh-key: ${{ secrets.CHART_DEPLOY_KEY }}
+          ref: envy
 
       - name: Update values.yaml
         # language="shell script"
         run: |
+          git branch
+          ls
           sed -i '
             0,/api_version: .*/s//api_version: ${{ inputs.version }}/
           ' environments/envy/values.yaml
@@ -32,6 +34,7 @@ jobs:
       - name: Commit and push changes
         # language="shell script"
         run: |
+          git branch
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add environments/envy/values.yaml
