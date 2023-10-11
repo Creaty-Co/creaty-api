@@ -1,0 +1,38 @@
+name: "Call: update image"
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag:
+        type: string
+        required: true
+
+jobs:
+  update-values:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.0.0
+        with:
+          repository: Creaty-Co/creaty-chart
+          ssh-key: ${{ secrets.CHART_DEPLOY_KEY }}
+
+      - name: Update values.yaml
+        # language="shell script"
+        run: |
+          sed -i '
+            0,/api_version: .*/s//api_version: ${{ input.tag }}/
+          ' environments/envy/values.yaml
+
+      - name: Commit and push changes
+        # language="shell script"
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add chart/values.yaml
+          git commit -m "Update API version to ${{ input.tag }}"
+          git push
