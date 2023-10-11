@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.0.0
         with:
-          repository: Creaty-Co/creaty-chart
+          repository: creaty-co/creaty-chart
           ssh-key: ${{ secrets.CHART_DEPLOY_KEY }}
 
       - name: Update values.yaml
