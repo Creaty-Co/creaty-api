@@ -2,7 +2,7 @@ name: "Push: main"
 
 on:
   push:
-    branches:    
+    branches:
       - 'main'
 
 jobs:
@@ -12,13 +12,23 @@ jobs:
   build:
     uses: ./.github/workflows/call-build.yml
     secrets: inherit
+  build_sha:
+    uses: ./.github/workflows/call-build.yml
+    with:
+      tag: ${{ github.sha }}
+    secrets: inherit
+  update_image:
+    uses: ./.github/workflows/call-update_image.yml
+    with:
+      tag: ${{ github.sha }}
+    secrets: inherit
   deploy:
     uses: ./.github/workflows/call-deploy.yml
     with:
       environment: dev
       url: 'https://dev.creaty.club'
     secrets: inherit
-    needs: [ build ]
+    needs: [build]
   sentry_release:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
@@ -27,7 +37,7 @@ jobs:
   release_draft:
     uses: ./.github/workflows/call-release_draft.yml
     secrets: inherit
-    needs: [ update_prs ]
+    needs: [update_prs]
   ci:
     uses: ./.github/workflows/call-ci.yml
     secrets: inherit
