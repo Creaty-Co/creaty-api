@@ -34,6 +34,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ env.REPOSITORY }}/api:${{ inputs.tag }}
-          cache-from: type=registry,ref=ghcr.io/${{ env.REPOSITORY }}/api:${{ inputs.tag }}
+          tags: |
+            ghcr.io/${{ env.REPOSITORY }}/api:latest
+            ghcr.io/${{ env.REPOSITORY }}/api:${{ inputs.tag }}
+          cache-from: type=registry,ref=ghcr.io/${{ env.REPOSITORY }}/api:latest
           cache-to: type=inline
