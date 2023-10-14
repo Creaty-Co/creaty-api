@@ -3,11 +3,19 @@ name: "Call: update version"
 on:
   workflow_call:
     inputs:
+      environment:
+        type: string
+        required: false
+        default: 'dev'
       version:
         type: string
         required: true
   workflow_dispatch:
     inputs:
+      environment:
+        type: string
+        required: false
+        default: 'dev'
       version:
         type: string
         required: true
@@ -18,10 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.0
         with:
-          repository: creaty-co/creaty-chart
+          repository: creaty-co/creaty-root-chart
           ssh-key: ${{ secrets.CHART_DEPLOY_KEY }}
-          ref: envy
-
+          ref: main
       - name: Update values.yaml
         # language="shell script"
         run: |
@@ -29,14 +36,13 @@ jobs:
           ls
           sed -i '
             0,/api_version: .*/s//api_version: ${{ inputs.version }}/
-          ' environments/envy/values.yaml
-
+          ' values/environments/${{ inputs.version }}.yaml
       - name: Commit and push changes
         # language="shell script"
         run: |
           git branch
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add environments/envy/values.yaml
-          git commit -m "Update API version to ${{ inputs.version }}"
+          git add .
+          git commit -m "Update API version to ${{ inputs.version }} in the ${{ inputs.environment }}"
           git push
