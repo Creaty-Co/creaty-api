@@ -11,9 +11,6 @@ jobs:
     secrets: inherit
   build:
     uses: ./.github/workflows/call-build.yml
-    secrets: inherit
-  build_sha:
-    uses: ./.github/workflows/call-build.yml
     with:
       tag: ${{ github.sha }}
     secrets: inherit
@@ -29,7 +26,7 @@ jobs:
     with:
       version: ${{ github.sha }}
     secrets: inherit
-    needs: [build_sha]
+    needs: [build]
   sentry_release:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
