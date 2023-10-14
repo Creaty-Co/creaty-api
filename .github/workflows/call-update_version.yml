@@ -21,7 +21,7 @@ on:
         required: true
 
 jobs:
-  update-values:
+  update_values:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.0
@@ -36,7 +36,7 @@ jobs:
           ls
           sed -i '
             0,/api_version: .*/s//api_version: ${{ inputs.version }}/
-          ' values/environments/${{ inputs.version }}.yaml
+          ' values/environments/${{ inputs.environment }}.yaml
       - name: Commit and push changes
         # language="shell script"
         run: |
