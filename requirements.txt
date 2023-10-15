@@ -32,7 +32,7 @@ asgiref==3.7.2
 orjson==3.9.7
 psycopg==3.1.12
 redis==5.0.1
-Pillow==10.0.1
+Pillow==10.1.0
 whitenoise==6.5.0
 celery==5.3.4
 gevent==23.9.1
