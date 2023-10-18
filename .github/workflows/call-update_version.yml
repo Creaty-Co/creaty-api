@@ -24,7 +24,7 @@ jobs:
   update_values:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.1
         with:
           repository: creaty-co/creaty-root-chart
           ssh-key: ${{ secrets.CHART_DEPLOY_KEY }}
