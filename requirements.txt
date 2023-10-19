@@ -29,7 +29,7 @@ djangochannelsrestframework==1.2.0
 channels==4.0.0
 channels-redis==4.1.0
 asgiref==3.7.2
-orjson==3.9.7
+orjson==3.9.8
 psycopg==3.1.12
 redis==5.0.1
 Pillow==10.1.0
