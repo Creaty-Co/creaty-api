@@ -48,7 +48,8 @@ jobs:
       - name: Update values.yaml
         # language="shell script"
         run: |
-          yq eval '.environments.${{ inputs.environment }}.api_version = ${{ inputs.version }}' -i values.yaml
+          yq eval '.environments.${{ inputs.environment }}.api_version = "${{ inputs.version }}"' -i values.yaml
+          yq eval '.environments.${{ inputs.environment }}.sentry_release = "${{ env.sentry_release }}"' -i values.yaml
       - name: Commit and push changes
         # language="shell script"
         run: |
