@@ -7,6 +7,9 @@ on:
         type: string
         required: false
         default: 'dev'
+      url:
+        type: string
+        required: true
       version:
         type: string
         required: true
@@ -16,27 +19,36 @@ on:
         type: string
         required: false
         default: 'dev'
+      url:
+        type: string
+        required: true
       version:
         type: string
         required: true
 
 jobs:
+  get_commit_title:
+    uses: ./.github/workflows/call-get_commit_title.yml
   update_values:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    needs: [get_commit_title]
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ inputs.url }}
     steps:
       - uses: actions/checkout@v4.1.1
         with:
           repository: creaty-co/creaty-root-chart
           ssh-key: ${{ secrets.CHART_DEPLOY_KEY }}
           ref: main
+      - name: Determine sentry release
+        run: |
+          sentry_release=${{ needs.get_commit_title.outputs.title }}
+          echo "sentry_release=${sentry_release//\//--}" >> $GITHUB_ENV
       - name: Update values.yaml
         # language="shell script"
         run: |
-          git branch
-          ls
-          sed -i '
-            0,/api_version: .*/s//api_version: ${{ inputs.version }}/
-          ' values/environments/${{ inputs.environment }}.yaml
+          yq eval '.environments.${{ inputs.environment }}.api_version = ${{ inputs.version }}' -i values.yaml
       - name: Commit and push changes
         # language="shell script"
         run: |
@@ -44,5 +56,5 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "Update API version to ${{ inputs.version }} in the ${{ inputs.environment }}"
+          git commit -m "${{ inputs.environment }}: api_version: ${{ inputs.version }}"
           git push
