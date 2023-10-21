@@ -303,8 +303,8 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR + 'static'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WHITENOISE_MANIFEST_STRICT = False
 
 # sentry
 

@@ -6,16 +6,33 @@ services:
       file: docker/docker-compose.base.yml
       service: db
     image: postgres:15.3
-    ports: [ 54320:5432 ]
+    ports: [54320:5432]
     volumes:
       - db_volume:/var/lib/postgresql/data
 
-  redis:
+  redis-cache:
     extends:
       file: docker/docker-compose.base.yml
-      service: redis
+      service: redis-cache
+
+  redis-cacheops:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: redis-cacheops
+
+  redis-storage:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: redis-storage
     volumes:
-      - redis_volume:/data
+      - redis-storage_volume:/data
+
+  redis-celery:
+    extends:
+      file: docker/docker-compose.base.yml
+      service: redis-celery
+    volumes:
+      - redis-celery_volume:/data
 
   api:
     extends:
@@ -23,12 +40,12 @@ services:
       service: api
     build:
       context: .
-    ports: [ 8100:8000 ]
-    networks: [ api_network, cal-api_network ]
+    ports: [8100:8000]
+    networks: [api_network, cal-api_network]
     volumes:
       - media_volume:/api/media
       - static_volume:/api/static
-    depends_on: [ db, redis ]
+    depends_on: [db, redis-cache, redis-cacheops, redis-storage]
 
   celery:
     extends:
@@ -36,7 +53,7 @@ services:
       service: celery
     build:
       context: .
-    depends_on: [ api ]
+    depends_on: [api, redis-celery]
 
   cbeat:
     extends:
@@ -44,7 +61,7 @@ services:
       service: cbeat
     build:
       context: .
-    depends_on: [ celery ]
+    depends_on: [celery]
 
   nginx:
     extends:
@@ -52,34 +69,37 @@ services:
       service: nginx
     build:
       dockerfile: local.dockerfile
-    ports: [ 80:80, 443:443 ]
-    networks: [ cal-web_network ]
+    ports: [80:80, 443:443]
+    networks: [cal-web_network]
     volumes:
       - static_volume:/etc/nginx/html/api/static
-    depends_on: [ api ]
+    depends_on: [api]
 
   cal-db:
     extends:
       file: docker/docker-compose.base.yml
       service: cal-db
-    ports: [ 54321:5432 ]
+    ports: [54321:5432]
 
   cal-web:
     extends:
       file: docker/docker-compose.base.yml
       service: cal-web
-    depends_on: [ cal-db ]
+    depends_on: [cal-db]
 
   cal-api:
     extends:
       file: docker/docker-compose.base.yml
       service: cal-api
-    ports: [ 3000:3000 ]
-    depends_on: [ cal-db ]
+    ports: [30000:3000]
+    depends_on: [cal-db]
 
 volumes:
   db_volume:
-  redis_volume:
+  redis-cache_volume:
+  redis-cacheops_volume:
+  redis-storage_volume:
+  redis-celery_volume:
   media_volume:
   static_volume:
   cal-db_volume:
