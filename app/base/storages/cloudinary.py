@@ -1,3 +1,4 @@
+import re
 from abc import ABC
 
 import cloudinary
@@ -19,6 +20,20 @@ class MediaCloudinaryStorage(_MediaCloudinaryStorage, ABC):
         content = UploadedFile(content, name)
         response = self._upload(name, content)
         return response['public_id']
+
+    def save(self, name, content, max_length=None):
+        """
+        :return: name without prefix
+        """
+        name = super().save(name, content, max_length)
+        prefix = self._get_prefix()
+        if (
+            prefix
+            and name.startswith(prefix)
+            and not bool(re.match(r'(.+/)+None-\d+', name))
+        ):
+            name = name[len(prefix) :]
+        return name
 
     def delete(self, name):
         response = uploader.destroy(
