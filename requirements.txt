@@ -33,7 +33,7 @@ orjson==3.9.8
 psycopg==3.1.12
 redis==5.0.1
 Pillow==10.0.1
-whitenoise==6.5.0
+whitenoise==6.6.0
 celery==5.3.4
 gevent==23.9.1
 argon2-cffi==23.1.0
