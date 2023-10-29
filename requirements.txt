@@ -17,7 +17,7 @@ django-celery-beat==2.5.0
 django-svg-image-form-field==1.0.1
 django-uuslug==2.0.0
 django-advanced-password-validation==1.1.1
-social-auth-app-django==5.3.0
+social-auth-app-django==5.4.0
 django-admin-interface==0.26.1
 
 djangorestframework==3.14.0
@@ -29,11 +29,11 @@ djangochannelsrestframework==1.2.0
 channels==4.0.0
 channels-redis==4.1.0
 asgiref==3.7.2
-orjson==3.9.8
+orjson==3.9.10
 psycopg==3.1.12
 redis==5.0.1
 Pillow==10.1.0
-whitenoise==6.5.0
+whitenoise==6.6.0
 celery==5.3.4
 gevent==23.9.1
 argon2-cffi==23.1.0
@@ -51,7 +51,7 @@ pybase64==1.3.1
 
 parameterized==0.9.0
 factory_boy==3.3.0
-Faker==19.10.0
+Faker==19.11.0
 coverage==7.3.2
 
 django-debug-toolbar==4.2.0
