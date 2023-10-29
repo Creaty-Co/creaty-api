@@ -16,7 +16,7 @@ jobs:
     outputs:
       title: ${{ steps.extract_title.outputs.title }}
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
       - name: Extract title
