@@ -6,9 +6,17 @@ on:
       - 'main'
 
 jobs:
+  ci:
+    uses: ./.github/workflows/call-ci.yml
+    secrets: inherit
   update_prs:
     uses: ./.github/workflows/call-update_prs.yml
     secrets: inherit
+    needs: [ci]
+  release_draft:
+    uses: ./.github/workflows/call-release_draft.yml
+    secrets: inherit
+    needs: [update_prs]
   build:
     uses: ./.github/workflows/call-build.yml
     with:
@@ -18,18 +26,11 @@ jobs:
     uses: ./.github/workflows/call-update_version.yml
     with:
       version: ${{ github.sha }}
-      url: 'https://dev.creaty.club'
     secrets: inherit
     needs: [build]
   sentry_release:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
-      environment: dev
+      url: 'https://dev.creaty.club'
     secrets: inherit
-  release_draft:
-    uses: ./.github/workflows/call-release_draft.yml
-    secrets: inherit
-    needs: [update_prs]
-  ci:
-    uses: ./.github/workflows/call-ci.yml
-    secrets: inherit
+    needs: [deploy]

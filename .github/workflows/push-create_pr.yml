@@ -14,17 +14,20 @@ jobs:
       - uses: actions/checkout@v4.1.1
       - name: Get branch name
         id: get_branch_name
+        # language="shell script"
         run: |
           branch_name=${GITHUB_REF##*/}
           echo VAL=$branch_name >> $GITHUB_OUTPUT
       - name: Get task number
         id: get_task_number
+        # language="shell script"
         run: |
           branch_name=${{ steps.get_branch_name.outputs.VAL }}
           number=${branch_name/task-/}
           echo VAL=$number >> $GITHUB_OUTPUT
       - name: Get task title
         id: get_task_title
+        # language="shell script"
         run: |
           task_number=${{ steps.get_task_number.outputs.VAL }}
           title=$(gh issue view $task_number --json title --jq .title)
@@ -32,6 +35,7 @@ jobs:
           echo VAL=$title >> $GITHUB_OUTPUT
       - name: Get author
         id: get_author
+        # language="shell script"
         run: |
           author=${{ github.event.commits[0].author.username }}
           upper=$(echo ${author^^})
@@ -39,6 +43,7 @@ jobs:
           echo UPPER=$upper >> $GITHUB_OUTPUT
       - name: Get token
         id: get_token
+        # language="shell script"
         run: |
           author=${{ steps.get_author.outputs.UPPER }}
           token=$(echo '${{ toJSON(secrets) }}' | python -c \

@@ -2,27 +2,30 @@ name: "Release: published"
 
 on:
   release:
-    types: [ published ]
+    types: [published]
 
 jobs:
+  release_draft:
+    uses: ./.github/workflows/call-release_draft.yml
+    secrets: inherit
   build:
     uses: ./.github/workflows/call-build.yml
     secrets: inherit
     with:
       tag: ${{ github.ref_name }}
-  deploy:
-    uses: ./.github/workflows/call-deploy.yml
-    with:
-      environment: stage
-      url: 'https://stage.creaty.club'
-      tag: ${{ github.ref_name }}
-      web_tag: pre-${{ github.ref_name }}
-    secrets: inherit
-    needs: [ build ]
-  sentry_release:
+  sentry_release_stage:
     uses: ./.github/workflows/call-sentry_release.yml
     with:
       environment: stage
+      url: 'https://stage.creaty.club'
       version: pre-${{ github.ref_name }}
     secrets: inherit
-    needs: [ deploy ]
+    needs: [build]
+  sentry_release_prod:
+    uses: ./.github/workflows/call-sentry_release.yml
+    with:
+      environment: prod
+      url: 'https://creaty.club'
+      version: ${{ github.ref_name }}
+    secrets: inherit
+    needs: [build]
