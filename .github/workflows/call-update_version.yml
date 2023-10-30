@@ -37,7 +37,7 @@ jobs:
         run: |
           sentry_release=${{ needs.get_commit_title.outputs.title }}
           yq eval '.environments.${{ inputs.environment }}.api_version="${{ inputs.version }}"' -i values.yaml
-          yq eval ".environments.${{ inputs.environment }}.sentry_release=\"$(echo $sentry_release)\" -i values.yaml"
+          yq eval ".environments.${{ inputs.environment }}.sentry_release=\"$(echo $sentry_release)\"" -i values.yaml
       - name: Commit and push changes
         # language="shell script"
         run: |
