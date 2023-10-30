@@ -29,6 +29,7 @@ jobs:
           fi
           title=$(git log --format=%s -n 1 $sha)
           title=${title//\//--}
+          title=${title/\\/--}
           title=${title/\"/_}
           title=${title/\'/_}
           echo title=$(printf '%q' "$title") >> $GITHUB_OUTPUT
