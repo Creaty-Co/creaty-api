@@ -32,16 +32,11 @@ jobs:
           repository: creaty-co/creaty-root-chart
           ssh-key: ${{ secrets.CHART_DEPLOY_KEY }}
           ref: main
-      - name: Determine sentry release
-        # language="shell script"
-        run: |
-          sentry_release=${{ needs.get_commit_title.outputs.title }}
-          echo "sentry_release=${sentry_release//\//--}" >> $GITHUB_ENV
       - name: Update values.yaml
         # language="shell script"
         run: |
           yq eval '
-            .environments.${{ inputs.environment }}.api_version=${{ inputs.version }}"
+            .environments.${{ inputs.environment }}.api_version="${{ inputs.version }}"
           ' -i values.yaml
           yq eval '
             .environments.${{ inputs.environment }}.sentry_release=${{ needs.get_commit_title.outputs.title }}
