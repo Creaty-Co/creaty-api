@@ -21,10 +21,12 @@ jobs:
           fetch-depth: 0
       - name: Extract title
         id: extract_title
+        # language="shell script"
         run: |
           sha=${{ inputs.sha }}
           if [ -z "$sha" ]; then
             sha=${{ github.sha }}
           fi
           title=$(git log --format=%s -n 1 $sha)
+          title=${title//\//--}
           echo title=$(printf '%q' "$title") >> $GITHUB_OUTPUT

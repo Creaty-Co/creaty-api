@@ -15,7 +15,7 @@ def check_health():
     last_exception = None
     for _ in range(20):
         try:
-            assert requests.get('http://api:8000/base/status/').status_code == 200
+            assert requests.get('http://api/base/status').status_code == 200
             assert get_redis_connection().ping()
             connection.ensure_connection()
             return

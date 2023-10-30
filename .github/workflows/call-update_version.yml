@@ -7,9 +7,6 @@ on:
         type: string
         required: false
         default: 'dev'
-      url:
-        type: string
-        required: true
       version:
         type: string
         required: true
@@ -19,9 +16,6 @@ on:
         type: string
         required: false
         default: 'dev'
-      url:
-        type: string
-        required: true
       version:
         type: string
         required: true
@@ -32,9 +26,6 @@ jobs:
   update_values:
     runs-on: ubuntu-22.04
     needs: [get_commit_title]
-    environment:
-      name: ${{ inputs.environment }}
-      url: ${{ inputs.url }}
     steps:
       - uses: actions/checkout@v4.1.1
         with:
@@ -42,14 +33,21 @@ jobs:
           ssh-key: ${{ secrets.CHART_DEPLOY_KEY }}
           ref: main
       - name: Determine sentry release
+        # language="shell script"
         run: |
           sentry_release=${{ needs.get_commit_title.outputs.title }}
           echo "sentry_release=${sentry_release//\//--}" >> $GITHUB_ENV
       - name: Update values.yaml
         # language="shell script"
         run: |
-          yq eval '.environments.${{ inputs.environment }}.api_version = "${{ inputs.version }}"' -i values.yaml
-          yq eval '.environments.${{ inputs.environment }}.sentry_release = "${{ env.sentry_release }}"' -i values.yaml
+          yq eval '
+            .environments.${{ inputs.environment }}.api_version = \
+              "${{ inputs.version }}"
+          ' -i values.yaml
+          yq eval '
+            .environments.${{ inputs.environment }}.sentry_release = \
+              ${{ needs.get_commit_title.outputs.title }}
+          ' -i values.yaml
       - name: Commit and push changes
         # language="shell script"
         run: |

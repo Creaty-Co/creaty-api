@@ -19,6 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.1
       - name: Run tests
+        # language="shell script"
         run: |
           docker-compose -f docker/test/docker-compose.yml up --build \
           --exit-code-from api --abort-on-container-exit api
