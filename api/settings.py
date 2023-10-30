@@ -145,6 +145,7 @@ if USE_BROWSABLE_API:
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # should be as high as possible
+    'django.middleware.security.SecurityMiddleware',  # immediately after CorsMiddleware
     # django middlewares
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -288,10 +289,12 @@ CELERY_BEAT_SCHEDULE = {
 
 # media
 
+DEFAULT_MEDIA_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
 USE_CLOUDINARY = False
 if (CLOUDINARY_URL := env('CLOUDINARY_URL')) != 'cloudinary://0:stub@_':
     USE_CLOUDINARY = True
-    DEFAULT_FILE_STORAGE = 'app.base.storages.cloudinary.MediaCloudinaryStorage'
+    DEFAULT_MEDIA_STORAGE = 'app.base.storages.cloudinary.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {'PREFIX': env('CLOUDINARY_PREFIX')}
 
@@ -301,10 +304,13 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
 # static
 
+STORAGES = {
+    'default': {'BACKEND': DEFAULT_MEDIA_STORAGE},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage'},
+}
+
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR + 'static'
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# WHITENOISE_MANIFEST_STRICT = False
 
 # sentry
 

@@ -6,7 +6,7 @@ services:
       file: docker/docker-compose.base.yml
       service: db
     image: postgres:15.3
-    ports: [54320:5432]
+    ports: [35432:5432]
     volumes:
       - db_volume:/var/lib/postgresql/data
 
@@ -40,7 +40,7 @@ services:
       service: api
     build:
       context: .
-    ports: [8100:8000]
+    ports: [38000:8000]
     networks: [api_network, cal-api_network]
     volumes:
       - media_volume:/api/media
@@ -79,7 +79,7 @@ services:
     extends:
       file: docker/docker-compose.base.yml
       service: cal-db
-    ports: [54321:5432]
+    ports: [35433:5432]
 
   cal-web:
     extends:
