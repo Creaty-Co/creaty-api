@@ -11,7 +11,7 @@ django-pickling==1.0
 django-redis==5.4.0
 django-cacheops==7.0.1
 django-countries==7.5.1
-django-money==3.3.0
+django-money==3.4.0
 certifi==2023.7.22
 django-celery-beat==2.5.0
 django-svg-image-form-field==1.0.1
