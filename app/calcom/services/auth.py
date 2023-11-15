@@ -13,12 +13,12 @@ class CalAuthService:
 
     def __init__(self, secret_key=settings.SECRET_KEY):
         self.cal_api_requester = CalAPIRequester()
-        self.secret_key = secret_key
+        self.secret_key: str = secret_key
 
     def get_password(self, id: int) -> str:
         key = self.secret_key.encode()
         hash_ = hmac.new(key, str(id).encode(), hashlib.sha256)
-        return hash_.hexdigest()
+        return f"A1{hash_.hexdigest()}"
 
     def register(self, user: User) -> None:
         self.cal_api_requester.signup(
