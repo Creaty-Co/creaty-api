@@ -1,5 +1,6 @@
 from django.conf import settings
 
+from app.calcom.services.auth import CalAuthService
 from app.users.models import User
 from app.users.notificators.base import BaseUsersNotifier
 from app.users.verification import EmailVerifier
@@ -23,6 +24,7 @@ class Registerer:
         self.successful_path = successful_path
         self.domain = domain
         self.user_manager = User.objects
+        self.cal_auth_service = CalAuthService()
 
     @property
     def failure_url(self) -> str:
@@ -39,6 +41,7 @@ class Registerer:
             user.has_discount = True
             user.is_verified = True
             user.save()
+            self.cal_auth_service.register(user)
             self.confirm_notifier.notify_users([user])
             return user
         raise self.InvalidCodeError

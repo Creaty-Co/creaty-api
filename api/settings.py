@@ -353,7 +353,7 @@ SPECTACULAR_SETTINGS = {
 
 # db
 
-DATABASES = {'default': env.db()}
+DATABASES = {'default': env.db(), 'cal': env.db('CAL_DATABASE_URL')}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
