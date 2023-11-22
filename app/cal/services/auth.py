@@ -3,7 +3,7 @@ import hmac
 
 from django.conf import settings
 
-from app.calcom.requesters.cal_api import CalAPIRequester
+from app.cal.requesters.cal_api import CalAPIRequester
 from app.users.models import User
 
 
