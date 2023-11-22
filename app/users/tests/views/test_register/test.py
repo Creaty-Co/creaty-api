@@ -1,8 +1,11 @@
+from unittest.mock import Mock
+
 from django.core import mail
 from django.utils.crypto import get_random_string
 
 from app.base.tests.fakers import fake
 from app.base.tests.views.base import BaseViewTest
+from app.cal.services.auth import CalAuthService
 from app.users.models import User
 from app.users.regisration import registerer
 from app.users.serializers.register.general import (
@@ -54,6 +57,7 @@ class UsersRegisterTest(BaseViewTest):
         code = get_random_string(10)
         registerer.verifier.cache.set((user.email, None), code)
         registerer.verifier.cache.set(code, user.email)
+        CalAuthService.register = Mock()
         self._test(
             'put',
             {
@@ -69,10 +73,6 @@ class UsersRegisterTest(BaseViewTest):
     def test_put_warn_408(self):
         UserFactory(is_verified=False, has_discount=False)
         code = get_random_string(10)
-        self._test(
-            'put',
-            PUTUsersRegisterSerializer.WARNINGS[408],
-            {'code': code},
-        )
+        self._test('put', PUTUsersRegisterSerializer.WARNINGS[408], {'code': code})
         self.assert_model(User, {'is_verified': False, 'has_discount': False})
         self.assert_equal(len(mail.outbox), 0)

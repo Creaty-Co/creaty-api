@@ -42,12 +42,14 @@ class BaseRequester:
         self,
         method: str,
         path: str = '',
-        query_params: str = None,
+        query_params: dict = None,
         hash_: str = '',
         headers: dict = im_dict,
         data: dict = im_dict,
         **kwargs,
     ):
         url = self.get_url(path, query_params or {}, hash_)
-        kwargs = self.default_kwargs | kwargs | {'headers': headers} | {'data': data}
+        kwargs = (
+            self.default_kwargs | kwargs | {'headers': headers} | {'json': dict(data)}
+        )
         return getattr(self.session, method)(url, **kwargs)
