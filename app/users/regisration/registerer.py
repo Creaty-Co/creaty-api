@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from app.calcom.services.auth import CalAuthService
+from app.cal.services.auth import CalAuthService
 from app.users.models import User
 from app.users.notificators.base import BaseUsersNotifier
 from app.users.verification import EmailVerifier

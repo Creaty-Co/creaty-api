@@ -62,6 +62,7 @@ SITE_NAME = 'Creaty'
 SITE_ROOT = BASE_DIR
 API_DOMAIN = env('API_DOMAIN')
 WEB_DOMAIN = env('WEB_DOMAIN')
+CAL_API_DOMAIN = env('CAL_API_DOMAIN')
 ROOT_DOMAIN = '.'.join(WEB_DOMAIN.split('.')[-2:])
 DOMAIN = WEB_DOMAIN
 
@@ -115,7 +116,7 @@ INSTALLED_APPS = [
     'app.mailings',
     'app.pages',
     'app.bookings',
-    'app.calcom',
+    'app.cal',
 ]
 
 REST_FRAMEWORK = {
