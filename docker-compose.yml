@@ -70,7 +70,7 @@ services:
     build:
       dockerfile: local.dockerfile
     ports: [80:80, 443:443]
-    networks: [cal-web_network]
+    networks: [cal_network]
     volumes:
       - static_volume:/etc/nginx/html/api/static
     depends_on: [api]
@@ -81,10 +81,11 @@ services:
       service: cal-db
     ports: [35433:5432]
 
-  cal-web:
+  cal:
     extends:
       file: docker/docker-compose.base.yml
-      service: cal-web
+      service: cal
+    domainname: cal.local.host
     depends_on: [cal-db]
 
   cal-api:
@@ -109,5 +110,5 @@ networks:
   redis_network:
   api_network:
   cal-db_network:
-  cal-web_network:
+  cal_network:
   cal-api_network:
