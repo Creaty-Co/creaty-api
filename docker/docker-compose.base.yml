@@ -49,7 +49,7 @@ services:
       && gunicorn api.wsgi -c gunicorn/config.py
       "
     env_file: [../envs/.base.env]
-    networks: [db_network, redis_network, cal-db_network]
+    networks: [db_network, redis_network]
     restart: unless-stopped
 
   celery:

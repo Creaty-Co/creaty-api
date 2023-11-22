@@ -41,7 +41,7 @@ services:
     build:
       context: .
     ports: [38000:8000]
-    networks: [api_network, cal-api_network]
+    networks: [api_network, cal-db_network, cal-api_network]
     volumes:
       - media_volume:/api/media
       - static_volume:/api/static
