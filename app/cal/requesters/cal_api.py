@@ -33,3 +33,11 @@ class CalAPIRequester(BaseRequester):
             'auth/callback/credentials',
             data={'email': email, 'password': password, 'csrfToken': csrf},
         ).cookies['next-auth.session-token']
+
+    def get_schedule(self, input_str: str) -> dict:
+        return self.request(
+            'get', 'trpc/public/slots.getSchedule', query_params={'inputs': input_str}
+        ).json()
+
+    def post_book_event(self, data: dict) -> dict:
+        return self.request('post', 'book/event', data=data).json()
