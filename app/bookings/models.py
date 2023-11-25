@@ -1,5 +1,3 @@
-from typing import Final
-
 from django.db import models
 from django.utils import timezone
 
@@ -70,9 +68,3 @@ class PackageBooking(AbstractBooking):
     def price(self):
         package = self.package
         return self.mentor.price * package.lessons_count * (1 - package.discount / 100)
-
-
-booking_model_by_event_type: Final[dict[str, type[AbstractBooking]]] = {
-    _booking_model.EVENT_TYPE: _booking_model
-    for _booking_model in (TrialBooking, HourlyBooking, PackageBooking)
-}

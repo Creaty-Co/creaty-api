@@ -1,6 +1,7 @@
 from app.base.logs import debug
 from app.base.renderers import ORJSONRenderer
-from app.bookings.models import TrialBooking, booking_model_by_event_type
+from app.bookings.models import TrialBooking
+from app.bookings.services.booking import BookingService
 from app.cal.requesters.cal_api import CalAPIRequester
 
 
@@ -13,6 +14,7 @@ class CalScheduleService:
         self.admin_username: str = '1'
         self.cal_api_requester = CalAPIRequester()
         self.json_renderer = ORJSONRenderer()
+        self.booking_service = BookingService()
 
     def get(self, input_: dict) -> dict:
         self._check_input(input_)
@@ -20,7 +22,7 @@ class CalScheduleService:
         if event_type == TrialBooking.EVENT_TYPE:
             # add admin username
             input_['json']['usernameList'].append(self.admin_username)
-        booking_model = booking_model_by_event_type[event_type]
+        booking_model = self.booking_service.get_by_event_type(event_type)
         input_['json']['duration'] = booking_model.DURATION
         input_str = self.json_renderer.render(input_).decode()
         debug(f"{input_str = }")
@@ -30,7 +32,7 @@ class CalScheduleService:
         try:
             event_type = input_['json']['eventTypeSlug']
             assert isinstance(event_type, str)
-            assert event_type in booking_model_by_event_type.keys()
+            assert event_type in self.booking_service.model_by_event_type.keys()
             assert isinstance(input_['json']['usernameList'], list)
         except (AssertionError, KeyError, ValueError) as exc:
             raise self.InputInvalidException from exc

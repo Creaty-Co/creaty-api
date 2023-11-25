@@ -6,7 +6,7 @@ from app.base.views import BaseView
 from app.cal.services.schedule import CalScheduleService
 
 
-class CalSlotsScheduleView(BaseView):
+class CalScheduleView(BaseView):
     def get(self):
         cal_schedule_service = CalScheduleService()
         input_ = self._parse_input()
