@@ -1,3 +1,4 @@
+from app.base.logs import debug
 from app.base.renderers import ORJSONRenderer
 from app.bookings.models import TrialBooking, booking_model_by_event_type
 from app.cal.requesters.cal_api import CalAPIRequester
@@ -22,6 +23,7 @@ class CalScheduleService:
         booking_model = booking_model_by_event_type[event_type]
         input_['json']['duration'] = booking_model.DURATION
         input_str = self.json_renderer.render(input_).decode()
+        debug(f"{input_str = }")
         return self.cal_api_requester.get_schedule(input_str)
 
     def _check_input(self, input_: dict) -> None:

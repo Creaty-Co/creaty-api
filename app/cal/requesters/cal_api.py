@@ -36,7 +36,7 @@ class CalAPIRequester(BaseRequester):
 
     def get_schedule(self, input_str: str) -> dict:
         return self.request(
-            'get', 'trpc/public/slots.getSchedule', query_params={'inputs': input_str}
+            'get', 'trpc/public/slots.getSchedule', query_params={'input': input_str}
         ).json()
 
     def post_book_event(self, data: dict) -> dict:

@@ -85,6 +85,7 @@ services:
     extends:
       file: docker/docker-compose.base.yml
       service: cal
+    ports: [30000:3000]
     depends_on: [cal-db]
 
 volumes:

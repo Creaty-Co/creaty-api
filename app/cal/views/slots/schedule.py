@@ -4,12 +4,9 @@ from app.base.exceptions import ClientError
 from app.base.parsers import ORJSONParser
 from app.base.views import BaseView
 from app.cal.services.schedule import CalScheduleService
-from app.users.permissions import AuthenticatedPermission
 
 
 class CalSlotsScheduleView(BaseView):
-    permissions_map = {'get': [AuthenticatedPermission]}
-
     def get(self):
         cal_schedule_service = CalScheduleService()
         input_ = self._parse_input()

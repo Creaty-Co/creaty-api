@@ -47,7 +47,7 @@ class HourlyBooking(AbstractBooking):
         'mentors.Mentor', models.CASCADE, related_name='hourly_bookings'
     )
 
-    EVENT_TYPE = 'hourly'
+    EVENT_TYPE = 'mentoring'
     DURATION = 60
 
     @property
