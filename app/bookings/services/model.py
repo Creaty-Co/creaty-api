@@ -9,7 +9,7 @@ from app.bookings.models import (
 from app.cal.models import CalEventType
 
 
-class BookingService:
+class BookingModelService:
     MODELS: tuple[type[AbstractBooking]] = (TrialBooking, HourlyBooking, PackageBooking)
 
     def __init__(self):
