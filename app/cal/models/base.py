@@ -1,14 +1,10 @@
-from django.db import models
-
 from app.base.models.base import BaseModel
 from app.cal.managers import CalManager
 
 
-class CalEventType(BaseModel):
-    slug = models.TextField()
-
+class BaseCalModel(BaseModel):
     objects = CalManager()
 
     class Meta:
+        abstract = True
         managed = False
-        db_table = 'EventType'
