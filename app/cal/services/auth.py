@@ -18,7 +18,7 @@ class CalAuthService:
     def get_password(self, id: int) -> str:
         key = self.secret_key.encode()
         hash_ = hmac.new(key, str(id).encode(), hashlib.sha256)
-        return hash_.hexdigest()
+        return f"A{hash_.hexdigest()}"
 
     def register(self, user: User) -> None:
         self.cal_api_requester.signup(
