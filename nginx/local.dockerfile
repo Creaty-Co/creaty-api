@@ -4,9 +4,13 @@ RUN cp -r /web/ /http/ && \
     cp -r /web/ /https/ && \
     rm -r /web/ && \
     find /http/ -type f -exec sed -i \
-        's|https://dev-api.creaty.club|http://api.local.host|g' {} + && \
+        's|https://dev-api.creaty.club|http://api.local.host|g; \
+        s|https://stage-api.creaty.club|http://api.local.host|g; \
+        s|https://api.creaty.club|http://api.local.host|g' {} + && \
     find /https/ -type f -exec sed -i \
-        's|https://dev-api.creaty.club|https://api.local.host|g' {} + && \
+        's|https://dev-api.creaty.club|https://api.local.host|g; \
+        s|https://stage-api.creaty.club|https://api.local.host|g; \
+        s|https://api.creaty.club|https://api.local.host|g' {} + && \
     gzip -rkvf9 /http/ && \
     gzip -rkvf9 /https/
 
