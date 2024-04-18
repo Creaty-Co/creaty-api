@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.postgres.forms import SimpleArrayField
 from django.utils.html import format_html
 
 from app.mentors.models import Mentor, Package
@@ -21,6 +22,13 @@ class PageInline(admin.TabularInline):
 
 class MentorAdminForm(forms.ModelForm):
     instance: User
+    links = SimpleArrayField(
+        forms.URLField(),
+        delimiter='\n',
+        required=False,
+        widget=forms.Textarea,
+        help_text="Enter each element on a new line.",
+    )
 
     class Meta:
         model = Mentor
@@ -50,6 +58,28 @@ class MentorAdminForm(forms.ModelForm):
         return self.instance
 
 
+class ArrayFieldListWidget(forms.Textarea):
+    def format_value(self, value: str):
+        return '\n'.join(value.split(','))
+
+    def value_from_datadict(self, data, files, name):
+        value = data.get(name)
+        return value.split('\n') if value else []
+
+
+class CustomArrayWidget(forms.Textarea):
+    def format_value(self, value):
+        if value:
+            return '\n'.join(str(item) for item in value)
+        return ''
+
+    def value_from_datadict(self, data, files, name):
+        value = data.get(name)
+        if value:
+            return [item.strip() for item in value.splitlines()]
+        return []
+
+
 def send_password_reset_email(_, __, queryset):
     for mentor in queryset:
         password_resetter.send_to_user(mentor.email)
@@ -74,7 +104,7 @@ class MentorAdmin(admin.ModelAdmin):
                 'fields': [
                     'is_draft',
                     'slug',
-                    'link',
+                    'links',
                     'avatar_image',
                     'avatar',
                     'first_name',
@@ -107,6 +137,7 @@ class MentorAdmin(admin.ModelAdmin):
     search_fields = ['first_name', 'last_name']
     actions = [send_password_reset_email, send_mentor_registration_email]
     inlines = [PackageInline, PageInline]
+    # formfield_overrides = {ArrayField: {'widget': CustomArrayWidget}}
 
     def avatar_image(self, obj):
         return format_html('<img src="{}" width="500"/>', obj.avatar.url)
@@ -123,3 +154,10 @@ class MentorAdmin(admin.ModelAdmin):
         if not obj:
             return []
         return super().get_inline_instances(request, obj)
+
+    # def formfield_for_dbfield(self, db_field, request, **kwargs):
+    #     if isinstance(db_field, ArrayField):
+    #         return db_field.formfield(
+    #             widget=ArrayFieldListWidget(attrs={'rows': '2', 'cols': '40'})
+    #         )
+    #     return super().formfield_for_dbfield(db_field, request, **kwargs)
