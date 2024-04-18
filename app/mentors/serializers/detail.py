@@ -60,6 +60,7 @@ class RetrieveMentorSerializer(BaseModelSerializer):
             'tags',
             'packages',
             'info',
+            'links',
             'is_draft',
         ]
 
