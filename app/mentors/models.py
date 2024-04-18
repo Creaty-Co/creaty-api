@@ -1,6 +1,7 @@
 from cacheops import invalidate_obj
 from django.conf import settings
 from django.contrib.auth.hashers import is_password_usable
+from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from djmoney.models.fields import MoneyField
@@ -32,7 +33,7 @@ class Mentor(User):
     what_help = models.TextField(blank=True, default='')
     experience = models.TextField(blank=True, default='')
     city = models.TextField(blank=True, default='')
-    link = models.URLField(blank=True, default='')
+    links = ArrayField(models.URLField(), blank=True, default=list)
 
     @property
     def url(self) -> str:
