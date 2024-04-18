@@ -21,6 +21,7 @@ class MentorFactory(UserFactory):
     what_help = Faker('english_text')
     experience = Faker('english_text')
     city = Faker('city')
+    links = factory.List([factory.Faker('url') for _ in range(random.randint(1, 5))])
     is_draft = False
 
     class Meta:
