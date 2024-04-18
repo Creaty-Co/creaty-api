@@ -88,12 +88,12 @@ services:
     domainname: cal.local.host
     depends_on: [cal-db]
 
-  cal-api:
-    extends:
-      file: docker/docker-compose.base.yml
-      service: cal-api
-    ports: [30000:3000]
-    depends_on: [cal-db]
+#  cal-api:
+#    extends:
+#      file: docker/docker-compose.base.yml
+#      service: cal-api
+#    ports: [30000:3000]
+#    depends_on: [cal-db]
 
 volumes:
   db_volume:
