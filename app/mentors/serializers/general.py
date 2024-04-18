@@ -37,6 +37,5 @@ class GETMentorsSerializer(BaseModelSerializer):
             'country',
             'tags',
             'is_draft',
-            'link',
             'email',
         ]
