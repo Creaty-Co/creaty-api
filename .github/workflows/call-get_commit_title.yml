@@ -28,6 +28,7 @@ jobs:
             sha=${{ github.sha }}
           fi
           title=$(git log --format=%s -n 1 $sha)
+          title=${title//#/№}
           title=${title//\//--}
           title=${title/\\/--}
           title=${title/\"/_}
