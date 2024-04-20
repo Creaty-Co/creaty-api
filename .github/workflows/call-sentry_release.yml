@@ -54,5 +54,7 @@ jobs:
           SENTRY_PROJECT: creaty-api
         with:
           ignore_empty: true
+          ignore_missing: true
           environment: ${{ inputs.environment }}
           version: ${{ env.version }}
+        continue-on-error: true
