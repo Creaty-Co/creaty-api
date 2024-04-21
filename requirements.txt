@@ -27,7 +27,7 @@ drf_base64==2.0
 djangochannelsrestframework==1.2.0
 
 channels==4.1.0
-channels-redis==4.1.0
+channels-redis==4.2.0
 asgiref==3.8.1
 orjson==3.9.15
 psycopg==3.1.18
