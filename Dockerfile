@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.2
 FROM python:3.12.3
 
 WORKDIR /api
@@ -8,7 +9,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 COPY /requirements.txt ./requirements.txt
 
-RUN pip install --upgrade pip \
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --upgrade pip \
     pip install --upgrade setuptools \
     pip install -r requirements.txt
 
