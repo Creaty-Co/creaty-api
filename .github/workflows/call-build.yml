@@ -18,33 +18,20 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4.1.1
-
+      - uses: actions/checkout@v4.1.3
       - name: Set up Docker Buildx
-        id: buildx
         uses: docker/setup-buildx-action@v3.3.0
-
-      - name: Enable buildkit cache
-        uses: actions/cache@v2
-        with:
-          path: /tmp/buildkit-cache/buildkit-state.tar
-          key: "${{ runner.os }}-buildkit-${{ github.sha }}"
-          restore-keys: |
-            ${{ runner.os }}-buildkit-
-
       - name: Login to container registry
         uses: docker/login-action@v3.0.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Repository to lower case
         # language="shell script"
         run: |
           repository=${{ github.repository }}
           echo "REPOSITORY=${repository,,}" >> ${GITHUB_ENV}
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.1.0
         with:
@@ -53,18 +40,5 @@ jobs:
           tags: |
             ghcr.io/${{ env.REPOSITORY }}/api:latest
             ghcr.io/${{ env.REPOSITORY }}/api:${{ inputs.tag }}
-          build-args: |
-            BUILDKIT_INLINE_CACHE=1
           cache-from: type=registry,ref=ghcr.io/${{ env.REPOSITORY }}/api:latest
           cache-to: type=registry,mode=max,ref=ghcr.io/${{ env.REPOSITORY }}/api:latest
-
-      - name: Load buildkit state from cache
-        run: |
-          docker run --rm --volumes-from buildx_buildkit_${{ steps.buildx.outputs.name }}0 \
-          -v /tmp/buildkit-cache:/cache alpine /bin/sh -c \
-          "ls -al /var/lib/buildkit"
-
-      - name: Debug print
-        run: |
-          ls -al /tmp
-          ls -al /tmp/buildkit-cache
