@@ -12,6 +12,9 @@ class AbstractBooking(models.Model):
     description = models.TextField(blank=True, default='')
     created_at = models.DateTimeField(default=timezone.now)
 
+    EVENT_TYPE: str
+    DURATION: int
+
     class Meta:
         abstract = True
 
@@ -29,8 +32,11 @@ class TrialBooking(AbstractBooking):
         'mentors.Mentor', models.CASCADE, related_name='free_bookings'
     )
 
+    EVENT_TYPE = 'trial'
+    DURATION = 15
+
     @property
-    def price(self) -> Money:
+    def price(self):
         return Money(0)
 
 
@@ -39,8 +45,11 @@ class HourlyBooking(AbstractBooking):
         'mentors.Mentor', models.CASCADE, related_name='hourly_bookings'
     )
 
+    EVENT_TYPE = 'mentoring'
+    DURATION = 60
+
     @property
-    def price(self) -> Money:
+    def price(self):
         return self.mentor.price
 
 
@@ -51,6 +60,9 @@ class PackageBooking(AbstractBooking):
     package = models.ForeignKey(
         'mentors.Package', models.CASCADE, related_name='bookings'
     )
+
+    EVENT_TYPE = 'package'
+    DURATION = 60
 
     @property
     def price(self):
