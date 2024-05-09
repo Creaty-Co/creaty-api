@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from app.base.requesters.base import BaseRequester
 
 
@@ -5,13 +7,12 @@ class CalAPIRequester(BaseRequester):
     class CalAPIError(Exception):
         pass
 
-    CAL_API_BASE_URL = 'http://cal-api:3000/api'
-
     def __init__(self, **kwargs):
         kwargs['default_kwargs'] = kwargs.get('default_kwargs', {}) | {
             'allow_redirects': False
         }
-        super().__init__(base_url=self.CAL_API_BASE_URL, **kwargs)
+        base_url = f"http://{settings.CAL_API_DOMAIN}/api"
+        super().__init__(base_url=base_url, **kwargs)
 
     def signup(self, username: str, email: str, password: str) -> None:
         message = self.request(

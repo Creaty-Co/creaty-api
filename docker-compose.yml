@@ -41,7 +41,7 @@ services:
     build:
       context: .
     ports: [38000:8000]
-    networks: [api_network, cal-api_network]
+    networks: [api_network, cal-db_network, cal-api_network]
     volumes:
       - media_volume:/api/media
       - static_volume:/api/static
@@ -70,7 +70,7 @@ services:
     build:
       dockerfile: local.dockerfile
     ports: [80:80, 443:443]
-    networks: [cal-web_network]
+    networks: [cal_network]
     volumes:
       - static_volume:/etc/nginx/html/api/static
     depends_on: [api]
@@ -81,18 +81,19 @@ services:
       service: cal-db
     ports: [35433:5432]
 
-  cal-web:
+  cal:
     extends:
       file: docker/docker-compose.base.yml
-      service: cal-web
+      service: cal
+    domainname: cal.local.host
     depends_on: [cal-db]
 
-  cal-api:
-    extends:
-      file: docker/docker-compose.base.yml
-      service: cal-api
-    ports: [30000:3000]
-    depends_on: [cal-db]
+#  cal-api:
+#    extends:
+#      file: docker/docker-compose.base.yml
+#      service: cal-api
+#    ports: [30000:3000]
+#    depends_on: [cal-db]
 
 volumes:
   db_volume:
@@ -109,5 +110,5 @@ networks:
   redis_network:
   api_network:
   cal-db_network:
-  cal-web_network:
+  cal_network:
   cal-api_network:

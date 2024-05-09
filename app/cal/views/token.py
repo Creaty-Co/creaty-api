@@ -1,14 +1,14 @@
 from rest_framework.response import Response
 
 from app.base.views import BaseView
-from app.calcom.serializers.token import GET_CalcomTokenSerializer
-from app.calcom.services.auth import CalAuthService
+from app.cal.serializers.token import GET_CalTokenSerializer
+from app.cal.services.auth import CalAuthService
 from app.users.permissions import AuthenticatedPermission
 
 
-class CalcomTokenView(BaseView):
+class CalTokenView(BaseView):
     permissions_map = {'get': [AuthenticatedPermission]}
-    serializer_map = {'get': GET_CalcomTokenSerializer}
+    serializer_map = {'get': GET_CalTokenSerializer}
 
     def get(self):
         user = self.request.user
