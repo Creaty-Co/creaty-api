@@ -39,7 +39,7 @@ services:
     build:
       context: .
     ports: [38000:8000]
-    networks: [api_network, redis_network, platform-db_network, platform-api_network]
+    networks: [api_network, platform-db_network, platform-api_network]
     volumes:
       - media_volume:/api/media
       - static_volume:/api/static

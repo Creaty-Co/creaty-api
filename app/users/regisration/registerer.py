@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from app.cal.services.auth import CalAuthService
+from app.platform.services.auth import PlatformAuthService
 from app.users.models import User
 from app.users.notificators.base import BaseUsersNotifier
 from app.users.verification import EmailVerifier
@@ -24,7 +24,7 @@ class Registerer:
         self.successful_path = successful_path
         self.domain = domain
         self.user_manager = User.objects
-        self.platform_auth_service = CalAuthService()
+        self.platform_auth_service = PlatformAuthService()
 
     @property
     def failure_url(self) -> str:
