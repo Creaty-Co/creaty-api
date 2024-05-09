@@ -49,7 +49,7 @@ services:
       && gunicorn api.wsgi -c gunicorn/config.py
       "
     env_file: [../envs/.base.env]
-    networks: [db_network, redis_network, cal-db_network]
+    networks: [db_network, redis_network, platform-db_network]
     restart: unless-stopped
 
   celery:
@@ -80,27 +80,28 @@ services:
     networks: [api_network]
     restart: unless-stopped
 
-  cal-db:
-    container_name: cal-db
+  platform-db:
+    container_name: platform-db
     image: postgres:15.3
     environment:
       POSTGRES_DB: db
       POSTGRES_USER: pg
       POSTGRES_PASSWORD: password
     volumes:
-      - cal-db_volume:/var/lib/postgresql/data/
-    networks: [cal-db_network]
+      - platform-db_volume:/var/lib/postgresql/data/
+    networks: [platform-db_network]
     restart: unless-stopped
 
-  cal:
-    container_name: cal
-    # image: calcom/cal.com:v3.9.1
-    image: cal
+  platform:
+    container_name: platform
+    image: ghcr.io/creaty-co/creaty-platform/platform:latest
+    build:
+      context: .
     env_file: [../envs/.base.env]
     environment:
-      DATABASE_URL: postgresql://pg:password@cal-db:5432/db
-      DATABASE_DIRECT_URL: postgresql://pg:password@cal-db:5432/db
-    networks: [cal-db_network, cal_network]
+      DATABASE_URL: postgresql://pg:password@platform-db:5432/db
+      DATABASE_DIRECT_URL: postgresql://pg:password@platform-db:5432/db
+    networks: [platform-db_network, platform_network]
     restart: unless-stopped
 
 volumes:
@@ -108,12 +109,12 @@ volumes:
   redis_volume:
   media_volume:
   api_static_volume:
-  cal-db_volume:
+  platform-db_volume:
 
 networks:
   db_network:
   redis_network:
   api_network:
-  cal-db_network:
-  cal_network:
-  cal-api_network:
+  platform-db_network:
+  platform_network:
+  platform-api_network:

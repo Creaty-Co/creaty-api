@@ -1,7 +1,7 @@
 from django.db import models
 
 from app.base.models.base import BaseModel
-from app.calcom.managers import BaseCalManager
+from app.platform.managers import BasePlatformManager
 
 
 class CalUser(BaseModel):
@@ -9,7 +9,7 @@ class CalUser(BaseModel):
     username = models.TextField()
     email = models.EmailField()
 
-    objects = BaseCalManager()
+    objects = BasePlatformManager()
 
     class Meta:
         managed = False

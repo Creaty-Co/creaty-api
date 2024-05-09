@@ -3,7 +3,7 @@ from django.conf import settings
 from app.base.requesters.base import BaseRequester
 
 
-class CalAPIRequester(BaseRequester):
+class PlatformAPIRequester(BaseRequester):
     class CalAPIError(Exception):
         pass
 
@@ -11,7 +11,7 @@ class CalAPIRequester(BaseRequester):
         kwargs['default_kwargs'] = kwargs.get('default_kwargs', {}) | {
             'allow_redirects': False
         }
-        base_url = f"http://{settings.CAL_API_DOMAIN}/api"
+        base_url = f"http://{settings.PLATFORM_API_DOMAIN}/api"
         super().__init__(base_url=base_url, **kwargs)
 
     def signup(self, username: str, email: str, password: str) -> None:
