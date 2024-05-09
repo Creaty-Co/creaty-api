@@ -35,7 +35,7 @@ jobs:
       name: ${{ inputs.environment }}
       url: ${{ inputs.url }}
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.1.3
         with:
           fetch-depth: 0
       - name: Determine version
@@ -47,12 +47,14 @@ jobs:
           fi
           echo "version=$version" >> $GITHUB_ENV
       - name: Create Sentry release
-        uses: getsentry/action-release@v1.4.1
+        uses: getsentry/action-release@v1.7.0
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: creaty-co
           SENTRY_PROJECT: creaty-api
         with:
           ignore_empty: true
+          ignore_missing: true
           environment: ${{ inputs.environment }}
           version: ${{ env.version }}
+        continue-on-error: true

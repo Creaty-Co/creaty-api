@@ -94,10 +94,12 @@ services:
 
   cal:
     container_name: cal
-    image: calcom/cal.com:v3.4.7
+    # image: calcom/cal.com:v3.9.1
+    image: cal
     env_file: [../envs/.base.env]
     environment:
       DATABASE_URL: postgresql://pg:password@cal-db:5432/db
+      DATABASE_DIRECT_URL: postgresql://pg:password@cal-db:5432/db
     networks: [cal-db_network, cal_network]
     restart: unless-stopped
 
