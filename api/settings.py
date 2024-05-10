@@ -290,7 +290,7 @@ CELERY_BEAT_SCHEDULE = {
 
 # media
 
-DEFAULT_MEDIA_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DEFAULT_MEDIA_STORAGE = 'app.base.storages.file_system.FileSystemStorage'
 
 USE_CLOUDINARY = False
 if (CLOUDINARY_URL := env('CLOUDINARY_URL')) != 'cloudinary://0:stub@_':
