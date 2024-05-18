@@ -22,7 +22,6 @@ RUN mkdir /certs/ && \
     openssl genpkey -algorithm RSA -out /certs/key.pem && \
     openssl req -new -x509 -key /certs/key.pem -out /certs/crt.pem -days 365 -subj \
         "/C=US/ST=State/L=City/O=Organization/OU=OrganizationalUnit/CN=*.local.host"
-COPY ./certs/ /certs/
 
 COPY ./nginx.local.conf.conf ./templates/nginx.conf.conf
 COPY --from=web /http/ ./html/http/
