@@ -2,6 +2,7 @@ from typing import Any, TypeVar
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 from django.db import models
+from rest_framework import status
 from rest_framework.fields import IntegerField
 from rest_framework.response import Response
 
@@ -31,9 +32,14 @@ def add_query_params(url: str, **query_params: Any) -> str:
 
 
 def response_204(f):
-    def _f_decorator(self):
-        f(self)
-        return Response(status=204)
+    def _f_decorator(self, *args, **kwargs):
+        response: Response = f(self, *args, **kwargs)
+        if response:
+            response.status_code = status.HTTP_204_NO_CONTENT
+            response.data = None
+        else:
+            response = Response(status=status.HTTP_204_NO_CONTENT)
+        return response
 
     return extend_schema(responses={200: None, 201: None, 204: ''})(_f_decorator)
 
