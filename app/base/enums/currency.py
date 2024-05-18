@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from collections.abc import Iterable
+
 import moneyed
 from moneyed import CurrencyDoesNotExist, get_currency
 
@@ -8,6 +12,9 @@ class Currency(BaseEnumStr):
     RUB = 'Рубль (₽)'
     USD = 'Доллар США ($)'
     EUR = 'Евро (€)'
+
+
+Currency: Iterable
 
 
 for _currency in tuple(Currency):
