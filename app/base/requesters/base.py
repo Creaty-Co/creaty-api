@@ -14,7 +14,7 @@ class BaseRequester:
     ):
         self.base_url = base_url
         self.session_factory = session_factory
-        self.default_kwargs = default_kwargs
+        self.default_kwargs = dict(default_kwargs)
         self._session = None
 
     @property
@@ -48,8 +48,10 @@ class BaseRequester:
         data: dict = im_dict,
         **kwargs,
     ):
+        headers = dict(headers)
+        data = dict(data)
         url = self.get_url(path, query_params or {}, hash_)
-        kwargs = (
-            self.default_kwargs | kwargs | {'headers': headers} | {'json': dict(data)}
-        )
+        headers = self.default_kwargs.get('headers', {}) | headers
+        data = self.default_kwargs.get('data', {}) | data
+        kwargs = self.default_kwargs | kwargs | {'headers': headers} | {'json': data}
         return getattr(self.session, method)(url, **kwargs)
