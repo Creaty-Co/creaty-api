@@ -94,8 +94,7 @@ services:
 
   platform:
     container_name: platform
-    # image: ghcr.io/creaty-co/creaty-platform/platform:latest
-    image: platform
+    image: ghcr.io/creaty-co/creaty-platform/platform:latest
     env_file: [../envs/.base.env]
     environment:
       DATABASE_URL: postgresql://pg:password@platform-db:5432/db
