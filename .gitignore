@@ -18,6 +18,7 @@
 !/envs/*.example.env
 /.env
 /db/certs/
+/secrets/
 
 ### python_gitignore template
 # Created by .ignore support plugin (hsz.mobi)

@@ -30,7 +30,7 @@ class BaseTest(APITestCase):
             case _:
                 if callable(exp_value):
                     if exp_value(value) is False:
-                        self.fail(f"{exp_value = }({value = }) is False")
+                        self.fail(f"{exp_value=}({value=}) is False")
                 elif exp_value is not ...:
                     self.assert_is_instance(value, type(exp_value))
                     self.assertEqual(exp_value, value)

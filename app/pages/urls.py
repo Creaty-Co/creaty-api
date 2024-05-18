@@ -30,7 +30,7 @@ urlpatterns = [
     path('links/documents/', PagesLinksDocumentsView.as_view()),
     path('links/documents/<int:id>/', PagesLinksDocumentView.as_view()),
     re_path(
-        f'locales/(?P<language>{"|".join(l[0] for l in settings.LANGUAGES)})'
+        f'locales/(?P<language>{"|".join(lang[0] for lang in settings.LANGUAGES)})'
         f'/translation.json/',
         PagesLocaleView.as_view(),
     ),

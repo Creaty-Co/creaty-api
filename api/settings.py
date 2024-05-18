@@ -62,7 +62,7 @@ SITE_NAME = 'Creaty'
 SITE_ROOT = BASE_DIR
 API_DOMAIN = env('API_DOMAIN')
 WEB_DOMAIN = env('WEB_DOMAIN')
-CAL_API_DOMAIN = env('CAL_API_DOMAIN')
+PLATFORM_API_URL = env('PLATFORM_API_URL')
 ROOT_DOMAIN = '.'.join(WEB_DOMAIN.split('.')[-2:])
 DOMAIN = WEB_DOMAIN
 
@@ -116,7 +116,7 @@ INSTALLED_APPS = [
     'app.mailings',
     'app.pages',
     'app.bookings',
-    'app.cal',
+    'app.platform',
 ]
 
 REST_FRAMEWORK = {
@@ -290,7 +290,7 @@ CELERY_BEAT_SCHEDULE = {
 
 # media
 
-DEFAULT_MEDIA_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DEFAULT_MEDIA_STORAGE = 'app.base.storages.file_system.FileSystemStorage'
 
 USE_CLOUDINARY = False
 if (CLOUDINARY_URL := env('CLOUDINARY_URL')) != 'cloudinary://0:stub@_':
@@ -354,7 +354,7 @@ SPECTACULAR_SETTINGS = {
 
 # db
 
-DATABASES = {'default': env.db(), 'cal': env.db('CAL_DATABASE_URL')}
+DATABASES = {'default': env.db(), 'platform': env.db('PLATFORM_DATABASE_URL')}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
@@ -416,7 +416,7 @@ LOG_PRETTY = env('LOG_PRETTY')
 LOG_MAX_LENGTH = env('LOG_MAX_LENGTH')
 LOG_REQUESTS = env('LOG_REQUESTS')
 
-_loggers = {
+_loggers: dict = {
     k: {
         'handlers': list(
             map(
