@@ -5,7 +5,7 @@ from django.utils.crypto import get_random_string
 
 from app.base.tests.fakers import fake
 from app.base.tests.views.base import BaseViewTest
-from app.cal.services.auth import CalAuthService
+from app.platform.services.auth import PlatformAuthService
 from app.users.models import User
 from app.users.regisration import registerer
 from app.users.serializers.register.general import (
@@ -57,7 +57,7 @@ class UsersRegisterTest(BaseViewTest):
         code = get_random_string(10)
         registerer.verifier.cache.set((user.email, None), code)
         registerer.verifier.cache.set(code, user.email)
-        CalAuthService.register = Mock()
+        PlatformAuthService.register = Mock()
         self._test(
             'put',
             {
