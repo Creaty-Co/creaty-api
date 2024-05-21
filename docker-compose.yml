@@ -12,11 +12,15 @@ services:
     extends:
       file: docker/docker-compose.base.yml
       service: redis-cache
+    volumes:
+      - redis-cache_volume:/data
 
   redis-cacheops:
     extends:
       file: docker/docker-compose.base.yml
       service: redis-cacheops
+    volumes:
+      - redis-cacheops_volume:/data
 
   redis-storage:
     extends:
