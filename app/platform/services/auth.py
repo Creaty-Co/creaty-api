@@ -25,8 +25,9 @@ class PlatformAuthService:
         return f"A1{hash_.hexdigest()}"
 
     def register(self, user: User) -> None:
+        username = mentor.slug if (mentor := user.to_mentor) else str(user.id)
         self.platform_api_requester.signup(
-            str(user.id), user.email, self.get_password(user.id)
+            user.id, username, user.email, self.get_password(user.id)
         )
 
     def token(self, user: User) -> str:
