@@ -117,6 +117,7 @@ INSTALLED_APPS = [
     'app.pages',
     'app.bookings',
     'app.platform',
+    'app.calendar',
 ]
 
 REST_FRAMEWORK = {
@@ -389,7 +390,18 @@ VERIFICATION_PASSWORD_RESET_SUCCESSFUL_PATH = 'user/reset-password'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_APP_ID')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('GOOGLE_APP_SECRET')
 SOCIAL_AUTH_GOOGLE_SCOPE = ['email']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/calendar.events',
+    'openid',
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
 SOCIAL_AUTH_GOOGLE_PROFILE_EXTRA_PARAMS = {'fields': 'id, name, email'}
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline',
+    'include_granted_scopes': 'true',
+    'prompt': 'consent',
+}
 
 SOCIAL_AUTH_STRATEGY = 'app.users.strategy.SocialStrategy'
 SOCIAL_AUTH_USER_FIELDS = ['email', 'first_name', 'last_name']
