@@ -55,3 +55,8 @@ Faker==24.11.0
 coverage==7.4.4
 
 django-debug-toolbar==4.2.0
+
+
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
