@@ -43,7 +43,7 @@ services:
     build:
       context: .
     ports: [38000:8000]
-    networks: [api_network, platform-db_network, platform-api_network]
+    networks: [api_network]
     volumes:
       - media_volume:/api/media
       - static_volume:/api/static
@@ -72,22 +72,9 @@ services:
     build:
       dockerfile: local.dockerfile
     ports: [80:80, 443:443]
-    networks: [platform_network]
     volumes:
       - static_volume:/etc/nginx/html/api/static
     depends_on: [api]
-
-  platform-db:
-    extends:
-      file: docker/docker-compose.base.yml
-      service: platform-db
-    ports: [35433:5432]
-
-  platform:
-    extends:
-      file: docker/docker-compose.base.yml
-      service: platform
-    depends_on: [platform-db]
 
 volumes:
   db_volume:
@@ -97,12 +84,8 @@ volumes:
   redis-celery_volume:
   media_volume:
   static_volume:
-  platform-db_volume:
 
 networks:
   db_network:
   redis_network:
   api_network:
-  platform-db_network:
-  platform_network:
-  platform-api_network:
