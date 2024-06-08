@@ -5,10 +5,10 @@ from google.oauth2.credentials import Credentials
 from social_django.models import UserSocialAuth
 
 
-class CredentialsContexter:
+class GoogleCredentialsContexter:
     class Context:
         def __init__(
-            self, contexter: 'CredentialsContexter', social_auth: UserSocialAuth
+            self, contexter: 'GoogleCredentialsContexter', social_auth: UserSocialAuth
         ):
             self.contexter = contexter
             self.social_auth = social_auth
