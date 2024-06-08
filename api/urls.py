@@ -32,6 +32,7 @@ urlpatterns += [
     path('geo/', include('app.geo.urls')),
     path('bookings/', include('app.bookings.urls')),
     path('platform/', include('app.platform.urls')),
+    path('calendar/', include('app.calendar.urls')),
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]
