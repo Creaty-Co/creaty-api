@@ -1,9 +1,12 @@
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
+import factory
 
 from app.base.tests.factories.base import BaseFactory
-from app.base.tests.fakers import Faker
+from app.base.tests.fakers import Faker, fake
 from app.users.models import User
+
+from social_django.models import UserSocialAuth
 
 
 class UserFactory(BaseFactory):
@@ -34,3 +37,20 @@ class GroupFactory(BaseFactory):
         model = Group
 
     name = Faker('english_word')
+
+
+class UserSocialAuthFactory(BaseFactory):
+    class Meta:
+        model = UserSocialAuth
+
+    user = factory.SubFactory(UserFactory)
+    provider = Faker('word')
+    uid = Faker('uuid4')
+    extra_data = factory.LazyFunction(
+        lambda: {
+            'auth_time': int(fake.unix_time()),
+            'expires': fake.random_int(min=3600, max=7200),
+            'access_token': fake.uuid4(),
+            'refresh_token': fake.uuid4(),
+        }
+    )
