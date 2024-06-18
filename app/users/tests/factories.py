@@ -1,12 +1,11 @@
+import factory
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
-import factory
+from social_django.models import UserSocialAuth
 
 from app.base.tests.factories.base import BaseFactory
 from app.base.tests.fakers import Faker, fake
 from app.users.models import User
-
-from social_django.models import UserSocialAuth
 
 
 class UserFactory(BaseFactory):

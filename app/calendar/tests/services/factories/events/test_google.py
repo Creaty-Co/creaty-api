@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
-from app.base.tests.base import BaseTest
-from unittest.mock import patch, MagicMock
 import uuid
+from datetime import datetime, timedelta
+from unittest.mock import MagicMock, patch
 
+from app.base.tests.base import BaseTest
 from app.calendar.entites.calendar_event import CalendarEventEntity
 from app.calendar.services.factories.events.google import GoogleCalendarEventFactory
 from app.users.tests.factories import UserFactory, UserSocialAuthFactory
