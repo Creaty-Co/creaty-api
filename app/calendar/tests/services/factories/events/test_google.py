@@ -44,7 +44,7 @@ class GoogleCalendarEventFactoryTest(BaseTest):
                 'start_time': start_time,
                 'end_time': end_time,
                 'google_event_uuid': calendar_event.google_event_uuid,
-                'host': host.id,
+                'host': host,
                 'guests': list(guests),
             },
         )
