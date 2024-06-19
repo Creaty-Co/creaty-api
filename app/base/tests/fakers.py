@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
 import datetime
+from collections.abc import Callable, Sequence
 from typing import Any, Final
 
 from django.core.files.base import ContentFile
 from factory import Faker as _FactoryFaker
-from faker import Faker as _Faker, Generator
+from faker import Faker as _Faker
+from faker import Generator
 
 
 class SubFaker(_Faker):
