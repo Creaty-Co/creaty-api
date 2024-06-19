@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
 
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import exceptions, status
