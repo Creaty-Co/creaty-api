@@ -1,4 +1,4 @@
-from datetime import datetime, date, timezone, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from app.base.tests.base import BaseTest
 from app.bookings.services.factories.slots import BookingSlotsFactory

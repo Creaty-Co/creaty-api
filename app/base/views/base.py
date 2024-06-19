@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import exceptions, status
 from rest_framework.generics import GenericAPIView
