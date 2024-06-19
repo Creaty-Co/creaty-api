@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-import datetime
 from collections.abc import Callable, Sequence
+import datetime
 from typing import Any, Final
 
 from django.core.files.base import ContentFile
 from factory import Faker as _FactoryFaker
-from faker import Faker as _Faker
-from faker import Generator
+from faker import Faker as _Faker, Generator
 
 
 class SubFaker(_Faker):
@@ -48,6 +47,12 @@ class SubFaker(_Faker):
             self.__getattr__('image')(size=size, image_format=extension),
             fake.file_name(category='image', extension=extension),
         )
+
+    def timezone(self) -> datetime.timezone:
+        hours_offset = self.random.randint(-12, 14)
+        minutes_offset = self.random.choice([0, 15, 30, 45])
+        offset = datetime.timedelta(hours=hours_offset, minutes=minutes_offset)
+        return datetime.timezone(offset)
 
 
 class Faker(_FactoryFaker):

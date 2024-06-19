@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from typing import Protocol, runtime_checkable
+
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import exceptions, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import ListModelMixin
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.throttling import BaseThrottle
 
@@ -14,11 +17,20 @@ from app.base.serializers.base import BaseSerializer
 from app.base.services.cache import Cacher
 from app.base.utils.common import status_by_method
 from app.base.utils.schema import extend_schema
+from app.users.models import User
 
 __all__ = ['BaseView']
 
 
+class _RequestProtocol(Request):
+    @property
+    def user(self) -> User:
+        return super().user()
+
+
 class BaseView(GenericAPIView):
+    request: _RequestProtocol
+
     many: bool = False
     serializer_class = BaseSerializer
     permission_classes = []

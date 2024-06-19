@@ -1,9 +1,10 @@
-from datetime import datetime, timedelta
-from app.base.tests.base import BaseTest
+from datetime import datetime, timedelta, timezone
 from unittest.mock import patch, MagicMock
-import uuid
 
+from app.base.tests.base import BaseTest
+from app.base.tests.fakers import fake
 from app.calendar.entites.calendar_event import CalendarEventEntity
+from app.calendar.models import CalendarEvent
 from app.calendar.services.factories.events.google import GoogleCalendarEventFactory
 from app.users.tests.factories import UserFactory, UserSocialAuthFactory
 
@@ -19,21 +20,34 @@ class GoogleCalendarEventFactoryTest(BaseTest):
         UserSocialAuthFactory(user=host)
         guests = {UserFactory(), UserFactory()}
 
+        start_time = datetime.now(timezone.utc)
+        end_time = start_time + timedelta(hours=fake.random.randint(1, 3))
+        tz = fake.timezone()
         calendar_event_entity = CalendarEventEntity(
             host=host,
-            title="Test Event",
-            start_time=datetime.now(),
-            end_time=datetime.now() + timedelta(hours=1),
+            title=fake.text(),
+            start_time=start_time.astimezone(tz),
+            end_time=end_time.astimezone(tz),
             guests=guests,
         )
 
         factory = GoogleCalendarEventFactory()
 
         # Act
-        event_uuid = factory._create_event_in_google_calendar(calendar_event_entity)
+        calendar_event = factory.create_event(calendar_event_entity)
 
         # Assert
-        self.assertTrue(isinstance(event_uuid, uuid.UUID))
+        self.assert_model(
+            CalendarEvent,
+            {
+                'title': calendar_event_entity.title,
+                'start_time': start_time,
+                'end_time': end_time,
+                'google_event_uuid': calendar_event.google_event_uuid,
+                'host': host.id,
+                'guests': list(guests),
+            },
+        )
         mock_build.assert_called_once_with(
             serviceName='calendar',
             version='v3',
