@@ -8,8 +8,8 @@ from app.base.serializers.fields.timezone import TimezoneField
 from app.base.utils.schema import extend_schema
 from app.base.views import BaseView
 from app.bookings.serializers.slots.trial import (
-    QueryParamsGETBookingsSlotsTrialSerializer,
     GETBookingsSlotsTrialSerializer,
+    QueryParamsGETBookingsSlotsTrialSerializer,
 )
 from app.bookings.services.factories.slots import BookingSlotsFactory
 from app.users.permissions import AuthenticatedPermission

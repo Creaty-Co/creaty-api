@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Final
 
 from app.bookings.entites.booking_type import BookingTypeEntity
-from app.bookings.models import TrialBooking, HourlyBooking
+from app.bookings.models import HourlyBooking, TrialBooking
 
 
 class BookingTypeEnum(Enum):
