@@ -41,12 +41,14 @@ jobs:
           key: buildkit-state
       - name: Load buildkit state into volume
         run: |
-          mkdir ./state || true
-          ls -al ./state
           container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
+          docker exec -t ${container_id} ls -al /state
           docker exec -t ${container_id} rm -rf /state/*
           docker exec -t ${container_id} ls -al /state
+          mkdir ./state || true
+          ls -al ./state
           docker cp ./state/. ${container_id}:/state
+          docker exec -t ${container_id} ls -al /state
           docker exec -t ${container_id} chown -R root:root /state
           docker exec -t ${container_id} ls -al /state
           docker rm -f ${container_id}
@@ -62,14 +64,13 @@ jobs:
 
       - name: Copy files from Docker to host
         run: |
-          pwd
           rm -rf ./state/*
           container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
           docker exec -t ${container_id} chmod -R 777 /state
           docker exec -t ${container_id} ls -al /state
-          docker cp ${container_id}:/state ./state
-          docker rm -f ${container_id}
+          docker cp ${container_id}:/state/. ./state
           ls -al ./state
+          docker rm -f ${container_id}
       - name: Upload buildkit state
         uses: actions/cache@v3
         with:
