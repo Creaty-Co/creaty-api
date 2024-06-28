@@ -64,10 +64,10 @@ jobs:
       - name: Copy files from Docker to host
         run: |
           pwd
+          rm -rf ./state
           container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
-          docker cp ${container_id}:/state ./state
           docker exec -t ${container_id} ls -al /state
-          ls -al ./state
+          docker cp ${container_id}:/state ./state
           docker rm -f ${container_id}
       - name: Upload buildkit state
         uses: actions/cache@v3
