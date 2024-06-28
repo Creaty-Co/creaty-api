@@ -32,7 +32,19 @@ jobs:
         run: |
           repository=${{ github.repository }}
           echo "REPOSITORY=${repository,,}" >> ${GITHUB_ENV}
-      - run: docker volume ls && docker ps -a
+
+      - name: Download cached state
+        uses: actions/download-artifact@v3
+        with:
+          name: buildkit_state
+          path: ./state
+      - name: Load state into volume
+        run: |
+          container_id=$(docker create -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine)
+          docker cp ./state/. ${container_id}:/state
+          docker exec -t ${container_id} ls /state
+          docker rm ${container_id}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.1.0
         with:
@@ -41,10 +53,23 @@ jobs:
           tags: creaty-api-test
           cache-from: type=registry,ref=ghcr.io/${{ env.REPOSITORY }}/api:cache-latest,mode=max
           cache-to: type=registry,mode=max,ref=ghcr.io/${{ env.REPOSITORY }}/api:cache-latest,mode=max
+
       - run: |
           docker ps -a
           docker inspect buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0
-          docker run --rm -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/mnt -t alpine ls -al /mnt
+          docker run --rm -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state -t alpine ls -al /state
+      - name: Copy files from Docker to host
+        run: |
+          pwd
+          container_id=$(docker create -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine)
+          docker cp ${container_id}:/state ./state
+          docker exec -t ${container_id} ls /state
+          docker rm ${container_id}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildkit_state
+          path: ./state
 
       - name: Run tests
         # language="shell script"
