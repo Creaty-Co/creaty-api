@@ -43,7 +43,7 @@ jobs:
         run: |
           mkdir ./state || true
           container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
-          docker exec -t ${container_id} rm -rf /state
+          docker exec -t ${container_id} rm -rf /state/*
           docker exec -t ${container_id} ls -al /state
           ls -al ./state
           docker cp ./state/. ${container_id}:/state
@@ -63,7 +63,7 @@ jobs:
       - name: Copy files from Docker to host
         run: |
           pwd
-          rm -rf ./state
+          rm -rf ./state/*
           container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
           docker exec -t ${container_id} chmod -R 777 /state
           docker exec -t ${container_id} ls -al /state
