@@ -57,10 +57,6 @@ jobs:
           cache-from: type=registry,ref=ghcr.io/${{ env.REPOSITORY }}/api:cache-latest,mode=max
           cache-to: type=registry,mode=max,ref=ghcr.io/${{ env.REPOSITORY }}/api:cache-latest,mode=max
 
-      - run: |
-          docker ps -a
-          docker inspect buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0
-          docker run --rm -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state -t alpine ls -al /state
       - name: Copy files from Docker to host
         run: |
           pwd
@@ -69,6 +65,7 @@ jobs:
           docker exec -t ${container_id} ls -al /state
           docker cp ${container_id}:/state ./state
           docker rm -f ${container_id}
+          ls -al ./state
       - name: Upload buildkit state
         uses: actions/cache@v3
         with:
