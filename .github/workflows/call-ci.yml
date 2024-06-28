@@ -42,7 +42,7 @@ jobs:
       - name: Load buildkit state into volume
         run: |
           mkdir ./state || true
-          container_id=$(docker create -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
+          container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
           docker cp ./state/. ${container_id}:/state
           ls ./state
           docker exec -t ${container_id} ls /state
@@ -64,7 +64,7 @@ jobs:
       - name: Copy files from Docker to host
         run: |
           pwd
-          container_id=$(docker create -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
+          container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
           docker cp ${container_id}:/state ./state
           docker exec -t ${container_id} ls /state
           ls ./state
