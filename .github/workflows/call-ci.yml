@@ -32,6 +32,7 @@ jobs:
         run: |
           repository=${{ github.repository }}
           echo "REPOSITORY=${repository,,}" >> ${GITHUB_ENV}
+      - run: docker volume ls && docker ps -a
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.1.0
         with:
