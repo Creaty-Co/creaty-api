@@ -43,8 +43,11 @@ jobs:
         run: |
           mkdir ./state || true
           container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
-          docker cp ./state/. ${container_id}:/state
+          docker exec -t ${container_id} rm -rf /state
+          docker exec -t ${container_id} ls -al /state
           ls -al ./state
+          docker cp ./state/. ${container_id}:/state
+          docker exec -t ${container_id} chown -R root:root /state
           docker exec -t ${container_id} ls -al /state
           docker rm -f ${container_id}
 
@@ -62,6 +65,7 @@ jobs:
           pwd
           rm -rf ./state
           container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
+          docker exec -t ${container_id} chmod -R 777 /state
           docker exec -t ${container_id} ls -al /state
           docker cp ${container_id}:/state ./state
           docker rm -f ${container_id}
