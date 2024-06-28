@@ -44,9 +44,9 @@ jobs:
           mkdir ./state || true
           container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
           docker cp ./state/. ${container_id}:/state
-          ls ./state
-          docker exec -t ${container_id} ls /state
-          docker rm ${container_id}
+          ls -al ./state
+          docker exec -t ${container_id} ls -al /state
+          docker rm -f ${container_id}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.1.0
@@ -66,9 +66,9 @@ jobs:
           pwd
           container_id=$(docker run -d -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine tail -f /dev/null)
           docker cp ${container_id}:/state ./state
-          docker exec -t ${container_id} ls /state
-          ls ./state
-          docker rm ${container_id}
+          docker exec -t ${container_id} ls -al /state
+          ls -al ./state
+          docker rm -f ${container_id}
       - name: Upload buildkit state
         uses: actions/cache@v3
         with:
