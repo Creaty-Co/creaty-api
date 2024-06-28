@@ -40,7 +40,7 @@ jobs:
           tags: creaty-api-test
           cache-from: type=registry,ref=ghcr.io/${{ env.REPOSITORY }}/api:cache-latest,mode=max
           cache-to: type=registry,mode=max,ref=ghcr.io/${{ env.REPOSITORY }}/api:cache-latest,mode=max
-      - run: docker run --rm -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}_state:/mnt -t alpine ls /mnt
+      - run: docker run --rm -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}_state:/mnt -t alpine ls -al /mnt
 
       - name: Run tests
         # language="shell script"
