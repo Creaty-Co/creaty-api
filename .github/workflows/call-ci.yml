@@ -33,11 +33,12 @@ jobs:
           repository=${{ github.repository }}
           echo "REPOSITORY=${repository,,}" >> ${GITHUB_ENV}
 
-      - name: Download cached state
-        uses: actions/download-artifact@v3
+      - name: Cache buildkit state
+        id: cache-buildkit
+        uses: actions/cache@v3
         with:
-          name: buildkit_state
           path: ./state
+          key: buildkit-state
       - name: Load state into volume
         run: |
           container_id=$(docker create -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine)
@@ -64,12 +65,13 @@ jobs:
           container_id=$(docker create -v buildx_buildkit_${{ steps.setup_buildx.outputs.name }}0_state:/state alpine)
           docker cp ${container_id}:/state ./state
           docker exec -t ${container_id} ls /state
+          ls ./state
           docker rm ${container_id}
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/cache@v3
         with:
-          name: buildkit_state
           path: ./state
+          key: buildkit-state
 
       - name: Run tests
         # language="shell script"
