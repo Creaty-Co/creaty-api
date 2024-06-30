@@ -39,11 +39,17 @@ jobs:
         id: cache-buildkit
         uses: actions/cache@v3
         with:
-          path: ./state
+          path: ./state.tar.gz
           key: buildkit-state
-      - name: Load buildkit state into volume
+      - name: Decompress buildkit state
+        if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: |
-          docker buildx rm ${{ steps.setup_buildx.outputs.name }}
+          du -h .
+          tar -xzvf state.tar.gz
+          du -h .
+      - name: Load buildkit state into volume
+        if: steps.cache-buildkit.outputs.cache-hit == 'true'
+        run: |
           container_id=$(docker run -d -v buildx_buildkit_bld0_state:/state ubuntu tail -f /dev/null)
           docker exec -t ${container_id} ls -al /state
           mkdir ./state || docker exec -t ${container_id} sh -c 'rm -rf /state/*'
@@ -68,7 +74,6 @@ jobs:
           docker exec -t buildx_buildkit_bld0 ls -al /var/lib/buildkit
           docker exec -t buildx_buildkit_bld0 du -h -d1 /var/lib/buildkit
           docker exec -t buildx_buildkit_bld0 du -h -d1 /var/lib/buildkit/runc-overlayfs/snapshots/snapshots/
-          docker inspect buildx_buildkit_bld0
 
       - name: Copy files from Docker to host
         run: |
@@ -83,10 +88,14 @@ jobs:
           ls -al ./state
           docker rm -f ${container_id}
           docker buildx rm bld
-      - name: Upload buildkit state
+      - name: Compress and upload buildkit state
+        run: |
+          du -h .
+          tar -czvf state.tar.gz state
+          du -h .
         uses: actions/cache@v3
         with:
-          path: ./state
+          path: ./state.tar.gz
           key: buildkit-state
 
       - name: Run tests
