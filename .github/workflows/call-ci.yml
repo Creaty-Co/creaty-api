@@ -44,7 +44,9 @@ jobs:
       - name: Decompress buildkit state
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: |
-          tar -xzf state.tar.gz -C tmp/state
+          ls -al
+          ls -al /tmp
+          tar -xzf tmp/state.tar.gz -C tmp/state
           ls -al /tmp
           ls -al /tmp/state
           du -sh .
