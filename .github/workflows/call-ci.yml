@@ -50,12 +50,14 @@ jobs:
           docker exec -t ${container_id} ls -al /state
           docker rm -f ${container_id}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5.1.0
-        with:
-          context: .
-          load: true
-          tags: creaty-api-test
+      #      - name: Build test image
+      #        uses: docker/build-push-action@v5.1.0
+      #        with:
+      #          context: .
+      #          load: true
+      #          tags: creaty-api-test
+      - name: Build test image
+        run: docker buildx build --load -t creaty-api-test .
 
       - name: Copy files from Docker to host
         run: |
