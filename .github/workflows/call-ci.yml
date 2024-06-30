@@ -87,7 +87,6 @@ jobs:
           docker cp ${container_id}:/state/. ./state
           ls -al ./state
           docker rm -f ${container_id}
-          docker buildx rm bld
       - name: Compress and upload buildkit state
         run: |
           du -h .
