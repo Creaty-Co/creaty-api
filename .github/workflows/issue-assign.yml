@@ -8,7 +8,7 @@ jobs:
   assign:
     runs-on: ubuntu-22.04
     steps:
-      - uses: pozil/auto-assign-issue@v1.13.0
+      - uses: pozil/auto-assign-issue@v1.14.0
         with:
           assignees: GentleEnvy
           abortIfPreviousAssignees: true
