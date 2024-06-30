@@ -74,8 +74,8 @@ jobs:
 
       - name: Copy files from Docker to host
         run: |
-          mkdir -p tmp/state
-          rm -rf tmp/state/*
+          mkdir -p ~/state
+          rm -rf ~/state/*
           docker rm -f buildx_buildkit_bld0
           container_id=$(docker run -d -v buildx_buildkit_bld0_state:/state ubuntu tail -f /dev/null)
           docker exec -t ${container_id} chmod -R 777 /state
@@ -86,6 +86,7 @@ jobs:
       - name: Compress buildkit state
         run: |
           ls -al ~/state
+          mkdir -p ~/buildkit-state
           tar -czf ~/buildkit-state/state.tar.gz ~/state
           ls -al ~/buildkit-state
       - name: Upload buildkit state
