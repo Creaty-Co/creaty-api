@@ -76,7 +76,8 @@ jobs:
 
       - name: Copy files from Docker to host
         run: |
-          rm -rf tmp/state/* || true
+          mkdir -p tmp/state
+          rm -rf tmp/state/*
           docker rm -f buildx_buildkit_bld0
           container_id=$(docker run -d -v buildx_buildkit_bld0_state:/state ubuntu tail -f /dev/null)
           docker exec -t ${container_id} chmod -R 777 /state
