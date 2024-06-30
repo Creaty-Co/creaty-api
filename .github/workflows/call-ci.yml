@@ -40,7 +40,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./tmp/state.tar.gz
-          key: buildkit-state
+          key: buildkit-state-${{ github.sha }}
+          restore-keys: |
+            buildkit-state-
       - name: Decompress buildkit state
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: tar -xzf tmp/state.tar.gz
@@ -49,8 +51,6 @@ jobs:
         run: |
           container_id=$(docker run -d -v buildx_buildkit_bld0_state:/state ubuntu tail -f /dev/null)
           docker exec -t ${container_id} ls -al /state
-          mkdir -p tmp/state || docker exec -t ${container_id} sh -c 'rm -rf /state/*'
-          ls -al tmp/state
           docker cp tmp/state/. ${container_id}:/state
           docker exec -t ${container_id} chown -R root:root /state
           docker exec -t ${container_id} du -sh /state
@@ -85,7 +85,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./tmp/state.tar.gz
-          key: buildkit-state
+          key: buildkit-state-${{ github.sha }}
 
       - name: Run tests
         # language="shell script"
