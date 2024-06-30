@@ -39,13 +39,15 @@ jobs:
         id: cache-buildkit
         uses: actions/cache@v3
         with:
-          path: ./tmp/state.tar.gz
-          key: buildkit-state-${{ github.sha }}
-          restore-keys: |
-            buildkit-state-
+          path: ./tmp
+          key: buildkit-state
       - name: Decompress buildkit state
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
-        run: tar -xzf tmp/state.tar.gz
+        run: |
+          tar -xzf state.tar.gz -C tmp/state
+          ls -al /tmp
+          ls -al /tmp/state
+          du -sh .
       - name: Load buildkit state into volume
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: |
@@ -80,12 +82,16 @@ jobs:
           du -sh tmp/state
           docker rm -f ${container_id}
       - name: Compress buildkit state
-        run: tar -czf tmp/state.tar.gz tmp/state
+        run: |
+          mkdir -p /tmp/state
+          ls -al tmp/state
+          tar -czf /tmp/state/state.tar.gz tmp/state
+          ls -al /tmp/state
       - name: Upload buildkit state
         uses: actions/cache@v3
         with:
-          path: ./tmp/state.tar.gz
-          key: buildkit-state-${{ github.sha }}
+          path: /tmp/state
+          key: buildkit-state
 
       - name: Run tests
         # language="shell script"
