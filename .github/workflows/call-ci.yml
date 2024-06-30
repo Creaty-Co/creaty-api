@@ -39,26 +39,25 @@ jobs:
         id: cache-buildkit
         uses: actions/cache@v3
         with:
-          path: ./state.tar.gz
+          path: tmp/state.tar.gz
           key: buildkit-state
       - name: Decompress buildkit state
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: |
-          du -h .
-          tar -xzvf state.tar.gz
-          du -h .
+          du -sh .
+          tar -xzvf tmp/state.tar.gz
+          du -sh .
       - name: Load buildkit state into volume
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: |
           container_id=$(docker run -d -v buildx_buildkit_bld0_state:/state ubuntu tail -f /dev/null)
           docker exec -t ${container_id} ls -al /state
-          mkdir ./state || docker exec -t ${container_id} sh -c 'rm -rf /state/*'
-          ls -al ./state
-          docker cp ./state/. ${container_id}:/state
+          mkdir -p tmp/state || docker exec -t ${container_id} sh -c 'rm -rf /state/*'
+          ls -al tmp/state
+          docker cp tmp/state/. ${container_id}:/state
           docker exec -t ${container_id} chown -R root:root /state
-          docker exec -t ${container_id} ls -al /state
-          docker exec -t ${container_id} du -h --max-depth=1 /state/runc-overlayfs/snapshots/snapshots/
-          docker exec -t ${container_id} du -h --max-depth=1 /state
+          docker exec -t ${container_id} ls -al /state/runc-overlayfs/snapshots/snapshots/
+          docker exec -t ${container_id} du -sh /state
           docker rm -f ${container_id}
 
       #      - name: Build test image
@@ -77,25 +76,24 @@ jobs:
 
       - name: Copy files from Docker to host
         run: |
-          rm -rf ./state/*
+          rm -rf tmp/state/* || true
           docker rm -f buildx_buildkit_bld0
           container_id=$(docker run -d -v buildx_buildkit_bld0_state:/state ubuntu tail -f /dev/null)
           docker exec -t ${container_id} chmod -R 777 /state
-          docker exec -t ${container_id} ls -al /state
-          docker exec -t ${container_id} du -h --max-depth=1 /state/runc-overlayfs/snapshots/snapshots/
-          docker exec -t ${container_id} du -h --max-depth=1 /state
-          docker cp ${container_id}:/state/. ./state
-          ls -al ./state
+          docker exec -t ${container_id} ls -al /state/runc-overlayfs/snapshots/snapshots/
+          docker exec -t ${container_id} du -sh /state
+          docker cp ${container_id}:/state/. tmp/state
+          du -sh tmp/state
           docker rm -f ${container_id}
       - name: Compress buildkit state
         run: |
-          du -h .
-          tar -czvf state.tar.gz state
-          du -h .
+          du -sh .
+          tar -czvf tmp/state.tar.gz tmp/state
+          du -sh .
       - name: Upload buildkit state
         uses: actions/cache@v3
         with:
-          path: ./state.tar.gz
+          path: tmp/state.tar.gz
           key: buildkit-state
 
       - name: Run tests
