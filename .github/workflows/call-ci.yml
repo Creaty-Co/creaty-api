@@ -41,7 +41,6 @@ jobs:
         with:
           path: ~/buildkit-state
           key: buildkit-state
-          lookup-only: true
       - name: Decompress buildkit state
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: |
@@ -89,11 +88,6 @@ jobs:
           mkdir -p ~/buildkit-state
           tar -czf ~/buildkit-state/state.tar.gz ~/state
           ls -al ~/buildkit-state
-      - name: Upload buildkit state
-        uses: actions/cache@v3
-        with:
-          path: ~/buildkit-state
-          key: buildkit-state
 
       - name: Run tests
         # language="shell script"
