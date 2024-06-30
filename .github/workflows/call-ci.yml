@@ -64,10 +64,11 @@ jobs:
       - name: Build test image
         run: |
           docker buildx create --name bld --use
+          docker buildx build --load -t creaty-api-test .
           docker exec -t buildx_buildkit_bld0 ls -al /var/lib/buildkit
           docker exec -t buildx_buildkit_bld0 du -h -d1 /var/lib/buildkit
           docker exec -t buildx_buildkit_bld0 du -h -d1 /var/lib/buildkit/runc-overlayfs/snapshots/snapshots/
-          docker buildx build --load -t creaty-api-test .
+          docker inspect buildx_buildkit_bld0
 
       - name: Copy files from Docker to host
         run: |
