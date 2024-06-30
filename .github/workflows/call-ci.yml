@@ -46,6 +46,7 @@ jobs:
         run: |
           ls -al ~
           ls -al ~/buildkit-state
+          mkdir -p ~/state
           tar -xzf ~/buildkit-state/state.tar.gz -C ~/state
           ls -al ~/state
           du -sh ~/state
