@@ -39,14 +39,11 @@ jobs:
         id: cache-buildkit
         uses: actions/cache@v3
         with:
-          path: tmp/state.tar.gz
+          path: ./tmp/state.tar.gz
           key: buildkit-state
       - name: Decompress buildkit state
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
-        run: |
-          du -sh .
-          tar -xzvf tmp/state.tar.gz
-          du -sh .
+        run: tar -xzf tmp/state.tar.gz
       - name: Load buildkit state into volume
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: |
@@ -56,7 +53,6 @@ jobs:
           ls -al tmp/state
           docker cp tmp/state/. ${container_id}:/state
           docker exec -t ${container_id} chown -R root:root /state
-          docker exec -t ${container_id} ls -al /state/runc-overlayfs/snapshots/snapshots/
           docker exec -t ${container_id} du -sh /state
           docker rm -f ${container_id}
 
@@ -70,9 +66,7 @@ jobs:
         run: |
           docker buildx create --name bld --use
           docker buildx build --load -t creaty-api-test .
-          docker exec -t buildx_buildkit_bld0 ls -al /var/lib/buildkit
-          docker exec -t buildx_buildkit_bld0 du -hs /var/lib/buildkit
-          docker exec -t buildx_buildkit_bld0 ls -al /var/lib/buildkit/runc-overlayfs/snapshots/snapshots/
+          docker exec -t buildx_buildkit_bld0 du -sh /var/lib/buildkit
 
       - name: Copy files from Docker to host
         run: |
@@ -81,20 +75,16 @@ jobs:
           docker rm -f buildx_buildkit_bld0
           container_id=$(docker run -d -v buildx_buildkit_bld0_state:/state ubuntu tail -f /dev/null)
           docker exec -t ${container_id} chmod -R 777 /state
-          docker exec -t ${container_id} ls -al /state/runc-overlayfs/snapshots/snapshots/
           docker exec -t ${container_id} du -sh /state
           docker cp ${container_id}:/state/. tmp/state
           du -sh tmp/state
           docker rm -f ${container_id}
       - name: Compress buildkit state
-        run: |
-          du -sh .
-          tar -czvf tmp/state.tar.gz tmp/state
-          du -sh .
+        run: tar -czf tmp/state.tar.gz tmp/state
       - name: Upload buildkit state
         uses: actions/cache@v3
         with:
-          path: tmp/state.tar.gz
+          path: ./tmp/state.tar.gz
           key: buildkit-state
 
       - name: Run tests
