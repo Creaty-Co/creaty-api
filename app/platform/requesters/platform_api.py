@@ -16,11 +16,18 @@ class PlatformAPIRequester(BaseRequester):
         }
         super().__init__(base_url=base_url, **kwargs)
 
-    def signup(self, username: str, email: str, password: str) -> None:
+    def signup(
+        self, original_id: int, username: str, email: str, password: str
+    ) -> None:
         message = self.request(
             'post',
             'auth/signup',
-            data={'username': username, 'email': email, 'password': password},
+            data={
+                'original_id': original_id,
+                'username': username,
+                'email': email,
+                'password': password,
+            },
         ).json()['message']
         if message != 'Created user':
             raise self.CalAPIError(message)
