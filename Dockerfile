@@ -8,8 +8,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 COPY /requirements.txt ./requirements.txt
 
-RUN pip install --upgrade pip \
-    pip install --upgrade setuptools \
+RUN --mount=type=cache,target=/root/.cache/pip  \
+    pip install --upgrade pip && \
+    pip install --upgrade setuptools && \
     pip install -r requirements.txt
 
 COPY . .
