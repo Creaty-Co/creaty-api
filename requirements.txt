@@ -17,7 +17,7 @@ django-celery-beat==2.5.0
 django-svg-image-form-field==1.0.1
 django-uuslug==2.0.0
 django-advanced-password-validation==1.2.0
-social-auth-app-django==5.4.0
+social-auth-app-django==5.4.1
 django-admin-interface==0.26.1
 
 djangorestframework==3.15.2
