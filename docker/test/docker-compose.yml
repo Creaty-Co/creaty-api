@@ -37,12 +37,19 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: api
-    image: creaty-api-test
+    image: python:3.12.4
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1
+      PYTHONUNBUFFERED: 1
+      DJANGO_SETTINGS_MODULE: api.settings
     env_file: [../../envs/.test.env]
-    command: bash -c "
-      coverage run manage.py test --noinput
-      && coverage report
-      && coverage xml -o /api/coverages/coverage.xml
+    working_dir: /api
+    command: |
+      bash -c "
+        pip install -r requirements.txt &&
+        coverage run manage.py test --noinput &&
+        coverage report &&
+        coverage xml -o /api/coverages/coverage.xml
       "
     volumes: [../../coverages:/api/coverages]
     depends_on: [db, redis-cache, redis-cacheops, redis-storage]
