@@ -50,7 +50,7 @@ jobs:
           ls -al ~/buildkit-state
           mkdir -p ~/state
           tar -xzf ~/buildkit-state/state.tar.gz -C ~/state
-          ls -al ~/state
+          ls -al ~/state/runc-overlayfs/snapshots/snapshots
           du -sh ~/state
       - name: Load buildkit state into volume
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
@@ -87,7 +87,7 @@ jobs:
           docker rm -f ${container_id}
       - name: Compress buildkit state
         run: |
-          ls -al ~/state
+          ls -al ~/state/runc-overlayfs/snapshots/snapshots
           mkdir -p ~/buildkit-state
           tar -czf ~/buildkit-state/state.tar.gz ~/state
           ls -al ~/buildkit-state
