@@ -49,10 +49,37 @@ services:
     working_dir: /api
     command: |
       sh -c "
-        pip install --no-cache-dir --disable-pip-version-check -r requirements.txt &&
-        coverage run manage.py test --noinput &&
-        coverage report &&
+        start_time=\$(date +%s)
+
+        echo 'Running pip install -r requirements.txt...'
+        pip install --no-cache-dir --disable-pip-version-check -r requirements.txt
+        end_time=\$(date +%s)
+        elapsed_time=\$((end_time - start_time))
+        echo 'pip install -r requirements.txt took' \$elapsed_time 'seconds'
+
+        start_time=\$(date +%s)
+
+        echo 'Running coverage run manage.py test --noinput...'
+        coverage run manage.py test --noinput
+        end_time=\$(date +%s)
+        elapsed_time=\$((end_time - start_time))
+        echo 'coverage run manage.py test --noinput took' \$elapsed_time 'seconds'
+
+        start_time=\$(date +%s)
+
+        echo 'Running coverage report...'
+        coverage report
+        end_time=\$(date +%s)
+        elapsed_time=\$((end_time - start_time))
+        echo 'coverage report took' \$elapsed_time 'seconds'
+
+        start_time=\$(date +%s)
+
+        echo 'Running coverage xml -o /api/coverages/coverage.xml...'
         coverage xml -o /api/coverages/coverage.xml
+        end_time=\$(date +%s)
+        elapsed_time=\$((end_time - start_time))
+        echo 'coverage xml -o /api/coverages/coverage.xml took' \$elapsed_time 'seconds'
       "
     volumes:
       - ../..:/api
