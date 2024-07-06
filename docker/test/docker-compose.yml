@@ -48,7 +48,7 @@ services:
     env_file: [../../envs/.test.env]
     working_dir: /api
     command: |
-      bash -c "
+      sh -c "
         ls -alh && 
         pip install -r requirements.txt &&
         coverage run manage.py test --noinput &&
