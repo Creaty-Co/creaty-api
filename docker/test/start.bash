@@ -8,26 +8,13 @@ start=$(date +%s)
 
 pip_start=$(date +%s)
 procs=$(wc -l requirements.txt | awk '{print $1}')
-max_attempts=5
-attempt=1
-while (( attempt <= max_attempts )); do
-  pip install --upgrade pip
-  xargs -t -n1 -P"$procs" pip download -d ./dist < requirements.txt
-  pip install \
-    --no-input --progress-bar off --root-user-action ignore \
-    --no-cache-dir --disable-pip-version-check --no-clean --prefer-binary \
-    --no-index --find-links=./dist \
-    -r requirements.txt
-  # shellcheck disable=SC2181
-  if [[ $? -eq 0 ]]; then
-    break
-  fi
-  ((attempt++))
-  sleep 1
-done
-if (( attempt > max_attempts )); then
-  exit 1
-fi
+pip install --upgrade pip
+xargs -t -n2 -P20 pip download -d ./dist < requirements.txt
+pip install \
+  --no-input --progress-bar off --root-user-action ignore \
+  --no-cache-dir --disable-pip-version-check --no-clean --prefer-binary \
+  --no-index --find-links=./dist \
+  -r requirements.txt
 pip_end=$(date +%s)
 echo "pip install took $(( pip_end - pip_start )) seconds"
 
