@@ -4,7 +4,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: db
-    image: postgres:15.3
+    image: postgres:15.3-alpine
     env_file: [../../envs/.test.env]
     restart: 'no'
 
@@ -13,6 +13,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: redis-cache
+    image: redis:7.0.12-alpine
     env_file: [../../envs/.test.env]
     restart: 'no'
 
@@ -21,6 +22,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: redis-cacheops
+    image: redis:7.0.12-alpine
     env_file: [../../envs/.test.env]
     restart: 'no'
 
@@ -29,6 +31,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: redis-storage
+    image: redis:7.0.12-alpine
     env_file: [../../envs/.test.env]
     restart: 'no'
 
@@ -37,7 +40,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: api
-    image: python:3.12.4
+    image: python:3.12.4-alpine
     environment:
       PYTHONDONTWRITEBYTECODE: 1
       PYTHONUNBUFFERED: 1
@@ -46,12 +49,14 @@ services:
     working_dir: /api
     command: |
       bash -c "
+        ls -alh && 
         pip install -r requirements.txt &&
         coverage run manage.py test --noinput &&
         coverage report &&
         coverage xml -o /api/coverages/coverage.xml
       "
-    volumes: [../../coverages:/api/coverages]
+    volumes:
+      - ../..:/api
     depends_on: [db, redis-cache, redis-cacheops, redis-storage]
     restart: 'no'
 
