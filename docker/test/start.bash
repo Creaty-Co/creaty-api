@@ -23,6 +23,7 @@ echo "" > "$RESULTS_FILE"
 # Функция для выполнения команды и замера времени
 run_pip_download() {
     local n=$1
+    rm -rf ./dist
     pip_download_start=$(date +%s%3N)
     xargs -n"$n" -P"$NUM_PROCESSES" pip download -d "$DOWNLOAD_DIR" \
         --progress-bar off --disable-pip-version-check --no-clean --prefer-binary -q \
