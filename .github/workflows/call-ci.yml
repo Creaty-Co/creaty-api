@@ -50,6 +50,7 @@ jobs:
           ls -al ~/buildkit-state
           mkdir -p ~/state
           tar -xzf ~/buildkit-state/state.tar.gz -C ~/state
+          ls -al ~/state
           ls -al ~/state/runc-overlayfs
           du -sh ~/state
       - name: Load buildkit state into volume
