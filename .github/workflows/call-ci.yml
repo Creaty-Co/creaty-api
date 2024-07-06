@@ -44,7 +44,7 @@ jobs:
           restore-keys: |
             buildkit-state-
       - name: Decompress buildkit state
-        if: steps.cache-buildkit.outputs.cache-hit == 'true'
+        #if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: |
           ls -al ~
           ls -al ~/buildkit-state
@@ -53,7 +53,7 @@ jobs:
           ls -al ~/state/runc-overlayfs/snapshots/snapshots
           du -sh ~/state
       - name: Load buildkit state into volume
-        if: steps.cache-buildkit.outputs.cache-hit == 'true'
+        #if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: |
           container_id=$(docker run -d -v buildx_buildkit_bld0_state:/state ubuntu tail -f /dev/null)
           docker exec -t ${container_id} ls -al /state
