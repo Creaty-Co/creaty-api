@@ -49,11 +49,10 @@ services:
     working_dir: /api
     command: |
       sh -c "
-        ls -alh && 
-        pip install -r requirements.txt &&
-        coverage run manage.py test --noinput &&
-        coverage report &&
-        coverage xml -o /api/coverages/coverage.xml
+        { time pip install --no-cache-dir --disable-pip-version-check -r requirements.txt; } 2>&1 | grep real && \
+        { time coverage run manage.py test --noinput; } 2>&1 | grep real && \
+        { time coverage report; } 2>&1 | grep real && \
+        { time coverage xml -o /api/coverages/coverage.xml; } 2>&1 | grep real
       "
     volumes:
       - ../..:/api
