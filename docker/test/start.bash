@@ -11,10 +11,10 @@ procs=$(wc -l requirements.txt | awk '{print $1}')
 max_attempts=5
 attempt=1
 while (( attempt <= max_attempts )); do
-  pip install \
+  xargs --max-args=1 --max-procs=2 --exit pip install \
     --no-input --progress-bar off --root-user-action ignore \
     --no-cache-dir --disable-pip-version-check --no-clean --prefer-binary \
-    -r requirements.txt
+    < requirements.txt
   # shellcheck disable=SC2181
   if [[ $? -eq 0 ]]; then
     break
