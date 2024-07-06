@@ -40,7 +40,7 @@ services:
     extends:
       file: ../docker-compose.base.yml
       service: api
-    image: python:3.12.4-alpine
+    image: python:3.12.4
     environment:
       PYTHONDONTWRITEBYTECODE: 1
       PYTHONUNBUFFERED: 1
