@@ -8,13 +8,11 @@ start=$(date +%s)
 
 pip_start=$(date +%s)
 procs=$(wc -l requirements.txt | awk '{print $1}')
-pip install --upgrade pip
 xargs -t -n2 -P20 pip download -d ./dist \
-  --no-input --progress-bar off --root-user-action ignore \
-  --no-cache-dir --disable-pip-version-check --no-clean --prefer-binary \
+  --progress-bar off --disable-pip-version-check --no-clean --prefer-binary \
   < requirements.txt
 pip install \
-  --no-input --progress-bar off --root-user-action ignore \
+  --progress-bar off --root-user-action ignore \
   --no-cache-dir --disable-pip-version-check --no-clean --prefer-binary \
   --no-index --find-links=./dist \
   -r requirements.txt
