@@ -48,7 +48,7 @@ services:
     env_file: [../../envs/.test.env]
     working_dir: /api
     # language="shell script"
-    command: ./docker/test/start.bash
+    command: 'bash ./docker/test/start.bash'
     volumes:
       - ../..:/api
     depends_on: [db, redis-cache, redis-cacheops, redis-storage]
