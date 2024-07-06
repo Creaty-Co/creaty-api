@@ -40,7 +40,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/buildkit-state
-          key: buildkit-state
+          key: buildkit-state-${{ github.sha }}
+          restore-keys: |
+            buildkit-state-
       - name: Decompress buildkit state
         if: steps.cache-buildkit.outputs.cache-hit == 'true'
         run: |
