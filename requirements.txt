@@ -54,7 +54,7 @@ factory_boy==3.3.0
 Faker==24.11.0
 coverage==7.4.4
 
-django-debug-toolbar==4.2.0
+django-debug-toolbar==4.4.5
 
 
 google-api-python-client
