@@ -1,27 +1,34 @@
 task:
-  - api/**/*
-  - app/**/*
-  - locale/**/*
+  - any:
+      - changed-files:
+          - any-glob-to-any-file: ['api/**/*', 'app/**/*', 'locale/**/*']
 
 test:
-  - app/*/tests/**/*
+  - any:
+      - changed-files:
+          - any-glob-to-any-file: 'app/*/tests/**/*'
 
 devops:
-  - .github/**/*
-  - docker/**/*
-  - envs/*
-  - nginx/*
-  - gunicorn/*
-  - .coveragerc
-  - .dockerignore
-  - .gitignore
-  - codecov.yml
-  - .pre-commit-config.yaml
-  - pyproject.toml
-  - setup.cfg
-  - Dockerfile
-  - docker-compose.yml
-  - manage.py
+  - any:
+      - changed-files:
+          - any-glob-to-any-file:
+              - '.github/**/*'
+              - 'docker/**/*'
+              - 'envs/*'
+              - 'nginx/*'
+              - 'gunicorn/*'
+              - '.coveragerc'
+              - '.dockerignore'
+              - '.gitignore'
+              - 'codecov.yml'
+              - '.pre-commit-config.yaml'
+              - 'pyproject.toml'
+              - 'setup.cfg'
+              - 'Dockerfile'
+              - 'docker-compose.yml'
+              - 'manage.py'
 
 requirements:
-  - requirements.txt
+  - any:
+      - changed-files:
+          - any-glob-to-any-file: 'requirements.txt'
