@@ -15,7 +15,6 @@ from sentry_sdk.integrations.redis import RedisIntegration
 
 from app.base.enums.currency import Currency
 from app.base.logs.configs import LogConfig
-from app.base.template.undefinable_variable import UndefinableVariable
 
 # patches
 
@@ -172,8 +171,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
-            'string_if_invalid': UndefinableVariable('%s'),
+            ]
         },
     }
 ]
