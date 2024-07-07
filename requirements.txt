@@ -1,5 +1,5 @@
 # django
-Django==5.0.4
+Django==5.0.6
 django-cors-headers==4.4.0
 django-environ==0.11.2
 django-filter==24.2
@@ -30,7 +30,7 @@ djangochannelsrestframework==1.2.0
 # misc
 channels==4.1.0
 channels-redis==4.2.0
-orjson==3.10.1
+orjson==3.10.6
 psycopg==3.2.1
 redis==5.0.7
 Pillow==10.4.0
