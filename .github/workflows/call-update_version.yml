@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [get_commit_title]
     steps:
-      - uses: actions/checkout@v4.1.3
+      - uses: actions/checkout@v4.1.7
         with:
           repository: creaty-co/creaty-root-chart
           ssh-key: ${{ secrets.CHART_DEPLOY_KEY }}
