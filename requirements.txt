@@ -1,4 +1,4 @@
-Django==4.2.7
+Django==5.0.4
 django-cors-headers==4.3.1
 django-environ==0.11.2
 django-filter==24.2
@@ -13,7 +13,7 @@ django-cacheops==7.0.2
 django-countries==7.6.1
 django-money==3.4.1
 certifi==2024.7.4
-django-celery-beat==2.5.0
+django-celery-beat==2.6.0
 django-svg-image-form-field==1.0.1
 django-uuslug==2.0.0
 django-advanced-password-validation==1.2.0
