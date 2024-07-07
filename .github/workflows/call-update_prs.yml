@@ -13,3 +13,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GENTLEENVY_TOKEN }}
           MERGE_MSG: "auto-update"
           MERGE_CONFLICT_ACTION: ignore
+          PR_READY_STATE: ready_for_review
