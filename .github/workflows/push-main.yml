@@ -12,7 +12,6 @@ jobs:
   update_prs:
     uses: ./.github/workflows/call-update_prs.yml
     secrets: inherit
-    needs: [ci]
   release_draft:
     uses: ./.github/workflows/call-release_draft.yml
     secrets: inherit
