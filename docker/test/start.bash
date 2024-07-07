@@ -9,10 +9,10 @@ start=$(date +%s)
 pip_download_start=$(date +%s%3N)
 xargs -t -n15 -P100 pip download -d ./dist \
   --progress-bar off --disable-pip-version-check --no-clean --prefer-binary -q \
-  < requirements.txt || \
+  < <(grep -vE '^\s*($|#)' requirements.txt) || \
   xargs -t -n15 -P100 pip download -d ./dist \
     --progress-bar off --disable-pip-version-check --no-clean --prefer-binary -q \
-    < requirements.txt
+    < <(grep -vE '^\s*($|#)' requirements.txt)
 pip_download_end=$(date +%s%3N)
 echo "pip download took $(( pip_download_end - pip_download_start )) milliseconds"
 
