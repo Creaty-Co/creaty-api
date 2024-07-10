@@ -55,7 +55,7 @@ Faker==26.0.0
 coverage==7.5.4
 
 # dev
-django-debug-toolbar==4.4.5
+django-debug-toolbar==4.4.6
 
 # deploy
 daphne==4.1.2
