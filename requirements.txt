@@ -12,7 +12,7 @@ django-pickling==1.0
 django-redis==5.4.0
 django-cacheops==7.0.2
 django-countries==7.6.1
-django-money==3.5.2
+django-money==3.5.3
 django-celery-beat==2.6.0
 django-svg-image-form-field==1.0.1
 django-uuslug==2.0.0
