@@ -21,7 +21,7 @@ jobs:
       - name: Run tests
         # language="shell script"
         run: |
-          docker-compose -f docker/test/docker-compose.yml up --build \
+          docker compose -f docker/test/docker-compose.yml up --build \
           --exit-code-from api --abort-on-container-exit api
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4.5.0
