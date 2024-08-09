@@ -1,3 +1,4 @@
+from django.core.files.base import ContentFile
 from drf_base64.fields import Base64ImageField as _Base64ImageField
 from rest_framework.fields import SkipField
 
@@ -18,7 +19,7 @@ class Base64ImageField(_Base64ImageField):
             )
         super().__init__(**kwargs)
 
-    def _decode(self, data):
+    def _decode(self, data) -> ContentFile:
         try:
             value = super()._decode(data)
         except SkipField:
