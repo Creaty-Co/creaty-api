@@ -59,7 +59,7 @@ django-debug-toolbar==4.4.6
 
 # deploy
 daphne==4.1.2
-Twisted[http2]==24.3.0
+Twisted[http2]==24.7.0
 gunicorn==23.0.0
 asgiref==3.8.1
 whitenoise==6.7.0
