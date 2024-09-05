@@ -51,7 +51,7 @@ google-auth-oauthlib==1.2.1
 # test
 parameterized==0.9.0
 factory_boy==3.3.1
-Faker==28.1.0
+Faker==28.4.1
 coverage==7.6.1
 
 # dev
