@@ -37,7 +37,7 @@ Pillow==10.4.0
 celery==5.4.0
 gevent==24.2.1
 argon2-cffi==23.1.0
-pydantic[email]==2.9.0
+pydantic[email]==2.9.1
 py-moneyed==2.0
 requests==2.32.3
 toml==0.10.2
