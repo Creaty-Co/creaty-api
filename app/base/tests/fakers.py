@@ -49,6 +49,12 @@ class SubFaker(_Faker):
             fake.file_name(category='image', extension=extension),
         )
 
+    def timezone(self) -> datetime.timezone:
+        hours_offset = self.random.randint(-12, 14)
+        minutes_offset = self.random.choice([0, 15, 30, 45])
+        offset = datetime.timedelta(hours=hours_offset, minutes=minutes_offset)
+        return datetime.timezone(offset)
+
 
 class Faker(_FactoryFaker):
     def __init__(self, provider, **kwargs):
