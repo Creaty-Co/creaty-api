@@ -27,7 +27,7 @@ def status_by_method(method: str) -> int:
 
 
 def choices_to_help_text(
-    choices: type[models.Choices] | Iterable[tuple[Any, str]]
+    choices: type[models.Choices] | Iterable[tuple[Any, str]],
 ) -> str:
     transcripts = []
     if isinstance(choices, type) and issubclass(choices, Choices):
